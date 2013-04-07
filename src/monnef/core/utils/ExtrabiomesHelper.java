@@ -3,11 +3,13 @@ package monnef.core.utils;
 import com.google.common.base.Optional;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import extrabiomes.api.Biomes;
+import monnef.core.MonnefCorePlugin;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.biome.BiomeGenBase;
+import sun.rmi.runtime.Log;
 
-import static monnef.jaffas.food.JaffasFood.Log;
+import static monnef.core.MonnefCorePlugin.Log;
 
 public class ExtrabiomesHelper {
     /**

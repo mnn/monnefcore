@@ -1,7 +1,7 @@
 package monnef.core.utils;
 
 import cpw.mods.fml.common.FMLLog;
-import monnef.jaffas.food.JaffasFood;
+import monnef.core.MonnefCorePlugin;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +33,7 @@ public class CustomLogger {
     }
 
     public void printDebug(String message) {
-        if (JaffasFood.debug) {
+        if (MonnefCorePlugin.debugEnv) {
             print(Level.INFO, "[D] " + message);
         }
     }

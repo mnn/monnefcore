@@ -1,6 +1,6 @@
 package monnef.core.utils;
 
-import monnef.jaffas.power.api.IPowerNodeCoordinates;
+import monnef.core.api.IIntegerCoordinates;
 
 import java.text.DecimalFormat;
 
@@ -14,11 +14,11 @@ public class MathHelper {
         return number * number;
     }
 
-    public static float exactDistance(IPowerNodeCoordinates a, IPowerNodeCoordinates b) {
+    public static float exactDistance(IIntegerCoordinates a, IIntegerCoordinates b) {
         return sqrt_float(square(a.getX() - b.getX()) + square(a.getY() - b.getY()) + square(a.getZ() - b.getZ()));
     }
 
-    public static int exactDistanceInt(IPowerNodeCoordinates a, IPowerNodeCoordinates b) {
+    public static int exactDistanceInt(IIntegerCoordinates a, IIntegerCoordinates b) {
         return ceiling_float_int(exactDistance(a, b));
     }
 
