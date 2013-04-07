@@ -18,6 +18,7 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     public static final String CLASS_LOADER_TAG = "classLoader";
     public static CustomLogger Log = new CustomLogger("mC");
     public static boolean debugEnv = !ObfuscationHelper.isRunningInObfuscatedMode();
+    public static boolean jaffasEnv = System.getProperty("jaffasFlag") != null;
     static boolean initialized = false;
 
     public static boolean isInitialized() {

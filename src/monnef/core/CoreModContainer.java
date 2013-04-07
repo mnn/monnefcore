@@ -60,7 +60,7 @@ public class CoreModContainer extends DummyModContainer {
             }
         }
 
-        if (MonnefCorePlugin.debugEnv) {
+        if (MonnefCorePlugin.debugEnv && MonnefCorePlugin.jaffasEnv) {
             ObfuscationHelper.dumpUsedItemsToConfig();
         }
 

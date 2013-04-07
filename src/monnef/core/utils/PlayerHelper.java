@@ -1,9 +1,12 @@
 package monnef.core.utils;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class PlayerHelper {
@@ -28,4 +31,16 @@ public class PlayerHelper {
         return equippedItem.itemID == itemId;
     }
 
+    public static MovingObjectPosition rayTrace(EntityLiving entity, double distance) {
+/**
+ Vec3 vec3 = this.getPosition(par3);
+ Vec3 vec31 = this.getLook(par3);
+ Vec3 vec32 = vec3.addVector(vec31.xCoord * par1, vec31.yCoord * par1, vec31.zCoord * par1);
+ */
+
+        Vec3 pos = entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX, entity.posY, entity.posZ);
+        Vec3 look = entity.getLookVec();
+        Vec3 target = pos.addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
+        return entity.worldObj.rayTraceBlocks(pos, target);
+    }
 }
