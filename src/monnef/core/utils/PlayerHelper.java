@@ -38,7 +38,7 @@ public class PlayerHelper {
  Vec3 vec32 = vec3.addVector(vec31.xCoord * par1, vec31.yCoord * par1, vec31.zCoord * par1);
  */
 
-        Vec3 pos = entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX, entity.posY, entity.posZ);
+        Vec3 pos = entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX, entity.posY + 1.62D - entity.yOffset, entity.posZ);
         Vec3 look = entity.getLookVec();
         Vec3 target = pos.addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
         return entity.worldObj.rayTraceBlocks(pos, target);
