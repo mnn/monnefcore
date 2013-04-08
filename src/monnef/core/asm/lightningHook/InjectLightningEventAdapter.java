@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013 monnef.
+ */
+
 package monnef.core.asm.lightningHook;
 
 import monnef.core.asm.CoreTransformer;

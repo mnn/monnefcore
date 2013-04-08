@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013 monnef.
+ */
+
 package monnef.core;
 
 import net.minecraft.inventory.IInventory;

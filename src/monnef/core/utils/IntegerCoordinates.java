@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013 monnef.
+ */
+
 package monnef.core.utils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
