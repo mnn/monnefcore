@@ -9,7 +9,7 @@ import java.util.HashSet;
 import static monnef.core.MonnefCorePlugin.Log;
 
 public class CustomCloaksHandler implements ICloakHandler {
-    private static final String JAFFA_CLOAK_URL_BASE = Reference.URL + "/skin/cloak/_get.php";
+    private static final String JAFFA_CLOAK_URL_BASE = Reference.URL_JAFFAS + "/skin/cloak/_get.php";
     private static final String JAFFA_CLOAK_URL = JAFFA_CLOAK_URL_BASE + "?name=%s";
     private static HashSet<String> specialNames = new HashSet<String>();
 

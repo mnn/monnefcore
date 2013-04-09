@@ -1,5 +1,7 @@
 package monnef.core.base;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -56,6 +58,7 @@ public abstract class BlockMonnefCore extends Block implements ICustomIcon {
         this.iconsCount = iconsCount;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IconRegister iconRegister) {
         this.blockIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this));

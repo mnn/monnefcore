@@ -24,7 +24,6 @@ public class CoreModContainer extends DummyModContainer {
         myMeta.modId = Reference.ModId;
         myMeta.version = Reference.Version;
         myMeta.name = Reference.ModName;
-        myMeta.url = Reference.URL;
 
         if (instance != null) {
             System.out.println("multiple container creation?");

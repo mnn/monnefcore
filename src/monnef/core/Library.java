@@ -20,7 +20,7 @@ import static monnef.core.MonnefCorePlugin.Log;
 public class Library implements ILibrarySet {
     public static final String SKIP_LIBRARY_DOWNLOAD_TAG = "skipLibraryDownload";
 
-    public static final String DOWNLOAD_URL = Reference.URL + "/lib/%s";
+    public static final String DOWNLOAD_URL = Reference.URL_JAFFAS + "/lib/%s";
     public static final String CONFIG_DIR = "config";
 
     private static final HashMap<String, LibraryInfo> Libraries;
