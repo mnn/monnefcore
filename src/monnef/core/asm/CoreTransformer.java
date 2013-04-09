@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013 monnef.
+ */
+
 package monnef.core.asm;
 
 import cpw.mods.fml.relauncher.IClassTransformer;

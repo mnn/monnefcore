@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013 monnef.
+ */
+
 package monnef.core.asm;
 
 import monnef.core.utils.PathHelper;

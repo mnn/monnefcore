@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2013 monnef.
+ */
+
 package monnef.core.base;
 
 import cpw.mods.fml.relauncher.Side;
