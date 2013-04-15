@@ -20,4 +20,8 @@ public class VectorUtils {
     public static Vec3 multiplyVector(Vec3Pool pool, Vec3 input, double number) {
         return pool.getVecFromPool(input.xCoord * number, input.yCoord * number, input.zCoord * number);
     }
+
+    public static Vec3 shiftedVectorInDirection(Vec3Pool pool, Vec3 start, Vec3 direction, double distance) {
+        return addVector(start, multiplyVector(pool, direction.normalize(), distance));
+    }
 }

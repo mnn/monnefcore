@@ -17,6 +17,10 @@ public class IDProvider {
 
     public final int startItemID;
     private int actualItemID;
+
+    public final int startModEntityID = 0;
+    private int actualModEntityID;
+
     private Configuration config;
 
     private HashSet<Integer> BlockIDsAssigned;
@@ -49,6 +53,10 @@ public class IDProvider {
         return this.actualBlockID = newId;
     }
 
+    public int getModEntityID() {
+        return this.actualModEntityID++;
+    }
+
     public int getBlockIDFromConfig(String name) {
         int newUsedId = this.config.getBlock(name, this.getBlockID()).getInt();
         BlockIDsAssigned.add(newUsedId);
@@ -63,6 +71,10 @@ public class IDProvider {
 
     public int getEntityIDFromConfig(String name) {
         return this.config.get("entity", name, EntityRegistry.findGlobalUniqueEntityId()).getInt();
+    }
+
+    public int getModEntityIDFromConfig(String name) {
+        return this.config.get("mod_entity", name, getModEntityID()).getInt();
     }
 
     public void linkWithConfig(Configuration config) {
