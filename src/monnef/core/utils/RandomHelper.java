@@ -22,4 +22,8 @@ public class RandomHelper {
         return new float[]{(float) x, (float) y};
     }
 
+    public static float generateRandomFromSymmetricInterval(float len) {
+        return generateRandomFromInterval(-len, len);
+    }
+
 }
