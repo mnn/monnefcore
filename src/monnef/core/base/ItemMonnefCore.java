@@ -55,11 +55,11 @@ public abstract class ItemMonnefCore extends Item implements ICustomIcon {
     }
 
     @Override
-    public void updateIcons(IconRegister iconRegister) {
-        this.iconIndex = iconRegister.registerIcon(CustomIconHelper.generateId(this));
+    public void registerIcons(IconRegister iconRegister) {
+        this.itemIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this));
         if (iconsCount > 1) {
             icons = new Icon[iconsCount];
-            icons[0] = this.iconIndex;
+            icons[0] = this.itemIcon;
             for (int i = 1; i < iconsCount; i++) {
                 icons[i] = iconRegister.registerIcon(CustomIconHelper.generateShiftedId(this, i));
             }
