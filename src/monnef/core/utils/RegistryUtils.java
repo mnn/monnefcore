@@ -99,6 +99,13 @@ public class RegistryUtils {
         }
     }
 
+    public static void registerSubItems(Block block, String[] names) {
+        for (int ix = 0; ix < names.length; ix++) {
+            ItemStack multiBlockStack = new ItemStack(block, 1, ix);
+            LanguageRegistry.addName(multiBlockStack, names[multiBlockStack.getItemDamage()]);
+        }
+    }
+
     public static <T extends Item> T registerItem(T item, String name, String title) {
         item.setUnlocalizedName(name);
         GameRegistry.registerItem(item, item.getUnlocalizedName());

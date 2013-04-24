@@ -1,0 +1,5 @@
+This coremod is required by monnef's mods. It provides functionality for other my mods, it doesn't do anything on its own.
+
+Mods using this library:
+Jaffas and more! - http://www.planetminecraft.com/mod/jaffas-and-more-0410-forgemc147/
+Dawn of Steve
