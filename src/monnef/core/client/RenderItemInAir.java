@@ -20,19 +20,28 @@ import java.lang.reflect.Field;
 public class RenderItemInAir extends Render {
     private Texture texture;
     private Icon icon;
+    private final Item item;
 
     public RenderItemInAir(Item item) {
         super();
+        this.item = item;
+    }
+
+    public void tryLoadTexture() {
         icon = item.getIconFromDamage(0);
+        if (icon == null) return;
         Field ts = ReflectionHelper.findField(TextureStitched.class, "textureSheet", "field_94228_a");
         try {
             texture = (Texture) ts.get(icon);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
+        if (texture == null) tryLoadTexture();
+
         GL11.glPushMatrix();
 
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
