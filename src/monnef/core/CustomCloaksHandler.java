@@ -25,11 +25,12 @@ public class CustomCloaksHandler implements ICloakHandler {
     @Override
     public void handleCloak(EntityPlayer player, String name) {
         if (MonnefCorePlugin.debugEnv) {
-            Log.printFine("got question on a cloak for [" + name + "]");
             name = "monnef";
         }
+        Log.printFine("got question on a cloak for [" + name + "]");
         String url = String.format(JAFFA_CLOAK_URL, name);
         if (specialNames.contains(name)) {
+            Log.printFine("setting cloak for [" + name + "]");
             player.cloakUrl = url;
         }
     }
