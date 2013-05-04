@@ -44,7 +44,7 @@ public class Library implements ILibrarySet {
     }
 
     private void handleConfig() {
-        String pathname = PathHelper.getActualPath() + "/" + CONFIG_DIR + "/" + Reference.ModId + ".cfg";
+        String pathname = PathHelper.getMinecraftPath() + "/" + CONFIG_DIR + "/" + Reference.ModId + ".cfg";
         Log.printFine("Opening config file: \"" + pathname + "\"");
         File config = new File(pathname);
         InputStream inputStream = null;

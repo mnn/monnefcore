@@ -19,7 +19,7 @@ import java.util.HashSet;
 import static monnef.core.MonnefCorePlugin.Log;
 
 public class ObfuscationHelper {
-    public static final String JAFFAS_MAPPINGS_CFG = "jaffas_mappings.ser";
+    public static final String JAFFAS_MAPPINGS_CFG = "monnef_mappings.ser";
     private static boolean runningInObfuscatedMode = System.getProperty("debugFlag") == null;
 
     private static HashMap<MappedObjectType, MappingDictionary> database;
@@ -66,7 +66,7 @@ public class ObfuscationHelper {
         if (runningInObfuscatedMode) {
             loadConfigFromJar();
         } else {
-            McpParser.parse(database, PathHelper.getActualPath() + "/../conf/");
+            McpParser.parse(database, PathHelper.getMinecraftPath() + "/../conf/");
             Log.printInfo("After MCP parser we have " + formatDatabaseStats(database) + ".");
         }
 
@@ -122,7 +122,7 @@ public class ObfuscationHelper {
     }
 
     public static void dumpUsedItemsToConfig() {
-        String path = PathHelper.getActualPath() + "/../bin_data/" + JAFFAS_MAPPINGS_CFG;
+        String path = PathHelper.getMinecraftPath() + "/../bin_data/" + JAFFAS_MAPPINGS_CFG;
         try {
             OutputStream output = new FileOutputStream(path);
             HashMap<MappedObjectType, MappingDictionary> usedOnlyDatabase = constructOnlyUsed(database, usedFlags);

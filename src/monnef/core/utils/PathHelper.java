@@ -4,10 +4,10 @@
 
 package monnef.core.utils;
 
+import cpw.mods.fml.relauncher.FMLInjectionData;
 import monnef.core.Library;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -43,7 +43,7 @@ public class PathHelper {
                 } else {
                     throw new RuntimeException("cannot parse path to my jar");
                 }
-            }else{
+            } else {
                 throw new RuntimeException("what? I'm not in a jar?");
             }
 
@@ -66,13 +66,14 @@ public class PathHelper {
         return absPath;
     }
 
-    public static String getActualPath() {
+    public static String getMinecraftPath() {
         String path;
         try {
-            path = new File(".").getCanonicalPath();
-        } catch (IOException e) {
+            // path = new File(".").getCanonicalPath();
+            path = ((File) FMLInjectionData.data()[6]).getAbsolutePath().replace(File.separatorChar, '/').replace("/.", "");
+        } catch (ClassCastException e) {
             e.printStackTrace();
-            throw new RuntimeException("cannot detect current path");
+            throw new RuntimeException("expected File in an injection data at 6, FML changed format?");
         }
 
         Log.printFine("current absolute path: [" + path + "]");
