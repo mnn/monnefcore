@@ -16,6 +16,7 @@ import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
 
 import static monnef.core.MonnefCorePlugin.Log;
+import static monnef.core.MonnefCorePlugin.debugEnv;
 
 public class CoreModContainer extends DummyModContainer {
     private static CoreModContainer instance;
@@ -30,7 +31,7 @@ public class CoreModContainer extends DummyModContainer {
         myMeta.name = Reference.ModName;
 
         if (instance != null) {
-            System.out.println("multiple container creation?");
+            Log.printWarning("multiple container creation?");
         }
 
         instance = this;
@@ -68,6 +69,7 @@ public class CoreModContainer extends DummyModContainer {
         }
 
         MonnefCorePlugin.initialized = true;
+        if (debugEnv) doDebuggingThings();
     }
 
     private void printDebugDataAndCrash(String msg) {
@@ -75,5 +77,8 @@ public class CoreModContainer extends DummyModContainer {
         Log.printFine("Mapping database:");
         ObfuscationHelper.printAllDataToLog();
         throw new RuntimeException(msg);
+    }
+
+    private void doDebuggingThings() {
     }
 }
