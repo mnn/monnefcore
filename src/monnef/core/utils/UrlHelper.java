@@ -48,6 +48,7 @@ public class UrlHelper {
             String line;
             out.clear();
             while ((line = reader.readLine()) != null) {
+                if (line.contains("<!")) break; // moxo footer
                 out.add(line.trim());
             }
             huc.disconnect();
