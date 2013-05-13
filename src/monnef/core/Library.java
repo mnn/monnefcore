@@ -32,8 +32,8 @@ public class Library implements ILibrarySet {
 
     static {
         Libraries = new HashMap<String, LibraryInfo>();
-        addLibrary("Jsoup", "99351550d1fa2e8147319dbafd3f3a79d4f4c6e5", "jsoup-1.7.1.jar");
-        addLibrary("Lombok", "ba171d45e78f08ccca3cf531d285f13cfb4de2c7", "lombok_0_11_6.jar");
+        //addLibrary("Jsoup", "99351550d1fa2e8147319dbafd3f3a79d4f4c6e5", "jsoup-1.7.1.jar");
+        //addLibrary("Lombok", "ba171d45e78f08ccca3cf531d285f13cfb4de2c7", "lombok_0_11_6.jar");
     }
 
     private static void addLibrary(String name, String hash, String fileName) {

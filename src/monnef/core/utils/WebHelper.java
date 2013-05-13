@@ -11,9 +11,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
+import java.util.List;
 
-public class UrlHelper {
+public class WebHelper {
 
     public static final int TIMEOUT = 1000;
 
@@ -34,11 +34,16 @@ public class UrlHelper {
         }
     }
 
-    public static boolean getNames(String url, Set<String> out) {
+    public static boolean getLinesTillFooter(String url, List<String> out) {
+        return getLinesTillFooter(url, "", out);
+    }
+
+    public static boolean getLinesTillFooter(String url, String referer, List<String> out) {
         try {
             URL u = new URL(url);
             HttpURLConnection huc = (HttpURLConnection) u.openConnection();
             huc.setInstanceFollowRedirects(true);
+            huc.setRequestProperty("Referer", referer);
             int responseCode = huc.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
                 return false;

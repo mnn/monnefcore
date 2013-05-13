@@ -6,9 +6,10 @@
 package monnef.core;
 
 import com.google.common.base.Joiner;
-import monnef.core.utils.UrlHelper;
+import monnef.core.utils.WebHelper;
 import net.minecraft.entity.player.EntityPlayer;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static monnef.core.MonnefCorePlugin.Log;
@@ -19,7 +20,10 @@ public class CustomCloaksHandler implements ICloakHandler {
     private static HashSet<String> specialNames = new HashSet<String>();
 
     public CustomCloaksHandler() {
-        UrlHelper.getNames(JAFFA_CLOAK_URL_BASE, specialNames);
+        ArrayList<String> tmp = new ArrayList<String>();
+        WebHelper.getLinesTillFooter(JAFFA_CLOAK_URL_BASE, tmp);
+        specialNames.clear();
+        specialNames.addAll(tmp);
         Log.printFine("special names: " + Joiner.on(", ").join(specialNames));
     }
 
