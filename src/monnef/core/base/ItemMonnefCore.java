@@ -7,6 +7,8 @@ package monnef.core.base;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 
 public abstract class ItemMonnefCore extends Item implements ICustomIcon {
@@ -70,5 +72,9 @@ public abstract class ItemMonnefCore extends Item implements ICustomIcon {
     @Override
     public Icon getCustomIcon(int index) {
         return icons[index];
+    }
+
+    public void initNBT(ItemStack stack) {
+        if (stack.getTagCompound() == null) stack.setTagCompound(new NBTTagCompound());
     }
 }
