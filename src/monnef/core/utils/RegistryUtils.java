@@ -113,4 +113,12 @@ public class RegistryUtils {
         LanguageRegistry.addName(item, title);
         return item;
     }
+
+    public static String getTitle(ItemStack stack) {
+        String title = stack.getDisplayName();
+        if (title == null || title.isEmpty()) {
+            title = LanguageRegistry.instance().getStringLocalization(stack.getItem().getUnlocalizedName() + ".name");
+        }
+        return title;
+    }
 }
