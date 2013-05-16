@@ -12,9 +12,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
+import monnef.core.calendar.CoreTickHandler;
 
 import static monnef.core.MonnefCorePlugin.Log;
 import static monnef.core.MonnefCorePlugin.debugEnv;
@@ -68,6 +70,10 @@ public class CoreModContainer extends DummyModContainer {
         if (MonnefCorePlugin.debugEnv && MonnefCorePlugin.jaffasEnv) {
             ObfuscationHelper.dumpUsedItemsToConfig();
         }
+
+        CoreTickHandler tickHandler = new CoreTickHandler();
+        TickRegistry.registerTickHandler(tickHandler, Side.CLIENT);
+        TickRegistry.registerTickHandler(tickHandler, Side.SERVER);
 
         MonnefCorePlugin.initialized = true;
         if (debugEnv) doDebuggingThings();
