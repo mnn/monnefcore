@@ -68,6 +68,7 @@ public abstract class BlockMonnefCore extends Block implements ICustomIcon {
     public void registerIcons(IconRegister iconRegister) {
         this.blockIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this));
         if (iconsCount > 1) {
+            icons = new Icon[iconsCount];
             icons[0] = this.blockIcon;
             for (int i = 1; i < iconsCount; i++) {
                 icons[i] = iconRegister.registerIcon(CustomIconHelper.generateShiftedId(this, i));

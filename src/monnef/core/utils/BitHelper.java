@@ -29,4 +29,12 @@ public class BitHelper {
             return unsetBit(a, bitNumber);
         }
     }
+
+    public static int generateOnes(int count) {
+        int o = 0;
+        while (count-- > 0) {
+            o = (o << 1) + 1;
+        }
+        return o;
+    }
 }
