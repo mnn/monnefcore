@@ -12,7 +12,7 @@ public class DirectionHelper {
         return dir == ForgeDirection.UP || dir == ForgeDirection.DOWN;
     }
 
-    public static Integer[] applyRotations(Integer[] input, Integer[] axisList) {
+    public static Integer[] applyRotations(Integer[] input, Integer... axisList) {
         checkDirectionArray(input, true);
         checkDirectionArray(axisList, false);
         Integer[] result = new Integer[6];
@@ -26,6 +26,16 @@ public class DirectionHelper {
         }
 
         return result;
+    }
+
+    public static Integer[] applyRotationsInverted(Integer[] input, Integer... axisList) {
+        Integer[] invertedRotations = new Integer[axisList.length];
+        int j = 0;
+        for (int i = axisList.length - 1; i >= 0; i--) {
+            invertedRotations[j++] = ForgeDirection.getOrientation(axisList[i]).getOpposite().ordinal();
+        }
+
+        return applyRotations(input, invertedRotations);
     }
 
     public static void checkDirectionArray(Integer[] toTest, boolean expectSix) {
