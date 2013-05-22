@@ -7,6 +7,8 @@ package monnef.core.utils;
 
 import net.minecraft.item.ItemStack;
 
+import java.util.List;
+
 public class ItemHelper {
     /**
      * Damages item.
@@ -26,5 +28,11 @@ public class ItemHelper {
         }
 
         return false;
+    }
+
+    public static void insertStackMultipleTimes(List<ItemStack> list, ItemStack item, int count) {
+        for (int i = 0; i < count; i++) {
+            list.add(item.copy());
+        }
     }
 }
