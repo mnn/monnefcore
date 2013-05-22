@@ -121,4 +121,13 @@ public class RegistryUtils {
         }
         return title;
     }
+
+    public static void registerBlockPackingRecipe(ItemStack input, ItemStack outputBlock) {
+        ItemStack[] inputItems = new ItemStack[9];
+        for (int i = 0; i < 9; i++) {
+            inputItems[i] = input.copy();
+        }
+
+        GameRegistry.addShapelessRecipe(outputBlock.copy(), inputItems);
+    }
 }
