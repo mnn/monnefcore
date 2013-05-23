@@ -27,4 +27,13 @@ public class RandomHelper {
         return generateRandomFromInterval(-len, len);
     }
 
+    public static int generateRandomFromInterval(int min, int max) {
+        int size = max - min;
+        if (size < 0) throw new IllegalArgumentException();
+        return rand.nextInt(size + 1) + min;
+    }
+
+    public static int generateRandomFromSymmetricInterval(int len) {
+        return generateRandomFromInterval(-len, len);
+    }
 }
