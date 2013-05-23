@@ -12,23 +12,29 @@ import net.minecraftforge.common.Property;
 
 import java.util.HashSet;
 
+import static monnef.core.MonnefCorePlugin.Log;
+
 public class IDProvider {
-    public final int startBlockID;
+    private static final String BOOT_CATEGORY_STRING = "boot";
+
+    public int startBlockID;
     private int actualBlockID;
 
-    public final int startItemID;
+    public int startItemID;
     private int actualItemID;
 
     public final int startModEntityID = 0;
     private int actualModEntityID;
 
+    private String modName;
     private Configuration config;
 
     private HashSet<Integer> BlockIDsAssigned;
     private HashSet<Integer> ItemIDsAssigned;
 
-    public IDProvider(int startBlockID, int startItemID) {
+    public IDProvider(int startBlockID, int startItemID, String modName) {
         this.startBlockID = startBlockID;
+        this.modName = modName;
         this.actualBlockID = this.startBlockID;
 
         this.startItemID = startItemID;
@@ -79,9 +85,22 @@ public class IDProvider {
     }
 
     public void linkWithConfig(Configuration config) {
+        if (this.config != null) {
+            throw new RuntimeException("multiple linking with config!");
+        }
+
         this.config = config;
         loadDataFromConfig(config.getCategory(Configuration.CATEGORY_BLOCK), BlockIDsAssigned);
         loadDataFromConfig(config.getCategory(Configuration.CATEGORY_ITEM), ItemIDsAssigned);
+        initStartsOfIntervals();
+    }
+
+    protected void initStartsOfIntervals() {
+        int newStartBlockID = config.get(BOOT_CATEGORY_STRING, "blockStartId", startBlockID).getInt();
+        int newStartItemID = config.get(BOOT_CATEGORY_STRING, "itemStartId", startItemID).getInt();
+        Log.printFine(String.format("Starts of ID intervals for \"%s\" are item = %d (default: %d) and block = %d (default: %d)", modName, newStartItemID, startItemID, newStartBlockID, startBlockID));
+        startBlockID = newStartBlockID;
+        startItemID = newStartItemID;
     }
 
     protected void loadDataFromConfig(ConfigCategory category, HashSet<Integer> used) {
