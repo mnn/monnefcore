@@ -8,7 +8,7 @@ package monnef.core.utils;
 import java.util.Random;
 
 public class RandomHelper {
-    private static Random rand = new Random();
+    public static Random rand = new Random();
 
     public static float generateRandomFromInterval(float min, float max) {
         float size = max - min;

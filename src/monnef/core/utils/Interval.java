@@ -38,4 +38,8 @@ public class Interval {
         }
         return tmp.toArray(new Interval[]{});
     }
+
+    public int getRandom() {
+        return RandomHelper.generateRandomFromInterval(getMin(), getMax());
+    }
 }

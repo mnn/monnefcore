@@ -31,7 +31,7 @@ public class PlayerHelper {
         world.spawnEntityInWorld(entity);
     }
 
-    public static boolean PlayerHasEquipped(EntityPlayer player, int itemId) {
+    public static boolean playerHasEquipped(EntityPlayer player, int itemId) {
         if (player == null) return false;
         ItemStack equippedItem = player.getCurrentEquippedItem();
         if (equippedItem == null) return false;
