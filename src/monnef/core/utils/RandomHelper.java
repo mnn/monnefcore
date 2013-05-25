@@ -36,4 +36,8 @@ public class RandomHelper {
     public static int generateRandomFromSymmetricInterval(int len) {
         return generateRandomFromInterval(-len, len);
     }
+
+    public static boolean rollPercentBooleanDice(int percentsOfSuccess) {
+        return rand.nextFloat() < percentsOfSuccess / 100f;
+    }
 }
