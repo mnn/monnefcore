@@ -7,4 +7,6 @@ package monnef.core.api;
 
 public interface IItemBlock {
     int getBlockIdCustom();
+
+    void setSubNames(String[] newNames);
 }

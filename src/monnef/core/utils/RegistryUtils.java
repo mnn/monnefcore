@@ -40,7 +40,11 @@ public class RegistryUtils {
         registerBlock(block, title);
     }
 
-    public static void registerMultiBlock(Block block, Class<?> itemBlock, String[] names) {
+    public static void registerMultiBlock(Block block, Class<?> itemBlock, String[] titles) {
+        registerMultiBlock(block, itemBlock, titles, null);
+    }
+
+    public static void registerMultiBlock(Block block, Class<?> itemBlock, String[] titles, String[] names) {
         String blockName = block.getUnlocalizedName();
         if (blockName == null) {
             throw new RuntimeException("Block name not set - " + itemBlock.getSimpleName() + ".");
@@ -48,17 +52,20 @@ public class RegistryUtils {
 
         Class<?> cls = itemBlock;
         if (ItemBlock.class.isAssignableFrom(cls)) {
+            if (names != null) {
+                throw new RuntimeException("cannot have custom names for ItemBlock");
+            }
             GameRegistry.registerBlock(block, (Class<? extends ItemBlock>) itemBlock, blockName);
         } else if (IItemBlock.class.isAssignableFrom(cls)) {
-            registerMyBlock(block, (Class<? extends IItemBlock>) itemBlock, blockName);
+            registerMyBlock(block, (Class<? extends IItemBlock>) itemBlock, blockName, names);
         } else {
             throw new RuntimeException("Unknown class in block registration.");
         }
 
-        registerSubBlocks(block, names);
+        registerSubBlocks(block, titles);
     }
 
-    private static void registerMyBlock(Block block, Class<? extends IItemBlock> itemclass, String blockName) {
+    private static void registerMyBlock(Block block, Class<? extends IItemBlock> itemclass, String blockName, String[] names) {
         // heavily based on GameRegistry.registerBlock of Forge
         if (Loader.instance().isInState(LoaderState.CONSTRUCTING)) {
             Log.printWarning("Registering block in non-constructing state!");
@@ -75,6 +82,9 @@ public class RegistryUtils {
             } catch (NoSuchMethodException e) {
                 itemCtor = itemclass.getConstructor(int.class, Block.class);
                 i = (Item) itemCtor.newInstance(blockItemId, block);
+            }
+            if (names != null) {
+                ((IItemBlock) i).setSubNames(names);
             }
             GameRegistry.registerItem(i, blockName, null);
         } catch (Exception e) {
