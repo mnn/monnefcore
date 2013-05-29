@@ -20,7 +20,7 @@ public class ItemHelper {
      * @param amount
      * @return If item is destroyed.
      */
-    public static boolean DamageItem(ItemStack item, int amount) {
+    public static boolean damageItem(ItemStack item, int amount) {
         //this.itemDamage > this.getMaxDamage()
         if (item == null) return false;
         if (amount <= 0) return false;
@@ -46,5 +46,12 @@ public class ItemHelper {
 
     public static ItemStack getItemStackAnyDamage(Block block) {
         return new ItemStack(block, 1, OreDictionary.WILDCARD_VALUE);
+    }
+
+    public static boolean haveStacksSameIdAndDamage(ItemStack template, ItemStack tested) {
+        if (template == null || tested == null) return false;
+        if (template.itemID != tested.itemID) return false;
+        if (template.getItemDamage() == OreDictionary.WILDCARD_VALUE) return true;
+        return template.getItemDamage() == tested.getItemDamage();
     }
 }
