@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
-public class InventoryBlockRenderer {
+public class CustomBlockRenderingHelper {
 
     // heavily based on RenderBlocks
     public static void Render(Block block, int meta, float colorMultiplier, RenderBlocks renderer) {
@@ -60,5 +60,21 @@ public class InventoryBlockRenderer {
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 5, meta));
         tess.draw();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+    }
+
+    public static void doRendering(RenderBlocks renderer, Block block) {
+        doRendering(renderer, block, 0, 0, 0, true, 0, 1);
+    }
+
+    public static void doRendering(RenderBlocks renderer, Block block, int x, int y, int z) {
+        doRendering(renderer, block, x, y, z, false, 0, 1);
+    }
+
+    public static void doRendering(RenderBlocks renderer, Block block, int x, int y, int z, boolean renderingInventory, int metaForInventory, int coloringForInventory) {
+        if (renderingInventory) {
+            CustomBlockRenderingHelper.Render(block, metaForInventory, coloringForInventory, renderer);
+        } else {
+            renderer.renderStandardBlock(block, x, y, z);
+        }
     }
 }
