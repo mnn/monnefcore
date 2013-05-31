@@ -6,6 +6,7 @@
 package monnef.core.utils;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
+import net.minecraft.block.Block;
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
@@ -93,6 +94,18 @@ public class IDProvider {
         loadDataFromConfig(config.getCategory(Configuration.CATEGORY_BLOCK), BlockIDsAssigned);
         loadDataFromConfig(config.getCategory(Configuration.CATEGORY_ITEM), ItemIDsAssigned);
         initStartsOfIntervals();
+    }
+
+    // doesn't mark, it's expected to release the id
+    public int getTempBlockId() {
+        int id = 256;
+        while (Block.blocksList[id] != null) {
+            id++;
+            if (id >= Block.blocksList.length) {
+                throw new RuntimeException("All block IDs exhausted. Are you crazy?");
+            }
+        }
+        return id;
     }
 
     protected void initStartsOfIntervals() {
