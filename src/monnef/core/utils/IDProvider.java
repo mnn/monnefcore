@@ -108,6 +108,13 @@ public class IDProvider {
         return id;
     }
 
+    public void safelyRemoveTempBlock(int tempBlockId, Block tempBlock) {
+        if (!(tempBlock.getClass().isInstance(Block.blocksList[tempBlockId]))) {
+            throw new RuntimeException(String.format("What trickery is going on here? Block registered with ID %d but now it's not there (new ID is %d), halting. This behaviour will break other things.", tempBlockId, tempBlock.blockID));
+        }
+        Block.blocksList[tempBlockId] = null; // don't consume block id
+    }
+
     protected void initStartsOfIntervals() {
         int newStartBlockID = config.get(BOOT_CATEGORY_STRING, "blockStartId", startBlockID).getInt();
         int newStartItemID = config.get(BOOT_CATEGORY_STRING, "itemStartId", startItemID).getInt();
