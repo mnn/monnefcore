@@ -28,17 +28,17 @@ public class DyeHelper {
     }
 
     public static int getDyeNum(DyeColor color) {
-        Integer index = dyeNames.get(color.getColor());
+        Integer index = dyeNames.get(color.getColorName());
         if (index == null) {
-            throw new RuntimeException("unknown color name: " + color.getColor());
+            throw new RuntimeException("unknown color name: " + color.getColorName());
         }
         return index;
     }
 
     public static int getWoolNum(DyeColor color) {
-        Integer index = woolNames.get(color.getColor());
+        Integer index = woolNames.get(color.getColorName());
         if (index == null) {
-            throw new RuntimeException("unknown color name: " + color.getColor());
+            throw new RuntimeException("unknown color name: " + color.getColorName());
         }
         return index;
     }
@@ -49,5 +49,13 @@ public class DyeHelper {
 
     public static ItemStack getWool(DyeColor color) {
         return new ItemStack(Block.cloth, 1, getWoolNum(color));
+    }
+
+    public static int getIntColor(DyeColor color) {
+        return getIntColor(color.ordinal());
+    }
+
+    public static int getIntColor(int color) {
+        return ItemDye.dyeColors[color];
     }
 }

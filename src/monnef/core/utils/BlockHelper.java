@@ -20,6 +20,7 @@ public class BlockHelper {
 
     public static final int NOTIFY_ALL = NOTIFY_FLAG | SEND_ID_OF_CHANGED_BLOCK_FLAG;
 
+    // with notify
     public static boolean setBlockMetadata(World world, int x, int y, int z, int metadata) {
         return world.setBlockMetadataWithNotify(x, y, z, metadata, NOTIFY_ALL);
     }

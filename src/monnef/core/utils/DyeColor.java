@@ -14,13 +14,14 @@ public enum DyeColor {
     BLACK("black"), RED("red"), GREEN("green"), BROWN("brown"), BLUE("blue"), PURPLE("purple"), CYAN("cyan"), SILVER("silver"),
     GRAY("gray"), PINK("pink"), LIME("lime"), YELLOW("yellow"), L_BLUE("lightBlue"), MAGENTA("magenta"), ORANGE("orange"), WHITE("white");
 
-    private final String color;
+    private final String colorName;
+    public static final DyeColor[] DYE = {BLACK, RED, GREEN, BROWN, BLUE, PURPLE, CYAN, SILVER, GRAY, PINK, LIME, YELLOW, L_BLUE, MAGENTA, ORANGE, WHITE};
 
-    DyeColor(String color) {
-        this.color = color;
+    DyeColor(String colorName) {
+        this.colorName = colorName;
     }
 
-    public String getColor() {
-        return color;
+    public String getColorName() {
+        return colorName;
     }
 }

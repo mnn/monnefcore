@@ -6,6 +6,10 @@
 package monnef.core.utils;
 
 public class ColorHelper {
+    public static int getInt(IntColor color) {
+        return getInt(color.red, color.green, color.blue, color.alpha);
+    }
+
     public static int getInt(int red, int green, int blue) {
         return getInt(red, green, blue, 0);
     }
@@ -30,6 +34,22 @@ public class ColorHelper {
         int green = (color >> 8) & 0xFF;
         int blue = color & 0xFF;
         return new IntColor(red, green, blue, alpha);
+    }
+
+    public static int addBrightness(int inputColor, int amount) {
+        IntColor c = getColor(inputColor);
+        c.red += amount;
+        c.green += amount;
+        c.blue += amount;
+        return getInt(c);
+    }
+
+    public static int addContrast(int inputColor, float modifier) {
+        IntColor c = getColor(inputColor);
+        c.red = Math.round(c.red * modifier);
+        c.green = Math.round(c.green * modifier);
+        c.blue = Math.round(c.blue * modifier);
+        return getInt(c);
     }
 
     public static class IntColor {
