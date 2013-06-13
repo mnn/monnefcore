@@ -71,5 +71,25 @@ public class ColorHelper {
             this.blue = blue;
             this.alpha = alpha;
         }
+
+        public float getFloatRed() {
+            return toFloat(red);
+        }
+
+        public float getFloatGreen() {
+            return toFloat(green);
+        }
+
+        public float getFloatBlue() {
+            return toFloat(blue);
+        }
+
+        public float getFloatAlpha() {
+            return toFloat(alpha);
+        }
+
+        private float toFloat(int value) {
+            return value / 255f;
+        }
     }
 }
