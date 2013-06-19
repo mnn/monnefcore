@@ -38,4 +38,10 @@ public class StringsHelper {
         BigInteger bi = new BigInteger(1, bytes);
         return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
+
+    public static String makeFirstCapital(String input) {
+        String first = input.substring(0, 1);
+        String rest = input.substring(1);
+        return first.toUpperCase() + rest;
+    }
 }

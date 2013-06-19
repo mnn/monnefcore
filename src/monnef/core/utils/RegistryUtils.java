@@ -110,9 +110,9 @@ public class RegistryUtils {
         }
     }
 
-    public static void registerSubItems(Block block, String[] names) {
+    public static void registerSubItems(Item item, String[] names) {
         for (int ix = 0; ix < names.length; ix++) {
-            ItemStack multiBlockStack = new ItemStack(block, 1, ix);
+            ItemStack multiBlockStack = new ItemStack(item, 1, ix);
             LanguageRegistry.addName(multiBlockStack, names[multiBlockStack.getItemDamage()]);
         }
     }

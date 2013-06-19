@@ -6,8 +6,6 @@
 package monnef.core.client;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
@@ -64,17 +62,17 @@ public class CustomBlockRenderingHelper {
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     }
 
-    public static void doRendering(RenderBlocks renderer, Block block) {
-        doRendering(renderer, block, 0, 0, 0, true, 0, 1);
+    public static void doRendering(RenderBlocks renderer, Block block, int meta) {
+        doRendering(renderer, block, 0, 0, 0, true, meta, 1);
     }
 
     public static void doRendering(RenderBlocks renderer, Block block, int x, int y, int z) {
         doRendering(renderer, block, x, y, z, false, 0, 1);
     }
 
-    public static void doRendering(RenderBlocks renderer, Block block, int x, int y, int z, boolean renderingInventory, int metaForInventory, int coloringForInventory) {
+    public static void doRendering(RenderBlocks renderer, Block block, int x, int y, int z, boolean renderingInventory, int metaForInventory, int colorMultiplierForInventory) {
         if (renderingInventory) {
-            CustomBlockRenderingHelper.Render(block, metaForInventory, coloringForInventory, renderer);
+            CustomBlockRenderingHelper.Render(block, metaForInventory, colorMultiplierForInventory, renderer);
         } else {
             renderer.renderStandardBlock(block, x, y, z);
         }
