@@ -7,7 +7,7 @@ package monnef.core.utils;
 
 public class ColorHelper {
     public static int getInt(IntColor color) {
-        return getInt(color.red, color.green, color.blue, color.alpha);
+        return getInt(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
     }
 
     public static int getInt(int red, int green, int blue) {
@@ -38,58 +38,103 @@ public class ColorHelper {
 
     public static int addBrightness(int inputColor, int amount) {
         IntColor c = getColor(inputColor);
-        c.red += amount;
-        c.green += amount;
-        c.blue += amount;
+        c.setRed(c.getRed() + amount);
+        c.setGreen(c.getGreen() + amount);
+        c.setBlue(c.getBlue() + amount);
         return getInt(c);
     }
 
     public static int addContrast(int inputColor, float modifier) {
         IntColor c = getColor(inputColor);
-        c.red = Math.round(c.red * modifier);
-        c.green = Math.round(c.green * modifier);
-        c.blue = Math.round(c.blue * modifier);
+        c.setRed(Math.round(c.getRed() * modifier));
+        c.setGreen(Math.round(c.getGreen() * modifier));
+        c.setBlue(Math.round(c.getBlue() * modifier));
         return getInt(c);
     }
 
     public static class IntColor {
-        public int red;
-        public int green;
-        public int blue;
-        public int alpha;
+        private int red;
+        private int green;
+        private int blue;
+        private int alpha;
+        private boolean dirty = true;
+        private int cachedIntValue;
 
         public IntColor() {
         }
 
         public IntColor(int red, int green, int blue) {
-            this(red, green, blue, (short) 0);
+            this(red, green, blue, (short) 255);
         }
 
         public IntColor(int red, int green, int blue, int alpha) {
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
-            this.alpha = alpha;
+            this.setRed(red);
+            this.setGreen(green);
+            this.setBlue(blue);
+            this.setAlpha(alpha);
         }
 
         public float getFloatRed() {
-            return toFloat(red);
+            return toFloat(getRed());
         }
 
         public float getFloatGreen() {
-            return toFloat(green);
+            return toFloat(getGreen());
         }
 
         public float getFloatBlue() {
-            return toFloat(blue);
+            return toFloat(getBlue());
         }
 
         public float getFloatAlpha() {
-            return toFloat(alpha);
+            return toFloat(getAlpha());
         }
 
         private float toFloat(int value) {
             return value / 255f;
+        }
+
+        public int toInt() {
+            if (dirty) {
+                cachedIntValue = ColorHelper.getInt(this);
+            }
+            return cachedIntValue;
+        }
+
+        public int getRed() {
+            return red;
+        }
+
+        public void setRed(int red) {
+            dirty = true;
+            this.red = red;
+        }
+
+        public int getGreen() {
+            return green;
+        }
+
+        public void setGreen(int green) {
+            dirty = true;
+            this.green = green;
+        }
+
+        public int getBlue() {
+            return blue;
+        }
+
+        public void setBlue(int blue) {
+            dirty = true;
+            this.blue = blue;
+        }
+
+        public int getAlpha() {
+            return alpha;
+        }
+
+        public void setAlpha(int alpha) {
+            dirty = true;
+            this.alpha = alpha;
         }
     }
 }
