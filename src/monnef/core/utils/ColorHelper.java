@@ -53,6 +53,8 @@ public class ColorHelper {
     }
 
     public static class IntColor {
+        public static final IntColor BLACK = new IntColor(0, 0, 0);
+
         private int red;
         private int green;
         private int blue;

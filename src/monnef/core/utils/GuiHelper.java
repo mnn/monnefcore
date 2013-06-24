@@ -20,7 +20,7 @@ public class GuiHelper {
         int y = (gui.height - gui.ySize) / 2;
         int mouseXinGui = mouseX - x;
         int mouseYinGui = mouseY - y;
-        return mouseXinGui > guiX && mouseXinGui < guiX + guiWidth &&
-                mouseYinGui > guiY && mouseYinGui < guiY + guiHeight;
+        return mouseXinGui >= guiX && mouseXinGui < guiX + guiWidth &&
+                mouseYinGui >= guiY && mouseYinGui < guiY + guiHeight;
     }
 }
