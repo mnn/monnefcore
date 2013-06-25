@@ -49,4 +49,8 @@ public class DirectionHelper {
             }
         }
     }
+
+    public static int opposite(int dir) {
+        return ForgeDirection.getOrientation(dir).getOpposite().ordinal();
+    }
 }
