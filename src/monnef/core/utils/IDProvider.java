@@ -36,13 +36,18 @@ public class IDProvider {
     public IDProvider(int startBlockID, int startItemID, String modName) {
         this.startBlockID = startBlockID;
         this.modName = modName;
-        this.actualBlockID = this.startBlockID;
 
         this.startItemID = startItemID;
-        this.actualItemID = this.startItemID;
+
+        initActualIDs();
 
         this.BlockIDsAssigned = new HashSet<Integer>();
         this.ItemIDsAssigned = new HashSet<Integer>();
+    }
+
+    private void initActualIDs() {
+        this.actualBlockID = this.startBlockID;
+        this.actualItemID = this.startItemID;
     }
 
     public int getItemID() {
@@ -91,9 +96,12 @@ public class IDProvider {
         }
 
         this.config = config;
+
+        initStartsOfIntervals();
+        initActualIDs();
+
         loadDataFromConfig(config.getCategory(Configuration.CATEGORY_BLOCK), BlockIDsAssigned);
         loadDataFromConfig(config.getCategory(Configuration.CATEGORY_ITEM), ItemIDsAssigned);
-        initStartsOfIntervals();
     }
 
     // doesn't mark, it's expected to release the id
