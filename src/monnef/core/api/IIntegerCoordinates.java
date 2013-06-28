@@ -8,6 +8,7 @@ package monnef.core.api;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public interface IIntegerCoordinates {
     TileEntity getTile();
@@ -23,4 +24,6 @@ public interface IIntegerCoordinates {
     void saveTo(NBTTagCompound tag, String tagName);
 
     void loadFrom(NBTTagCompound tag, String tagName);
+
+    IIntegerCoordinates shiftInDirectionBy(ForgeDirection dir, int amount);
 }

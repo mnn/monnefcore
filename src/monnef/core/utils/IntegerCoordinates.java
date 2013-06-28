@@ -10,6 +10,7 @@ import monnef.core.api.IIntegerCoordinates;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 import static monnef.core.utils.MathHelper.square;
 import static net.minecraft.util.MathHelper.sqrt_float;
@@ -139,5 +140,10 @@ public class IntegerCoordinates implements IIntegerCoordinates {
 
     public float computeDistanceSquare(IIntegerCoordinates other) {
         return square(getX() - other.getX()) + square(getY() - other.getY()) + square(getZ() - other.getZ());
+    }
+
+    @Override
+    public IIntegerCoordinates shiftInDirectionBy(ForgeDirection dir, int amount) {
+        return new IntegerCoordinates(getX() + dir.offsetX * amount, getY() + dir.offsetY * amount, getZ() + dir.offsetZ * amount, getWorld());
     }
 }
