@@ -53,4 +53,33 @@ public class DirectionHelper {
     public static int opposite(int dir) {
         return ForgeDirection.getOrientation(dir).getOpposite().ordinal();
     }
+
+    /*
+     *  -1: UP
+     *   0: NORTH
+     *   1: EAST
+     *   2: SOUTH
+     *   3: WEST
+     */
+    public static int translateFromRedstoneToClassicSideRepresentation(int redstoneSide) {
+        switch (redstoneSide) {
+            case -1:
+                return ForgeDirection.UP.ordinal();
+
+            case 0:
+                return ForgeDirection.NORTH.ordinal();
+
+            case 1:
+                return ForgeDirection.EAST.ordinal();
+
+            case 2:
+                return ForgeDirection.SOUTH.ordinal();
+
+            case 3:
+                return ForgeDirection.WEST.ordinal();
+
+            default:
+                throw new RuntimeException("unknown side");
+        }
+    }
 }
