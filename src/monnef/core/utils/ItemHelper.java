@@ -54,4 +54,24 @@ public class ItemHelper {
         if (template.getItemDamage() == OreDictionary.WILDCARD_VALUE) return true;
         return template.getItemDamage() == tested.getItemDamage();
     }
+
+    public static boolean haveStacksSameIdDamageAndProperSize(ItemStack template, ItemStack tested) {
+        if (!haveStacksSameIdAndDamage(template, tested)) return false;
+        return tested.stackSize >= template.stackSize;
+    }
+
+    public static int findItemIdByName(String name) {
+        if (name == null || name.isEmpty()) return 0;
+
+        for (int i = 0; i < Item.itemsList.length; i++) {
+            Item item = Item.itemsList[i];
+            if (item != null) {
+                if (name.equals(item.getUnlocalizedName())) {
+                    return item.itemID;
+                }
+            }
+        }
+
+        return 0;
+    }
 }
