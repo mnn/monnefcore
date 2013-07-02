@@ -5,9 +5,20 @@
 
 package monnef.core.utils;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
+import java.util.HashSet;
+
 public class BlockHelper {
+    private static HashSet<Integer> winterBlocks = new HashSet<Integer>();
+
+    static {
+        winterBlocks.add(Block.snow.blockID);
+        winterBlocks.add(Block.blockSnow.blockID);
+        winterBlocks.add(Block.ice.blockID);
+    }
+
     /* MCP comment
      * Flag 0x01 will pass the original block ID when notifying adjacent blocks, otherwise it will pass 0.
      * Flag 0x02 will trigger a block update both on server and on client.
@@ -37,5 +48,9 @@ public class BlockHelper {
 
     public static boolean setBlockWithoutNotify(World world, int x, int y, int z, int id, int meta) {
         return world.setBlock(x, y, z, id, meta, NOTIFY_NONE);
+    }
+
+    public static boolean isWinterBlock(int bId) {
+        return winterBlocks.contains(bId);
     }
 }
