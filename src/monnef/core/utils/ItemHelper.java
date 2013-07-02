@@ -6,6 +6,7 @@
 package monnef.core.utils;
 
 import net.minecraft.block.Block;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -73,5 +74,22 @@ public class ItemHelper {
         }
 
         return 0;
+    }
+
+    public static ItemStack[] copyStackArray(ItemStack[] inv) {
+        ItemStack[] ret = new ItemStack[inv.length];
+        for (int i = 0; i < inv.length; i++) {
+            ItemStack input = inv[i];
+            ret[i] = input == null ? null : input.copy();
+        }
+        return ret;
+    }
+
+    public static boolean isOutputFreeFor(ItemStack output, int slotNumber, IInventory inv) {
+        ItemStack outputSlotStack = inv.getStackInSlot(slotNumber);
+        if (outputSlotStack == null) return true;
+        if (!haveStacksSameIdAndDamage(outputSlotStack, output)) return false;
+        if (outputSlotStack.stackSize + output.stackSize > outputSlotStack.getMaxStackSize()) return false;
+        return true;
     }
 }
