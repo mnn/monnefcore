@@ -11,7 +11,7 @@ public class ColorHelper {
     }
 
     public static int getInt(int red, int green, int blue) {
-        return getInt(red, green, blue, 0);
+        return getInt(red, green, blue, 255);
     }
 
     public static int getInt(int red, int green, int blue, int alpha) {

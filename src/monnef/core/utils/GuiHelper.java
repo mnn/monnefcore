@@ -12,6 +12,11 @@ import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 public class GuiHelper {
+    public static final int COLOR_GRAY = ColorHelper.getInt(139, 139, 139);
+    public static final int COLOR_DARK_GRAY = ColorHelper.getInt(55, 55, 55);
+    public static final int COLOR_LIGHT_GRAY = ColorHelper.getInt(198, 198, 198);
+    public static final int COLOR_WHITE = ColorHelper.getInt(255, 255, 255);
+
     public static void drawModalRectFromDown(GuiScreen gui, int x, int y, int textureX, int textureY, int width, int height, int heightMax) {
         // x, y, u, v, width, height
         int invHeight = heightMax - height;
@@ -28,7 +33,11 @@ public class GuiHelper {
     }
 
     public static void drawRect(int x, int y, int width, int height, ColorHelper.IntColor color) {
-        Gui.drawRect(x, y, x + width, y + height, color.toInt());
+        drawRect(x, y, width, height, color.toInt());
+    }
+
+    public static void drawRect(int x, int y, int width, int height, int color) {
+        Gui.drawRect(x, y, x + width, y + height, color);
     }
 
     public static void setTessellatorColor(Tessellator tessellator, ColorHelper.IntColor color) {
@@ -76,6 +85,10 @@ public class GuiHelper {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+    public static void drawPixel(int x, int y, int color) {
+        drawRect(x, y, 1, 1, color);
     }
 
     public enum EnumFillRotation {

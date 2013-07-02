@@ -85,7 +85,7 @@ public class ItemHelper {
         return ret;
     }
 
-    public static boolean isOutputFreeFor(ItemStack output, int slotNumber, IInventory inv) {
+    public static boolean isOutputSlotFreeFor(ItemStack output, int slotNumber, IInventory inv) {
         ItemStack outputSlotStack = inv.getStackInSlot(slotNumber);
         if (outputSlotStack == null) return true;
         if (!haveStacksSameIdAndDamage(outputSlotStack, output)) return false;
