@@ -5,21 +5,21 @@
 
 package monnef.core.utils;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCloth;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 
-import java.util.HashMap;
-
 public class DyeHelper {
-    private static final HashMap<String, Integer> dyeNames;
-    private static final HashMap<String, Integer> woolNames;
+    private static final BiMap<String, Integer> dyeNames;
+    private static final BiMap<String, Integer> woolNames;
 
     static {
-        dyeNames = new HashMap<String, Integer>();
-        woolNames = new HashMap<String, Integer>();
+        dyeNames = HashBiMap.create();
+        woolNames = HashBiMap.create();
         for (int i = 0; i < ItemDye.dyeColorNames.length; i++) {
             String colorName = ItemDye.dyeColorNames[i];
             dyeNames.put(colorName, i);
@@ -57,5 +57,13 @@ public class DyeHelper {
 
     public static int getIntColor(int color) {
         return ItemDye.dyeColors[color];
+    }
+
+    public static String getWoolColorName(int color) {
+        return woolNames.inverse().get(color);
+    }
+
+    public static String getDyeColorName(int color) {
+        return dyeNames.inverse().get(color);
     }
 }

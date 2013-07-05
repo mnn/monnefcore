@@ -13,20 +13,19 @@ import org.lwjgl.opengl.GL11;
 public class CustomBlockRenderingHelper {
 
     // heavily based on RenderBlocks
-    public static void Render(Block block, int meta, float colorMultiplier, RenderBlocks renderer) {
-        boolean isGrass = block.blockID == Block.grass.blockID;
+    public static void render(Block block, int meta, float colorMultiplier, RenderBlocks renderer) {
+        render(block, meta, colorMultiplier, renderer, false);
+    }
+
+    public static void render(Block block, int meta, float colorMultiplier, RenderBlocks renderer, boolean forceColoring) {
         Tessellator tess = Tessellator.instance;
 
         block.setBlockBoundsForItemRender();
         renderer.setRenderBoundsFromBlock(block);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        tess.startDrawingQuads();
-        tess.setNormal(0.0F, -1.0F, 0.0F);
-        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, meta));
-        tess.draw();
 
-        if (isGrass && renderer.useInventoryTint) {
+        if (forceColoring) {
             int color = block.getRenderColor(meta);
             float red = (float) (color >> 16 & 255) / 255.0F;
             float green = (float) (color >> 8 & 255) / 255.0F;
@@ -35,13 +34,14 @@ public class CustomBlockRenderingHelper {
         }
 
         tess.startDrawingQuads();
+        tess.setNormal(0.0F, -1.0F, 0.0F);
+        renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 0, meta));
+        tess.draw();
+
+        tess.startDrawingQuads();
         tess.setNormal(0.0F, 1.0F, 0.0F);
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, renderer.getBlockIconFromSideAndMetadata(block, 1, meta));
         tess.draw();
-
-        if (isGrass && renderer.useInventoryTint) {
-            GL11.glColor4f(colorMultiplier, colorMultiplier, colorMultiplier, 1.0F);
-        }
 
         tess.startDrawingQuads();
         tess.setNormal(0.0F, 0.0F, -1.0F);
@@ -72,7 +72,7 @@ public class CustomBlockRenderingHelper {
 
     public static void doRendering(RenderBlocks renderer, Block block, int x, int y, int z, boolean renderingInventory, int metaForInventory, int colorMultiplierForInventory) {
         if (renderingInventory) {
-            CustomBlockRenderingHelper.Render(block, metaForInventory, colorMultiplierForInventory, renderer);
+            CustomBlockRenderingHelper.render(block, metaForInventory, colorMultiplierForInventory, renderer);
         } else {
             renderer.renderStandardBlock(block, x, y, z);
         }

@@ -138,5 +138,10 @@ public class ColorHelper {
             dirty = true;
             this.alpha = alpha;
         }
+
+        @Override
+        public String toString() {
+            return String.format("%d %d %d %d", getRed(), getGreen(), getBlue(), getAlpha());
+        }
     }
 }

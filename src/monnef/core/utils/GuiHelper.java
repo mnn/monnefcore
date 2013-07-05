@@ -40,6 +40,10 @@ public class GuiHelper {
         Gui.drawRect(x, y, x + width, y + height, color);
     }
 
+    public static void setTessellatorColor(Tessellator tessellator, int color) {
+        setTessellatorColor(tessellator, ColorHelper.getColor(color));
+    }
+
     public static void setTessellatorColor(Tessellator tessellator, ColorHelper.IntColor color) {
         tessellator.setColorRGBA_F(color.getFloatRed(), color.getFloatGreen(), color.getFloatBlue(), color.getFloatAlpha());
     }
