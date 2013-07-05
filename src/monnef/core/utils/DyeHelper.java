@@ -44,7 +44,11 @@ public class DyeHelper {
     }
 
     public static ItemStack getDye(DyeColor color) {
-        return new ItemStack(Item.dyePowder, 1, getDyeNum(color));
+        return getDye(getDyeNum(color));
+    }
+
+    public static ItemStack getDye(int color) {
+        return new ItemStack(Item.dyePowder, 1, color);
     }
 
     public static ItemStack getWool(DyeColor color) {

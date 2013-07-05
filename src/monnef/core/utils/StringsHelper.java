@@ -44,4 +44,8 @@ public class StringsHelper {
         String rest = input.substring(1);
         return first.toUpperCase() + rest;
     }
+
+    public static String insertSpaceOnLowerUpperCaseChange(String input) {
+        return input.replaceAll("(\\p{javaLowerCase})(\\p{javaUpperCase})", "$1 $2");
+    }
 }
