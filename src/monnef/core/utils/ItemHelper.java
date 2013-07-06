@@ -63,11 +63,12 @@ public class ItemHelper {
 
     public static int findItemIdByName(String name) {
         if (name == null || name.isEmpty()) return 0;
+        String prefixedName = "item." + name;
 
         for (int i = 0; i < Item.itemsList.length; i++) {
             Item item = Item.itemsList[i];
             if (item != null) {
-                if (name.equals(item.getUnlocalizedName())) {
+                if (prefixedName.equals(item.getUnlocalizedName())) {
                     return item.itemID;
                 }
             }
