@@ -74,7 +74,7 @@ public abstract class ItemMonnefCore extends Item implements ICustomIcon {
         return icons[index];
     }
 
-    public void initNBT(ItemStack stack) {
+    public static void initNBT(ItemStack stack) {
         if (stack.getTagCompound() == null) stack.setTagCompound(new NBTTagCompound());
     }
 }
