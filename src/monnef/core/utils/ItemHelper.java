@@ -93,4 +93,8 @@ public class ItemHelper {
         if (outputSlotStack.stackSize + output.stackSize > outputSlotStack.getMaxStackSize()) return false;
         return true;
     }
+
+    public static void setItemBlockToFull3D(Block block) {
+        Item.itemsList[block.blockID].setFull3D();
+    }
 }

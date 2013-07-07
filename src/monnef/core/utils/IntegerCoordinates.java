@@ -146,4 +146,9 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     public IIntegerCoordinates shiftInDirectionBy(ForgeDirection dir, int amount) {
         return new IntegerCoordinates(getX() + dir.offsetX * amount, getY() + dir.offsetY * amount, getZ() + dir.offsetZ * amount, getWorld());
     }
+
+    @Override
+    public TileEntity getBlockTileEntity() {
+        return getWorld().getBlockTileEntity(getX(), getY(), getZ());
+    }
 }

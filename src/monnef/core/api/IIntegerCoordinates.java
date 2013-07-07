@@ -26,4 +26,6 @@ public interface IIntegerCoordinates {
     void loadFrom(NBTTagCompound tag, String tagName);
 
     IIntegerCoordinates shiftInDirectionBy(ForgeDirection dir, int amount);
+
+    TileEntity getBlockTileEntity();
 }
