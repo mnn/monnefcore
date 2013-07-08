@@ -7,6 +7,7 @@ package monnef.core.utils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import monnef.core.api.IIntegerCoordinates;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -151,4 +152,25 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     public TileEntity getBlockTileEntity() {
         return getWorld().getBlockTileEntity(getX(), getY(), getZ());
     }
+
+    @Override
+    public int getBlockId() {
+        return getWorld().getBlockId(getX(), getY(), getZ());
+    }
+
+    @Override
+    public int getBlockMetadata() {
+        return getWorld().getBlockMetadata(getX(), getY(), getZ());
+    }
+
+    @Override
+    public int getRedstoneWirePowerLevel() {
+        return getBlockId() == Block.redstoneWire.blockID ? getBlockMetadata() : 0;
+    }
+
+    @Override
+    public int getIndirectPowerFromSide(int side) {
+        return getWorld().getIndirectPowerLevelTo(getX(), getY(), getZ(), side);
+    }
+
 }

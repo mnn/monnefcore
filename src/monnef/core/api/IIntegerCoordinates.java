@@ -28,4 +28,12 @@ public interface IIntegerCoordinates {
     IIntegerCoordinates shiftInDirectionBy(ForgeDirection dir, int amount);
 
     TileEntity getBlockTileEntity();
+
+    int getBlockId();
+
+    int getBlockMetadata();
+
+    int getRedstoneWirePowerLevel();
+
+    int getIndirectPowerFromSide(int side);
 }
