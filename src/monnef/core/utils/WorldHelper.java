@@ -5,6 +5,8 @@
 
 package monnef.core.utils;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -26,5 +28,12 @@ public class WorldHelper {
                         }
                     }
                 }
+    }
+
+    public static void dropBlockAsItemDo(World world, int x, int y, int z, int blockId, int meta, int count) {
+        if (world.isRemote) return;
+        ItemStack stack = new ItemStack(blockId, count, meta);
+        EntityItem item = new EntityItem(world, x + 0.5f, y + 0.5f, z + 0.5f, stack);
+        world.spawnEntityInWorld(item);
     }
 }
