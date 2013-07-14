@@ -6,6 +6,7 @@
 package monnef.core.utils;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -52,5 +53,38 @@ public class BlockHelper {
 
     public static boolean isWinterBlock(int bId) {
         return winterBlocks.contains(bId);
+    }
+
+    private static double getCurrentLocation(int coord, boolean addCurrentLocation) {
+        return addCurrentLocation ? coord : 0;
+    }
+
+    public static AxisAlignedBB rotateBoundingBoxCoordinates(BoundingBoxSize box, int rotation, int x, int y, int z, boolean addCurrentLocation) {
+        //return AxisAlignedBB.getAABBPool().getAABB((double) x + this.minX, (double) y + this.minY, (double) z + this.minZ, (double) x + this.maxX, (double) y + this.maxY, (double) z + this.maxZ);
+        //return AxisAlignedBB.getAABBPool().getAABB((double) x + box.x1, (double) y + box.y1, (double) z + box.z1, (double) x + box.x2, (double) y + box.y2, (double) z + box.z2);
+
+        double bbx = getCurrentLocation(x, addCurrentLocation) + box.x1;
+        double bby = getCurrentLocation(y, addCurrentLocation) + box.y1;
+        double bbz = getCurrentLocation(z, addCurrentLocation) + box.z1;
+        double bbxx = getCurrentLocation(x, addCurrentLocation) + box.x2;
+        double bbyy = getCurrentLocation(y, addCurrentLocation) + box.y2;
+        double bbzz = getCurrentLocation(z, addCurrentLocation) + box.z2;
+        switch (rotation) {
+            case 0:
+                return AxisAlignedBB.getAABBPool().getAABB(bbx, bby, bbz, bbxx, bbyy, bbzz);
+
+            case 3:
+                return AxisAlignedBB.getAABBPool().getAABB(bbz, bby, 1 - bbxx, bbzz, bbyy, 1 - bbx);
+
+            case 2:
+                return AxisAlignedBB.getAABBPool().getAABB(1 - bbxx, bby, 1 - bbzz, 1 - bbx, bbyy, 1 - bbz);
+
+            case 1:
+                return AxisAlignedBB.getAABBPool().getAABB(1 - bbzz, bby, bbx, 1 - bbz, bbyy, bbxx);
+
+            default:
+                return AxisAlignedBB.getAABBPool().getAABB(bbx - 1, bby, bbz - 1, bbxx + 1, bbyy, bbzz + 1);
+        }
+
     }
 }

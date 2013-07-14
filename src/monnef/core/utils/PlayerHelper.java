@@ -42,7 +42,6 @@ public class PlayerHelper {
         return entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX, calculatePlayerPositionY(entity), entity.posZ);
     }
 
-
     public static AxisAlignedBB addCoord(AxisAlignedBB input, Vec3 vector) {
         return input.addCoord(vector.xCoord, vector.yCoord, vector.zCoord);
     }
