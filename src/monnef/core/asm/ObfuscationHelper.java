@@ -139,19 +139,6 @@ public class ObfuscationHelper {
     private static HashMap<MappedObjectType, MappingDictionary> constructOnlyUsed(HashMap<MappedObjectType, MappingDictionary> database, HashMap<MappedObjectType, HashSet<MappedObject>> usedFlags) {
         HashMap<MappedObjectType, MappingDictionary> ret = new HashMap<MappedObjectType, MappingDictionary>();
 
-        /*
-        // construct based on usage flags (dangerous, when running server not all items are used...)
-        for (MappedObjectType type : MappedObjectType.values()) {
-            MappingDictionary entry = new MappingDictionary();
-            MappingDictionary data = database.get(type);
-            ret.put(type, entry);
-            HashSet<MappedObject> flagged = usedFlags.get(type);
-            for (MappedObject obj : flagged) {
-                entry.put(obj.getFullName(), data.get(obj.getFullName()));
-            }
-        }
-        */
-
         // construct from all enum items
         for (MappedObjectType type : MappedObjectType.values()) {
             MappingDictionary entry = new MappingDictionary();
