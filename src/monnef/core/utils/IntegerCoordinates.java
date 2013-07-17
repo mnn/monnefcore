@@ -5,8 +5,11 @@
 
 package monnef.core.utils;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import monnef.core.api.IIntegerCoordinates;
+import monnef.jaffas.technic.JaffasTechnic;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -62,7 +65,9 @@ public class IntegerCoordinates implements IIntegerCoordinates {
 
     @Override
     public World getWorld() {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimension);
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+            return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimension);
+        return JaffasTechnic.proxy.getClientWorld();
     }
 
     private void setWorld(World world) {
