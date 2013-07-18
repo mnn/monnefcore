@@ -5,6 +5,8 @@
 
 package monnef.core.utils;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -60,4 +62,8 @@ public class EntityHelper {
         }
     }
 
+    public static void setTrackingRange(Class<? extends Entity> aClass, int range) {
+        EntityRegistry.EntityRegistration record = EntityRegistry.instance().lookupModSpawn(aClass, false);
+        ReflectionHelper.setPrivateValue(EntityRegistry.EntityRegistration.class, record, range, "trackingRange");
+    }
 }
