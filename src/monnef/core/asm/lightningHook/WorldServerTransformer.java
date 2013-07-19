@@ -8,7 +8,6 @@ package monnef.core.asm.lightningHook;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.MappedObject;
 import monnef.core.asm.ObfuscationHelper;
-import monnef.core.event.EventFactory;
 import monnef.core.external.javassist.CannotCompileException;
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
@@ -23,7 +22,7 @@ import static monnef.core.MonnefCorePlugin.Log;
 public class WorldServerTransformer {
     private static String targetClass = ObfuscationHelper.getRealName(MappedObject.C_WORLD_SERVER);
     private static String targetMethodName = ObfuscationHelper.getRealName(MappedObject.M_CAN_LIGHTNING_STRIKE_AT);
-    private static final String HOOK_PROCESSOR_CLASS = EventFactory.class.getName();
+    private static final String HOOK_PROCESSOR_CLASS = "monnef.core.event.EventFactory";
     private static final String HOOK_METHOD_NAME = "onLightningGenerated";
     public static final boolean PRINT_DEBUG_STUFF = true;
 
@@ -43,6 +42,7 @@ public class WorldServerTransformer {
                             logDebug(String.format("[Transformer] MethodCall: cname - %s, mname - %s", m.getClassName(), m.getMethodName()));
                             if (m.getClassName().equals(targetClass)
                                     && m.getMethodName().equals(targetMethodName)) {
+                                logDebug("Class found, replacing.");
                                 m.replace(String.format("{$_ = %s.%s($0, $1, $2, $3, $proceed($$));}", HOOK_PROCESSOR_CLASS, HOOK_METHOD_NAME));
                                 Log.printFine("Lightning hook inserted via Javassist.");
                                 CoreTransformer.lightningHookApplied = true;
@@ -59,6 +59,6 @@ public class WorldServerTransformer {
 
     private static void logDebug(String msg) {
         if (PRINT_DEBUG_STUFF)
-            Log.printFine("[" + WorldServerTransformer.class.getSimpleName() + "] " + msg);
+            Log.printFinest("[" + WorldServerTransformer.class.getSimpleName() + "] " + msg);
     }
 }

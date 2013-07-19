@@ -61,10 +61,10 @@ public class CoreModContainer extends DummyModContainer {
             if (!CoreTransformer.cloakHookApplied) {
                 printDebugDataAndCrash("Unable to install a cloak hook!");
             }
-        } else {
-            if (!CoreTransformer.lightningHookApplied) {
-                printDebugDataAndCrash("Unable to install a lightning hook!");
-            }
+        }
+
+        if (!CoreTransformer.lightningHookApplied) {
+            printDebugDataAndCrash("Unable to install a lightning hook!");
         }
 
         if (MonnefCorePlugin.debugEnv && MonnefCorePlugin.jaffasEnv) {

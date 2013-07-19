@@ -80,4 +80,13 @@ public class PathHelper {
         Log.printFine("current absolute path: [" + path + "]");
         return path;
     }
+
+    public static boolean createDirIfNecessary(String path) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            return dir.mkdir();
+        } else {
+            return dir.isDirectory();
+        }
+    }
 }
