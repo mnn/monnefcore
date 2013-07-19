@@ -5,13 +5,18 @@
 
 package monnef.core.utils;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderSpider;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
+
+import java.lang.reflect.Field;
 
 public class RenderUtils {
     public static void renderStaticTileEntityInWorld(IBlockAccess world, int x, int y, int z, RenderBlocks blocksRenderer, TileEntity tile, TileEntitySpecialRenderer tileRenderer) {
@@ -45,5 +50,14 @@ public class RenderUtils {
         renderer.renderTileEntityAt(tile, x & 15, y & 15, z & 15, 0f);
 
         GL11.glPopMatrix();
+    }
+
+    public static void setShadowSizeInRenderer(RenderSpider renderer, float shadowSize) {
+        Field f = ReflectionHelper.findField(Render.class, "shadowSize", "field_76989_e");
+        try {
+            f.setFloat(renderer, shadowSize);
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 }
