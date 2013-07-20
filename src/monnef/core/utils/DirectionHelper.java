@@ -82,4 +82,8 @@ public class DirectionHelper {
                 throw new RuntimeException("unknown side");
         }
     }
+
+    public static boolean isYAxis(int side) {
+        return isYAxis(ForgeDirection.getOrientation(side));
+    }
 }
