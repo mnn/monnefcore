@@ -30,7 +30,7 @@ public class Config {
     private static boolean initialized = false;
     private static boolean useASMLightning;
 
-    public static boolean doUseASMLightning() {
+    public static boolean useOldASMLightning() {
         assertLoadedConfig();
         return useASMLightning;
     }

@@ -6,9 +6,7 @@
 package monnef.core.asm;
 
 import cpw.mods.fml.relauncher.IClassTransformer;
-import monnef.core.Config;
 import monnef.core.asm.cloakHook.RenderGlobalVisitor;
-import monnef.core.asm.lightningHook.WorldServerTransformer;
 import monnef.core.asm.lightningHook.WorldServerVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -39,17 +37,11 @@ public class CoreTransformer implements IClassTransformer {
             return writer.toByteArray();
         } else if (ObfuscationHelper.namesAreEqual(name, C_WORLD_SERVER)) {
             Log.printFine("Found WorldServer class.");
-            if (Config.doUseASMLightning()) {
-                Log.printFine("Using old ASM way.");
-                ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-                ClassReader reader = new ClassReader(bytes);
-                ClassVisitor visitor = new WorldServerVisitor(ASM4, writer);
-                reader.accept(visitor, 0);
-                return writer.toByteArray();
-            } else {
-                Log.printFine("Using Javassist way.");
-                return WorldServerTransformer.transform(bytes);
-            }
+            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+            ClassReader reader = new ClassReader(bytes);
+            ClassVisitor visitor = new WorldServerVisitor(ASM4, writer);
+            reader.accept(visitor, 0);
+            return writer.toByteArray();
         }
 
         return bytes;

@@ -15,11 +15,11 @@ public class LightningGeneratedEvent extends Event {
     public final int z;
     public final World world;
 
-    public LightningGeneratedEvent(World world, int x, int y, int z) {
+    public LightningGeneratedEvent(Object world, int x, int y, int z) {
         super();
         this.x = x;
         this.y = y;
         this.z = z;
-        this.world = world;
+        this.world = (World) world;
     }
 }
