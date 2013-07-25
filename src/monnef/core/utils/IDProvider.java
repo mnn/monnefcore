@@ -5,7 +5,7 @@
 
 package monnef.core.utils;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
+import com.google.common.base.Joiner;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
@@ -17,6 +17,7 @@ import static monnef.core.MonnefCorePlugin.Log;
 
 public class IDProvider {
     private static final String BOOT_CATEGORY_STRING = "boot";
+    public static final String CATEGORY_ENTITY = "entity";
 
     public int startBlockID;
     private int actualBlockID;
@@ -24,14 +25,17 @@ public class IDProvider {
     public int startItemID;
     private int actualItemID;
 
+    private int actualEntityID;
+
     public final int startModEntityID = 0;
     private int actualModEntityID;
 
     private String modName;
     private Configuration config;
 
-    private HashSet<Integer> BlockIDsAssigned;
-    private HashSet<Integer> ItemIDsAssigned;
+    private HashSet<Integer> blockIDsAssigned;
+    private HashSet<Integer> itemIDsAssigned;
+    private HashSet<Integer> entityIDsAssigned;
 
     public IDProvider(int startBlockID, int startItemID, String modName) {
         this.startBlockID = startBlockID;
@@ -41,18 +45,20 @@ public class IDProvider {
 
         initActualIDs();
 
-        this.BlockIDsAssigned = new HashSet<Integer>();
-        this.ItemIDsAssigned = new HashSet<Integer>();
+        this.blockIDsAssigned = new HashSet<Integer>();
+        this.itemIDsAssigned = new HashSet<Integer>();
+        this.entityIDsAssigned = new HashSet<Integer>();
     }
 
     private void initActualIDs() {
         this.actualBlockID = this.startBlockID;
         this.actualItemID = this.startItemID;
+        this.actualEntityID = 1;
     }
 
     public int getItemID() {
         int newId = this.actualItemID;
-        while (ItemIDsAssigned.contains(newId)) {
+        while (itemIDsAssigned.contains(newId)) {
             newId++;
         }
         return this.actualItemID = newId;
@@ -60,10 +66,18 @@ public class IDProvider {
 
     public int getBlockID() {
         int newId = this.actualBlockID;
-        while (BlockIDsAssigned.contains(newId)) {
+        while (blockIDsAssigned.contains(newId)) {
             newId++;
         }
         return this.actualBlockID = newId;
+    }
+
+    public int getEntityID() {
+        int newId = this.actualEntityID;
+        while (entityIDsAssigned.contains(newId) || EntityListHelper.idExists(newId)) {
+            newId++;
+        }
+        return this.actualEntityID = newId;
     }
 
     public int getModEntityID() {
@@ -72,18 +86,18 @@ public class IDProvider {
 
     public int getBlockIDFromConfig(String name) {
         int newUsedId = this.config.getBlock(name, this.getBlockID()).getInt();
-        BlockIDsAssigned.add(newUsedId);
+        blockIDsAssigned.add(newUsedId);
         return newUsedId;
     }
 
     public int getItemIDFromConfig(String name) {
         int newUsedId = this.config.getItem(name, this.getItemID()).getInt();
-        ItemIDsAssigned.add(newUsedId);
+        itemIDsAssigned.add(newUsedId);
         return newUsedId;
     }
 
     public int getEntityIDFromConfig(String name) {
-        return this.config.get("entity", name, EntityRegistry.findGlobalUniqueEntityId()).getInt();
+        return this.config.get(CATEGORY_ENTITY, name, getEntityID()).getInt();
     }
 
     public int getModEntityIDFromConfig(String name) {
@@ -100,8 +114,9 @@ public class IDProvider {
         initStartsOfIntervals();
         initActualIDs();
 
-        loadDataFromConfig(config.getCategory(Configuration.CATEGORY_BLOCK), BlockIDsAssigned);
-        loadDataFromConfig(config.getCategory(Configuration.CATEGORY_ITEM), ItemIDsAssigned);
+        loadDataFromConfig(Configuration.CATEGORY_BLOCK, blockIDsAssigned);
+        loadDataFromConfig(Configuration.CATEGORY_ITEM, itemIDsAssigned);
+        loadDataFromConfig(CATEGORY_ENTITY, entityIDsAssigned);
     }
 
     // doesn't mark, it's expected to release the id
@@ -131,12 +146,14 @@ public class IDProvider {
         startItemID = newStartItemID;
     }
 
-    protected void loadDataFromConfig(ConfigCategory category, HashSet<Integer> used) {
+    protected void loadDataFromConfig(String categoryName, HashSet<Integer> used) {
+        ConfigCategory category = config.getCategory(categoryName);
         for (Property entry : category.getValues().values()) {
             int id = entry.getInt();
             if (id != -1) {
                 used.add(id);
             }
         }
+        Log.printFinest(String.format("Loaded %d used IDs from category \"%s\": %s", used.size(), categoryName, Joiner.on(", ").join(used)));
     }
 }
