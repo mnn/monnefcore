@@ -44,20 +44,24 @@ public class RegistryUtils {
         registerMultiBlock(block, itemBlock, titles, null);
     }
 
+    public static void registerMultiBlock(Block block, Class<?> itemBlock, String name, String title) {
+        registerMultiBlock(block, itemBlock, new String[]{title}, new String[]{name});
+    }
+
     public static void registerMultiBlock(Block block, Class<?> itemBlock, String[] titles, String[] names) {
-        String blockName = block.getUnlocalizedName();
-        if (blockName == null) {
-            throw new RuntimeException("Block name not set - " + itemBlock.getSimpleName() + ".");
+        if (block.getUnlocalizedName() == null && (names == null || names.length <= 0)) {
+            throw new RuntimeException("Cannot find a block name - " + itemBlock.getSimpleName() + ".");
         }
 
         Class<?> cls = itemBlock;
         if (ItemBlock.class.isAssignableFrom(cls)) {
-            if (names != null) {
-                throw new RuntimeException("cannot have custom names for ItemBlock");
+            if (names != null && names.length != 1) {
+                throw new RuntimeException("cannot have multiple custom names for ItemBlock");
             }
-            GameRegistry.registerBlock(block, (Class<? extends ItemBlock>) itemBlock, blockName);
+            block.setUnlocalizedName(names[0]);
+            GameRegistry.registerBlock(block, (Class<? extends ItemBlock>) itemBlock, block.getUnlocalizedName());
         } else if (IItemBlock.class.isAssignableFrom(cls)) {
-            registerMyBlock(block, (Class<? extends IItemBlock>) itemBlock, blockName, names);
+            registerMyBlock(block, (Class<? extends IItemBlock>) itemBlock, block.getUnlocalizedName(), names);
         } else {
             throw new RuntimeException("Unknown class in block registration.");
         }

@@ -17,6 +17,8 @@ import cpw.mods.fml.relauncher.Side;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
 import monnef.core.calendar.CoreTickHandler;
+import monnef.core.utils.WolfFoodRegistry;
+import net.minecraftforge.common.MinecraftForge;
 
 import static monnef.core.MonnefCorePlugin.Log;
 import static monnef.core.MonnefCorePlugin.debugEnv;
@@ -52,7 +54,7 @@ public class CoreModContainer extends DummyModContainer {
 
     // use google subscribe and FML events
     @Subscribe
-    public void onStart(FMLInitializationEvent event) {
+    public void load(FMLInitializationEvent event) {
         Side side = FMLCommonHandler.instance().getEffectiveSide();
 
         if (side == Side.CLIENT) {
@@ -74,6 +76,8 @@ public class CoreModContainer extends DummyModContainer {
         CoreTickHandler tickHandler = new CoreTickHandler();
         TickRegistry.registerTickHandler(tickHandler, Side.CLIENT);
         TickRegistry.registerTickHandler(tickHandler, Side.SERVER);
+
+        MinecraftForge.EVENT_BUS.register(new WolfFoodRegistry());
 
         MonnefCorePlugin.initialized = true;
         if (debugEnv) doDebuggingThings();
