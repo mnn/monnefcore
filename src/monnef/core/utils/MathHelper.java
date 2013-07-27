@@ -30,4 +30,16 @@ public class MathHelper {
     public static float degToRad(float deg) {
         return (float) (deg * Math.PI / 180f);
     }
+
+    public static int[] range(int start, int count) {
+        return range(start, count, 1);
+    }
+
+    public static int[] range(int start, int count, int step) {
+        int[] res = new int[count];
+        for (int i = 0; i < count; i++) {
+            res[i] = start + i * step;
+        }
+        return res;
+    }
 }
