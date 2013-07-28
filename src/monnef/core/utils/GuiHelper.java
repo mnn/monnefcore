@@ -95,6 +95,15 @@ public class GuiHelper {
         drawRect(x, y, 1, 1, color);
     }
 
+    public static void drawTextureModalRect(Gui gui, int x, int y, int u, int v, int width, int height) {
+        gui.drawTexturedModalRect(x, y, u, v, width, height);
+    }
+
+    public static void drawTextureModalRectFromRight(Gui gui, int x, int y, int u, int v, int width, int height, int maxWidth) {
+        int leftShift = maxWidth - width;
+        gui.drawTexturedModalRect(x + leftShift, y, u + leftShift, v, width, height);
+    }
+
     public enum EnumFillRotation {
         TOP_DOWN,
         LEFT_RIGHT
