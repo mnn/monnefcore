@@ -86,4 +86,10 @@ public class DirectionHelper {
     public static boolean isYAxis(int side) {
         return isYAxis(ForgeDirection.getOrientation(side));
     }
+
+    public static final ForgeDirection[] fromX = new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH, ForgeDirection.WEST};
+
+    public static int translateFromTrivialXToForgeDir(int direction) {
+        return fromX[direction].ordinal();
+    }
 }
