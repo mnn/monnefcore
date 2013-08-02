@@ -36,4 +36,8 @@ public interface IIntegerCoordinates {
     int getRedstoneWirePowerLevel();
 
     int getIndirectPowerFromSide(int side);
+
+    IIntegerCoordinates strafeInDirection(ForgeDirection direction, int amount);
+
+    IIntegerCoordinates applyRelativeCoordinates(ForgeDirection rotation, int rx, int ry, int rz);
 }

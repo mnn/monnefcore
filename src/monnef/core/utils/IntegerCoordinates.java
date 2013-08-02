@@ -5,7 +5,6 @@
 
 package monnef.core.utils;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.api.IIntegerCoordinates;
@@ -28,6 +27,7 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     protected String compoundTagName;
     private int dimension;
     private boolean locked = false;
+    private static boolean ignoreNullWorld = false;
 
     public IntegerCoordinates(TileEntity tile) {
         setWorld(tile.worldObj);
@@ -54,8 +54,19 @@ public class IntegerCoordinates implements IIntegerCoordinates {
         postInit();
     }
 
+    // used for testing
+    private IntegerCoordinates(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        ignoreNullWorld = true;
+        postInit();
+    }
+
     private void postInit() {
-        locked = true;
+        if (!locked) {
+            locked = true;
+        }
     }
 
     @Override
@@ -65,17 +76,24 @@ public class IntegerCoordinates implements IIntegerCoordinates {
 
     @Override
     public World getWorld() {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+        if (ignoreNullWorld) {
+            // performance?
+            return null;
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
             return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimension);
+        }
         return JaffasTechnic.proxy.getClientWorld();
     }
 
     private void setWorld(World world) {
         if (world == null) {
-            throw new NullPointerException("world");
+            if (!ignoreNullWorld) {
+                throw new NullPointerException("world");
+            }
+        } else {
+            this.dimension = world.provider.dimensionId;
         }
-
-        this.dimension = world.provider.dimensionId;
     }
 
     @Override
@@ -178,4 +196,13 @@ public class IntegerCoordinates implements IIntegerCoordinates {
         return getWorld().getIndirectPowerLevelTo(getX(), getY(), getZ(), side);
     }
 
+    @Override
+    public IIntegerCoordinates strafeInDirection(ForgeDirection direction, int amount) {
+        return shiftInDirectionBy(direction.getRotation(ForgeDirection.DOWN), amount);
+    }
+
+    @Override
+    public IIntegerCoordinates applyRelativeCoordinates(ForgeDirection rotation, int rx, int ry, int rz) {
+        return shiftInDirectionBy(rotation, rz).shiftInDirectionBy(ForgeDirection.UP, ry).strafeInDirection(rotation, rx);
+    }
 }
