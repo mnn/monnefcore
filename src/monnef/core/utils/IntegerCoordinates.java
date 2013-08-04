@@ -205,4 +205,9 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     public IIntegerCoordinates applyRelativeCoordinates(ForgeDirection rotation, int rx, int ry, int rz) {
         return shiftInDirectionBy(rotation, rz).shiftInDirectionBy(ForgeDirection.UP, ry).strafeInDirection(rotation, rx);
     }
+
+    @Override
+    public IIntegerCoordinates copy() {
+        return new IntegerCoordinates(getX(), getY(), getZ(), getWorld());
+    }
 }

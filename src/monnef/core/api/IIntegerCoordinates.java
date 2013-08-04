@@ -40,4 +40,6 @@ public interface IIntegerCoordinates {
     IIntegerCoordinates strafeInDirection(ForgeDirection direction, int amount);
 
     IIntegerCoordinates applyRelativeCoordinates(ForgeDirection rotation, int rx, int ry, int rz);
+
+    IIntegerCoordinates copy();
 }
