@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -58,6 +59,33 @@ public class RenderUtils {
             f.setFloat(renderer, shadowSize);
         } catch (Throwable e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void rotate(ForgeDirection rotation) {
+        switch (rotation) {
+            case NORTH:
+                break;
+
+            case SOUTH:
+                GL11.glRotatef(180, 0, 1, 0);
+                break;
+
+            case WEST:
+                GL11.glRotatef(-90, 0, 1, 0);
+                break;
+
+            case EAST:
+                GL11.glRotatef(90, 0, 1, 0);
+                break;
+
+            case UP:
+                GL11.glRotatef(-90, 1, 0, 0);
+                break;
+
+            case DOWN:
+                GL11.glRotatef(90, 1, 0, 0);
+                break;
         }
     }
 }

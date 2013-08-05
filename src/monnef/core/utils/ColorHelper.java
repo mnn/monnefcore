@@ -6,6 +6,9 @@
 package monnef.core.utils;
 
 public class ColorHelper {
+    public static final int WHITE_INT = getInt(255, 255, 255);
+    public static final int BLACK_INT = getInt(0, 0, 0);
+
     public static int getInt(IntColor color) {
         return getInt(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
     }
@@ -29,11 +32,17 @@ public class ColorHelper {
     }
 
     public static IntColor getColor(int color) {
+        IntColor res = new IntColor();
+        getColor(color, res);
+        return res;
+    }
+
+    public static void getColor(int color, IntColor out) {
         int alpha = (color >> 24) & 0xFF;
         int red = (color >> 16) & 0xFF;
         int green = (color >> 8) & 0xFF;
         int blue = color & 0xFF;
-        return new IntColor(red, green, blue, alpha);
+        out.setAll(red, green, blue, alpha);
     }
 
     public static int addBrightness(int inputColor, int amount) {
@@ -142,6 +151,22 @@ public class ColorHelper {
         @Override
         public String toString() {
             return String.format("%d %d %d %d", getRed(), getGreen(), getBlue(), getAlpha());
+        }
+
+        public String formatHexWithAlpha() {
+            return String.format("%s%2X", formatHex(), getAlpha());
+        }
+
+        public String formatHex() {
+            return String.format("#%2X%2X%2X", getRed(), getGreen(), getBlue());
+        }
+
+        public void setAll(int red, int green, int blue, int alpha) {
+            dirty = true;
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+            this.alpha = alpha;
         }
     }
 }

@@ -7,6 +7,7 @@ package monnef.core.utils;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import monnef.core.MonnefCorePlugin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -65,5 +66,23 @@ public class EntityHelper {
     public static void setTrackingRange(Class<? extends Entity> aClass, int range) {
         EntityRegistry.EntityRegistration record = EntityRegistry.instance().lookupModSpawn(aClass, false);
         ReflectionHelper.setPrivateValue(EntityRegistry.EntityRegistration.class, record, range, "trackingRange");
+    }
+
+    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int id, Object modInstance) {
+        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, id, modInstance, false, 0, 0);
+    }
+
+    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int id, Object modInstance, int backEgg, int foreEgg) {
+        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, id, modInstance, true, backEgg, foreEgg);
+    }
+
+    private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int id, Object modInstance, boolean registerSpawnEggs, int backEgg, int foreEgg) {
+        MonnefCorePlugin.Log.printFine("Registered entity class \"" + entityClass + "\" with id #" + id);
+        if (registerSpawnEggs) {
+            EntityRegistry.registerGlobalEntityID(entityClass, entityName, id, backEgg, foreEgg);
+        } else {
+            EntityRegistry.registerGlobalEntityID(entityClass, entityName, id);
+        }
+        EntityRegistry.registerModEntity(entityClass, entityName, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates);
     }
 }

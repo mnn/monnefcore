@@ -9,10 +9,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 
 public class BoxHelper {
-    public static AxisAlignedBB createSquareFromCenter(double radius, ForgeDirection direction) {
+    public static AxisAlignedBB createSquareFromCenter(double radius, ForgeDirection direction, double length) {
         double x1 = -radius, x2 = radius;
         double y1 = -radius, y2 = radius;
-        double z1 = 0, z2 = 1;
+        double z1 = -length / 2, z2 = length / 2;
         switch (direction) {
             case NORTH:
             case SOUTH:
