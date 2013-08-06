@@ -5,6 +5,7 @@
 
 package monnef.core.utils;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -35,5 +36,9 @@ public class WorldHelper {
         ItemStack stack = new ItemStack(blockId, count, meta);
         EntityItem item = new EntityItem(world, x + 0.5f, y + 0.5f, z + 0.5f, stack);
         world.spawnEntityInWorld(item);
+    }
+
+    public static void createExplosion(World world, Entity exploder, double x, double y, double z, float size, boolean flaming, boolean smoking) {
+        world.newExplosion(exploder, x, y, z, size, flaming, smoking);
     }
 }

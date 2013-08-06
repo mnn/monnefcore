@@ -42,4 +42,8 @@ public class MathHelper {
         }
         return res;
     }
+
+    public static int scaleValue(int value, int valueMax, int newScaleMax) {
+        return (value * newScaleMax) / valueMax;
+    }
 }

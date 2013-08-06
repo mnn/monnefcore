@@ -16,6 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 import java.util.List;
 
@@ -84,5 +85,9 @@ public class EntityHelper {
             EntityRegistry.registerGlobalEntityID(entityClass, entityName, id);
         }
         EntityRegistry.registerModEntity(entityClass, entityName, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates);
+    }
+
+    public static void kickEntityInDirection(EntityLiving entity, ForgeDirection direction, float force) {
+        entity.addVelocity(direction.offsetX * force, direction.offsetY * force, direction.offsetZ * force);
     }
 }

@@ -40,4 +40,12 @@ public class RandomHelper {
     public static boolean rollPercentBooleanDice(int percentsOfSuccess) {
         return rand.nextFloat() < percentsOfSuccess / 100f;
     }
+
+    public static float generateRandomFromBaseAndSpread(float base, float spread) {
+        return base + generateRandomFromInterval(-spread, spread);
+    }
+
+    public static int generateRandomFromBaseAndSpread(int base, int spread) {
+        return base + generateRandomFromInterval(-spread, spread);
+    }
 }

@@ -47,10 +47,10 @@ public abstract class GuiContainerJaffas extends GuiContainer {
 
     public void drawBottomUpBar(int x, int y, int value, int width, int height, ColorHelper.IntColor topColor, ColorHelper.IntColor bottomColor) {
         drawPlasticBox(this, x, y, width, height);
-        GuiHelper.drawRect(x + 1, y + 1, width - 2, height - 2, GuiHelper.COLOR_GRAY);
         if (value != 0) {
-            GuiHelper.drawGradientRectFromDown(this, x + 1, y + 1, width - 2, value, topColor, bottomColor, GuiHelper.EnumFillRotation.TOP_DOWN, height - 2);
+            GuiHelper.drawGradientRectFromDown(this, x + 1, y + 1, width - 2, height - 2, topColor, bottomColor, GuiHelper.EnumFillRotation.TOP_DOWN, height - 2);
         }
+        GuiHelper.drawRect(x + 1, y + 1, width - 2, height - 2 - value, GuiHelper.COLOR_GRAY);
         GL11.glColor4f(1, 1, 1, 1);
     }
 

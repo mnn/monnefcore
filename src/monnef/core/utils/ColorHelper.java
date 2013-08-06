@@ -8,6 +8,10 @@ package monnef.core.utils;
 public class ColorHelper {
     public static final int WHITE_INT = getInt(255, 255, 255);
     public static final int BLACK_INT = getInt(0, 0, 0);
+    public static final int RED_INT = getInt(255, 0, 0);
+    public static final int YELLOW_INT = getInt(255, 255, 0);
+    public static final int BLUE_INT = getInt(0, 0, 255);
+    public static final int LIGHT_BLUE_INT = getInt(0, 255, 255);
 
     public static int getInt(IntColor color) {
         return getInt(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
@@ -62,7 +66,12 @@ public class ColorHelper {
     }
 
     public static class IntColor {
-        public static final IntColor BLACK = new IntColor(0, 0, 0);
+        public static final IntColor BLACK = new IntColor(BLACK_INT);
+        public static final IntColor WHITE = new IntColor(WHITE_INT);
+        public static final IntColor RED = new IntColor(RED_INT);
+        public static final IntColor YELLOW = new IntColor(YELLOW_INT);
+        public static final IntColor BLUE = new IntColor(BLUE_INT);
+        public static final IntColor LIGHT_BLUE = new IntColor(LIGHT_BLUE_INT);
 
         private int red;
         private int green;
@@ -72,6 +81,10 @@ public class ColorHelper {
         private int cachedIntValue;
 
         public IntColor() {
+        }
+
+        public IntColor(int color) {
+            getColor(color, this);
         }
 
         public IntColor(int red, int green, int blue) {
