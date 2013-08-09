@@ -32,7 +32,7 @@ public class ColorHelper {
         return input;
     }
 
-    public static IntColor getColor(ColorEnum color){
+    public static IntColor getColor(ColorEnum color) {
         return color.getColor();
     }
 
@@ -174,6 +174,18 @@ public class ColorHelper {
             this.green = green;
             this.blue = blue;
             this.alpha = alpha;
+        }
+
+        public String formatTextOrHex() {
+            String res = formatText();
+            if (res == null) res = formatHex();
+            return res;
+        }
+
+        public String formatText() {
+            String res = ColorEnum.getTitle(toInt());
+            if (res != null) return res;
+            return DyeHelper.getDyeColorTitle(DyeHelper.getDyeIndexFromIntColor(toInt()));      // TODO: handle failure
         }
     }
 }

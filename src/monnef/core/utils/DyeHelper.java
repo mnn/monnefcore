@@ -16,14 +16,19 @@ import net.minecraft.item.ItemStack;
 public class DyeHelper {
     private static final BiMap<String, Integer> dyeNames;
     private static final BiMap<String, Integer> woolNames;
+    private static final BiMap<Integer, Integer> intColorToDyeIndex;
+
+    private static final int EXPECTED_SIZE = 16;
 
     static {
-        dyeNames = HashBiMap.create();
-        woolNames = HashBiMap.create();
+        dyeNames = HashBiMap.create(EXPECTED_SIZE);
+        woolNames = HashBiMap.create(EXPECTED_SIZE);
+        intColorToDyeIndex = HashBiMap.create(EXPECTED_SIZE);
         for (int i = 0; i < ItemDye.dyeColorNames.length; i++) {
             String colorName = ItemDye.dyeColorNames[i];
             dyeNames.put(colorName, i);
             woolNames.put(colorName, BlockCloth.getBlockFromDye(i));
+            intColorToDyeIndex.put(getIntColor(i), i);
         }
     }
 
@@ -63,11 +68,25 @@ public class DyeHelper {
         return ItemDye.dyeColors[color];
     }
 
-    public static String getWoolColorName(int color) {
-        return woolNames.inverse().get(color);
+    public static String getWoolColorName(int index) {
+        return woolNames.inverse().get(index);
     }
 
-    public static String getDyeColorName(int color) {
-        return dyeNames.inverse().get(color);
+    public static String getDyeColorName(int index) {
+        return dyeNames.inverse().get(index);
+    }
+
+    public static int getDyeIndexFromIntColor(int color) {
+        return intColorToDyeIndex.get(color);
+    }
+
+    public static String getDyeColorTitle(int index) {
+        String dyeName = getDyeColorName(index);
+        if (dyeName == null) return null;
+        return StringsHelper.makeFirstCapital(StringsHelper.insertSpaceOnLowerUpperCaseChange(dyeName).toLowerCase());
+    }
+
+    public static int getIndexFromIntColor(int intColor) {
+        return intColorToDyeIndex.get(intColor);
     }
 }
