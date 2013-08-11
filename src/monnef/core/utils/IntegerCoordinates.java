@@ -210,4 +210,9 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     public IIntegerCoordinates copy() {
         return new IntegerCoordinates(getX(), getY(), getZ(), getWorld());
     }
+
+    @Override
+    public String format() {
+        return String.format("%d@%dx%dx%d", getWorld().provider.dimensionId, getX(), getY(), getZ());
+    }
 }

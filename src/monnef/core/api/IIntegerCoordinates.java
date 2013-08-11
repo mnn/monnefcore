@@ -42,4 +42,6 @@ public interface IIntegerCoordinates {
     IIntegerCoordinates applyRelativeCoordinates(ForgeDirection rotation, int rx, int ry, int rz);
 
     IIntegerCoordinates copy();
+
+    String format();
 }
