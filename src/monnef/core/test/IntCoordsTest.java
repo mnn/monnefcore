@@ -45,6 +45,42 @@ public class IntCoordsTest {
         assertEquals(50, pos.getZ());
     }
 
+    @Test
+    public void testStrafe2() {
+        IntegerCoordinates pos = createIntCoords(10, 20, 50);
+        pos = (IntegerCoordinates) pos.strafeInDirection(ForgeDirection.SOUTH, 2);
+        assertEquals(12, pos.getX());
+        assertEquals(20, pos.getY());
+        assertEquals(50, pos.getZ());
+    }
+
+    @Test
+    public void testStrafe3() {
+        IntegerCoordinates pos = createIntCoords(10, 20, 50);
+        pos = (IntegerCoordinates) pos.strafeInDirection(ForgeDirection.EAST, 2);
+        assertEquals(10, pos.getX());
+        assertEquals(20, pos.getY());
+        assertEquals(48, pos.getZ());
+    }
+
+    @Test
+    public void testRelCoords01() {
+        IntegerCoordinates pos = createIntCoords(10, 20, 50);
+        pos = (IntegerCoordinates) pos.applyRelativeCoordinates(ForgeDirection.SOUTH, 1, 5, 10);
+        assertEquals(11, pos.getX());
+        assertEquals(25, pos.getY());
+        assertEquals(60, pos.getZ());
+    }
+
+    @Test
+    public void testRelCoords02() {
+        IntegerCoordinates pos = createIntCoords(10, 20, 50);
+        pos = (IntegerCoordinates) pos.applyRelativeCoordinates(ForgeDirection.EAST, 1, 5, 10);
+        assertEquals(20, pos.getX());
+        assertEquals(25, pos.getY());
+        assertEquals(49, pos.getZ());
+    }
+
     private IntegerCoordinates createIntCoords(int x, int y, int z) {
         try {
             Constructor<IntegerCoordinates> constructor = IntegerCoordinates.class.getDeclaredConstructor(int.class, int.class, int.class);

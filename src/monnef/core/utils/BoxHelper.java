@@ -55,6 +55,7 @@ public class BoxHelper {
     }
 
     public static AxisAlignedBB getNonPooledAABB(AxisAlignedBB template) {
+        if (template == null) return null;
         return AxisAlignedBB.getBoundingBox(template.minX, template.minY, template.minZ, template.maxX, template.maxY, template.maxZ);
     }
 }
