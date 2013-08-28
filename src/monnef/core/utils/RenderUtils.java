@@ -72,11 +72,11 @@ public class RenderUtils {
                 break;
 
             case WEST:
-                GL11.glRotatef(-90, 0, 1, 0);
+                GL11.glRotatef(90, 0, 1, 0);
                 break;
 
             case EAST:
-                GL11.glRotatef(90, 0, 1, 0);
+                GL11.glRotatef(-90, 0, 1, 0);
                 break;
 
             case UP:

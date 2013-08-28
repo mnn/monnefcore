@@ -92,6 +92,8 @@ public class ColorHelper {
             this.setAlpha(alpha);
         }
 
+        // TODO: cache float values
+
         public float getFloatRed() {
             return toFloat(getRed());
         }

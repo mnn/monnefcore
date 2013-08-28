@@ -5,6 +5,7 @@
 
 package monnef.core.client;
 
+import monnef.core.utils.ColorHelper;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 
 public interface IModelObj {
@@ -17,4 +18,8 @@ public interface IModelObj {
     void renderPossiblyWithTexture(float scale);
 
     WavefrontObject getModel();
+
+    void renderWithTint(float scale, ColorHelper.IntColor tint);
+
+    void renderWithTextureAndTint(float scale, ColorHelper.IntColor tint);
 }

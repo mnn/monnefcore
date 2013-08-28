@@ -6,6 +6,7 @@
 package monnef.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import monnef.core.utils.ColorHelper;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.model.AdvancedModelLoader;
@@ -38,17 +39,30 @@ public class ModelObj extends ModelBase implements IModelObj {
 
     @Override
     public void render(float scale) {
+        renderWithTint(scale, null);
+    }
+
+    @Override
+    public void renderWithTint(float scale, ColorHelper.IntColor tint) {
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(rotationFix, 0, 1, 0);
+        if (tint != null) {
+            GL11.glColor4f(tint.getFloatRed(), tint.getFloatGreen(), tint.getFloatBlue(), 1f);
+        }
         model.renderAll();
         GL11.glPopMatrix();
     }
 
     @Override
     public void renderWithTexture(float scale) {
+        renderWithTextureAndTint(scale, null);
+    }
+
+    @Override
+    public void renderWithTextureAndTint(float scale, ColorHelper.IntColor tint) {
         bindTexture();
-        render(scale);
+        renderWithTint(scale, tint);
     }
 
     @Override

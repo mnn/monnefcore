@@ -20,7 +20,7 @@ public class BoxHelper {
 
             case WEST:
             case EAST:
-                return AxisAlignedBB.getAABBPool().getAABB(y1, x1, z1, y2, x2, z2);
+                return AxisAlignedBB.getAABBPool().getAABB(z1, y1, x1, z2, y2, x2);
         }
 
         return null;
