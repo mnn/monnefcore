@@ -97,4 +97,12 @@ public class ItemHelper {
     public static void setItemBlockToFull3D(Block block) {
         Item.itemsList[block.blockID].setFull3D();
     }
+
+    public static ItemStack constructDamagedItemStack(Item item, float damagedAmount) {
+        if (item == null) throw new NullPointerException("item");
+        if (damagedAmount <= 0 || damagedAmount >= 1) throw new RuntimeException("damageAmount");
+        int maxDamage = item.getMaxDamage();
+        int newDamage = Math.round(maxDamage * (1 - damagedAmount));
+        return new ItemStack(item, 1, newDamage);
+    }
 }
