@@ -105,4 +105,12 @@ public class ItemHelper {
         int newDamage = Math.round(maxDamage * (1 - damagedAmount));
         return new ItemStack(item, 1, newDamage);
     }
+
+    public static ItemStack[] constructStackArray(ItemStack toCopy, int count) {
+        ItemStack[] ret = new ItemStack[count];
+        for (int i = 0; i < count; i++) {
+            ret[i] = toCopy.copy();
+        }
+        return ret;
+    }
 }
