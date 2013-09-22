@@ -14,8 +14,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import monnef.core.CoreModContainer;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 import monnef.core.Reference;
+import monnef.core.client.ExporterTickHandler;
 import monnef.core.command.CommandMC;
 import monnef.core.common.GuiHandler;
 import net.minecraft.command.ICommandManager;
@@ -37,7 +39,7 @@ public class MonnefCoreNormalMod {
     @Mod.Init
     public void load(FMLInitializationEvent evt) {
         NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
-        //CoreModContainer.registerModHelper(this);
+        TickRegistry.registerTickHandler(new ExporterTickHandler(), Side.CLIENT);
     }
 
     @Mod.ServerStarting
