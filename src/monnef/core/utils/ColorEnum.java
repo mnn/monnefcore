@@ -14,7 +14,8 @@ public enum ColorEnum {
     YELLOW(255, 255, 0),
     BLUE(0, 0, 255),
     LIGHT_BLUE(0, 255, 255),
-    GREEN(0, 255, 0),;
+    GREEN(0, 255, 0),
+    MAGENTA(255, 0, 255),;
 
     private final ColorHelper.IntColor color;
     private static HashMap<Integer, String> titles = new HashMap<Integer, String>();

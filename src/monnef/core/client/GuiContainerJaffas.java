@@ -19,9 +19,23 @@ import java.util.List;
 
 public abstract class GuiContainerJaffas extends GuiContainer {
     private static ArrayList<String> tooltips = new ArrayList<String>();
+    protected int x;
+    protected int y;
 
     public GuiContainerJaffas(Container container) {
         super(container);
+        refreshXY();
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        refreshXY();
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+        refreshXY();
     }
 
     public static void drawPlasticBox(GuiContainerJaffas gui, int x, int y, int width, int height) {
@@ -123,5 +137,10 @@ public abstract class GuiContainerJaffas extends GuiContainer {
                 ycoord += 10;
             }
         }
+    }
+
+    protected void refreshXY() {
+        x = (width - xSize) / 2;
+        y = (height - ySize) / 2;
     }
 }
