@@ -16,6 +16,8 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import monnef.core.Config;
+import monnef.core.MonnefCorePlugin;
 import monnef.core.Reference;
 import monnef.core.client.ExporterTickHandler;
 import monnef.core.command.CommandMC;
@@ -38,16 +40,21 @@ public class MonnefCoreNormalMod {
 
     @Mod.Init
     public void load(FMLInitializationEvent evt) {
-        NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
-        TickRegistry.registerTickHandler(new ExporterTickHandler(), Side.CLIENT);
+        if (Config.isExporterEnabled() && Config.isCommandEnabled()) {
+            NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
+            TickRegistry.registerTickHandler(new ExporterTickHandler(), Side.CLIENT);
+            MonnefCorePlugin.Log.printInfo("Exporter initialized.");
+        }
     }
 
     @Mod.ServerStarting
     public void serverStarting(FMLServerStartingEvent event) {
-        MinecraftServer server = ModLoader.getMinecraftServerInstance();
-        ICommandManager commandManager = server.getCommandManager();
-        ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager);
-        serverCommandManager.registerCommand(new CommandMC());
+        if (Config.isCommandEnabled()) {
+            MinecraftServer server = ModLoader.getMinecraftServerInstance();
+            ICommandManager commandManager = server.getCommandManager();
+            ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager);
+            serverCommandManager.registerCommand(new CommandMC());
+        }
     }
 
     private void handleMetadata() {

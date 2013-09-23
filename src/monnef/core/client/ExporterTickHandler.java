@@ -65,7 +65,7 @@ public class ExporterTickHandler implements ITickHandler {
         int pixX = gui.x * mc.displayWidth / gui.width;
         int pixY = (gui.y - gui.height /*+ 1*/) * (-mc.displayHeight) / gui.height;
         int iconSize = 32;
-        String blockName = currentTask.stack.getItemName().replace("tile.", "");
+        String blockName = currentTask.stack.getItemName();
         String fileName = blockName + ".png";
         File currDir = new File(".");
         if (new File(currDir, fileName).exists()) {
@@ -73,7 +73,7 @@ public class ExporterTickHandler implements ITickHandler {
         }
         String res = ScreenShotHelper.saveScreenShot(currDir, fileName, pixX, pixY - iconSize, iconSize, iconSize);
         if (res.startsWith("Saved")) {
-            MonnefCorePlugin.Log.printFinest("Rendered block " + blockName + ".");
+            MonnefCorePlugin.Log.printFinest("Rendered block " + blockName + " (oID:" + currentTask.origId + ", sID:" + currentTask.stack.itemID + ").");
         } else {
             FMLClientHandler.instance().getClient().thePlayer.addChatMessage("Problem! " + res);
         }

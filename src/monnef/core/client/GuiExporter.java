@@ -12,6 +12,7 @@ import monnef.core.utils.GuiHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -53,23 +54,23 @@ public class GuiExporter extends GuiContainerJaffas {
 
             case BUTTON_PROCESS_ALL:
                 int c = 0;
-                for (int i = 1; i < Block.blocksList.length; i++) {
-                    Block b = Block.blocksList[i];
-                    if (b != null) {
+                for (int i = 1; i < Item.itemsList.length; i++) {
+                    Item item = Item.itemsList[i];
+                    if (item != null) {
                         ArrayList<ItemStack> o = new ArrayList<ItemStack>();
-                        b.getSubBlocks(i, null, o);
+                        item.getSubItems(i, null, o);
                         for (int j = 0; j < o.size(); j++) {
                             ItemStack stack = o.get(j);
                             if (stack != null) {
-                                ExporterTickHandler.scheduleTask(stack, i);
+                                ExporterTickHandler.scheduleTask(stack.copy(), i);
                                 c++;
                             } else {
-                                MonnefCorePlugin.Log.printWarning("Possible badly coded block - id: " + i + ", name: " + b.getUnlocalizedName());
+                                MonnefCorePlugin.Log.printWarning("Possible badly coded block - id: " + i + ", name: " + item.getUnlocalizedName());
                             }
                         }
                     }
                 }
-                FMLClientHandler.instance().getClient().thePlayer.addChatMessage("Queued " + c + " blocks to process.");
+                FMLClientHandler.instance().getClient().thePlayer.addChatMessage("Queued " + c + " items to process.");
                 break;
         }
     }

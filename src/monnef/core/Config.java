@@ -23,16 +23,30 @@ public class Config {
     public static final String SKIP_LIBRARY_DOWNLOAD_TAG = "skipLibraryDownload";
     public static final String CONFIG_DIR = "config";
     public static final String USE_ASM_LIGHTNING = "useASMLightning";
+    public static final String EXPORTER_ENABLED = "exporterEnabled";
+    public static final String CORE_COMMAND_ENABLED = "coreCommandEnabled";
 
     public static final String FALSE_VALUE = Boolean.FALSE.toString().toLowerCase();
     public static final String TRUE_VALUE = Boolean.TRUE.toString().toLowerCase();
 
     private static boolean initialized = false;
     private static boolean useASMLightning;
+    private static boolean exporterEnabled;
+    private static boolean commandEnabled;
 
     public static boolean useOldASMLightning() {
         assertLoadedConfig();
         return useASMLightning;
+    }
+
+    public static boolean isExporterEnabled() {
+        assertLoadedConfig();
+        return exporterEnabled;
+    }
+
+    public static boolean isCommandEnabled() {
+        assertLoadedConfig();
+        return commandEnabled;
     }
 
     public static void assertLoadedConfig() {
@@ -107,11 +121,23 @@ public class Config {
             }
         }
 
-        useASMLightning = TRUE_VALUE.equals(prop.getProperty(USE_ASM_LIGHTNING, FALSE_VALUE).toLowerCase());
+        useASMLightning = processBoolValue(prop, USE_ASM_LIGHTNING);
+        exporterEnabled = processBoolValue(prop, EXPORTER_ENABLED);
+        commandEnabled = processBoolValue(prop, CORE_COMMAND_ENABLED, TRUE_VALUE);
+    }
+
+    private static boolean processBoolValue(Properties prop, String key) {
+        return processBoolValue(prop, key, FALSE_VALUE);
+    }
+
+    private static boolean processBoolValue(Properties prop, String key, String defaultValue) {
+        return TRUE_VALUE.equals(prop.getProperty(key, defaultValue).toLowerCase());
     }
 
     private static void initConfig(Properties prop) {
         prop.setProperty(SKIP_LIBRARY_DOWNLOAD_TAG, "");
         prop.setProperty(USE_ASM_LIGHTNING, FALSE_VALUE);
+        prop.setProperty(EXPORTER_ENABLED, FALSE_VALUE);
+        prop.setProperty(CORE_COMMAND_ENABLED, TRUE_VALUE);
     }
 }
