@@ -26,7 +26,7 @@ public class MappingDictionary implements Serializable {
 
     public String getFirst(String fullName) {
         HashSet<String> set = data.get(fullName);
-        return testSet(set).iterator().next();
+        return testSet(set, fullName).iterator().next();
     }
 
     public Set<String> keySet() {
@@ -45,7 +45,7 @@ public class MappingDictionary implements Serializable {
 
     public HashSet<String> get(String fullName) {
         HashSet<String> set = data.get(fullName);
-        return new HashSet<String>(testSet(set));
+        return new HashSet<String>(testSet(set, fullName));
     }
 
     public void put(String name, Set<String> translations) {
@@ -56,9 +56,9 @@ public class MappingDictionary implements Serializable {
         data.put(name, newEntry);
     }
 
-    private HashSet<String> testSet(HashSet<String> set) {
+    private HashSet<String> testSet(HashSet<String> set, String name) {
         if (set == null) {
-            throw new RuntimeException("Object not found.");
+            throw new RuntimeException("Object not found - " + name);
         }
         return set;
     }
