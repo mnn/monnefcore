@@ -5,11 +5,13 @@
 
 package monnef.core.utils;
 
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -53,7 +55,7 @@ public class PlayerHelper {
     public static MovingObjectPosition rayTraceBlock(EntityPlayer entity, double distance, Vec3 look) {
         Vec3 pos = getPlayersHeadPositionVector(entity);
         Vec3 target = pos.addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
-        return entity.worldObj.rayTraceBlocks(pos, target);
+        return entity.worldObj.clip(pos, target);
     }
 
     public static final float U = 1 / 16f;
@@ -106,5 +108,11 @@ public class PlayerHelper {
             this.entity = entity;
             this.distance = distance;
         }
+    }
+
+    public static void addMessage(ICommandSender target, String msg) {
+        ChatMessageComponent component = new ChatMessageComponent();
+        component.addText(msg);
+        target.sendChatToPlayer(component);
     }
 }

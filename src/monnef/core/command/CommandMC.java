@@ -12,6 +12,8 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 
+import static monnef.core.utils.PlayerHelper.addMessage;
+
 public class CommandMC extends CommandBase {
     @Override
     public String getCommandName() {
@@ -19,22 +21,27 @@ public class CommandMC extends CommandBase {
     }
 
     @Override
+    public String getCommandUsage(ICommandSender icommandsender) {
+        return "commands.mc.usage";
+    }
+
+    @Override
     public void processCommand(ICommandSender commandsender, String[] parameters) {
         if (parameters.length <= 0) {
-            commandsender.sendChatToPlayer("monnef core");
+            addMessage(commandsender, "monnef core");
         } else if (parameters.length == 1 && parameters[0].equals("exporter")) {
             if (Config.isExporterEnabled()) {
                 if (commandsender instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) commandsender;
                     player.openGui(MonnefCoreNormalMod.instance, GuiHandler.GuiId.EXPORTER.ordinal(), player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
                 } else {
-                    commandsender.sendChatToPlayer("You're not an entity, aborting.");
+                    addMessage(commandsender, "You're not an entity, aborting.");
                 }
             } else {
-                commandsender.sendChatToPlayer("Exporter is disabled in a config file.");
+                addMessage(commandsender, "Exporter is disabled in a config file.");
             }
         } else {
-            commandsender.sendChatToPlayer("Unknown sub-command.");
+            addMessage(commandsender, "Unknown sub-command.");
         }
     }
 }

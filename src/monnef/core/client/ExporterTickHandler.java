@@ -39,7 +39,7 @@ public class ExporterTickHandler implements ITickHandler {
                     MonnefCorePlugin.Log.printWarning("Null in task's stack!");
                 } else {
                     try {
-                        MonnefCorePlugin.Log.printFinest("Adding to render queue block: " + currentTask.stack.getItemName());
+                        MonnefCorePlugin.Log.printFinest("Adding to render queue block: " + currentTask.stack.getUnlocalizedName());
                         gui.inventorySlots.getSlot(0).inventory.setInventorySlotContents(0, currentTask.stack);
                         takeShotNow = true;
                     } catch (NullPointerException e) {
@@ -65,7 +65,7 @@ public class ExporterTickHandler implements ITickHandler {
         int pixX = gui.x * mc.displayWidth / gui.width;
         int pixY = (gui.y - gui.height /*+ 1*/) * (-mc.displayHeight) / gui.height;
         int iconSize = 32;
-        String blockName = currentTask.stack.getItemName();
+        String blockName = currentTask.stack.getUnlocalizedName();
         String fileName = blockName + ".png";
         File currDir = new File(".");
         if (new File(currDir, fileName).exists()) {
