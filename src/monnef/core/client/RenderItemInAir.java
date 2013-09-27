@@ -5,21 +5,16 @@
 
 package monnef.core.client;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.texture.Texture;
-import net.minecraft.client.renderer.texture.TextureStitched;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import java.lang.reflect.Field;
-
 public class RenderItemInAir extends Render {
-    private Texture texture;
     private Icon icon;
     private final Item item;
 
@@ -28,20 +23,13 @@ public class RenderItemInAir extends Render {
         this.item = item;
     }
 
-    public void tryLoadTexture() {
+    public void tryLoadIcon() {
         icon = item.getIconFromDamage(0);
-        if (icon == null) return;
-        Field ts = ReflectionHelper.findField(TextureStitched.class, "textureSheet", "field_94228_a");
-        try {
-            texture = (Texture) ts.get(icon);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
+    @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        if (texture == null) tryLoadTexture();
+        if (icon == null) tryLoadIcon();
 
         GL11.glPushMatrix();
 
@@ -49,11 +37,19 @@ public class RenderItemInAir extends Render {
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
         Tessellator var10 = Tessellator.instance;
-        texture.bindTexture(0);
+
+        //texture.bindTexture(0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 1); // 1 for items
+
         this.doRender(var10);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 
         GL11.glPopMatrix();
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity) {
+        return null;
     }
 
     private void doRender(Tessellator par1Tessellator) {

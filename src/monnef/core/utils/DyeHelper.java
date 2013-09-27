@@ -8,7 +8,7 @@ package monnef.core.utils;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCloth;
+import net.minecraft.block.BlockColored;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ public class DyeHelper {
         for (int i = 0; i < ItemDye.dyeColorNames.length; i++) {
             String colorName = ItemDye.dyeColorNames[i];
             dyeNames.put(colorName, i);
-            woolNames.put(colorName, BlockCloth.getBlockFromDye(i));
+            woolNames.put(colorName, BlockColored.getBlockFromDye(i));
             intColorToDyeIndex.put(getIntColor(i), i);
         }
     }

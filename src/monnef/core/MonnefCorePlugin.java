@@ -7,9 +7,9 @@ package monnef.core;
 
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 import monnef.core.asm.ObfuscationHelper;
 import monnef.core.utils.CustomLogger;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 
 import java.util.Map;
 
@@ -30,7 +30,7 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
         return initialized;
     }
 
-    public static RelaunchClassLoader classLoader;
+    public static LaunchClassLoader classLoader;
 
     public MonnefCorePlugin() {
     }
@@ -58,7 +58,7 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
     public void injectData(Map<String, Object> data) {
         if (data.containsKey(CLASS_LOADER_TAG)) {
-            MonnefCorePlugin.classLoader = (RelaunchClassLoader) data.get(CLASS_LOADER_TAG);
+            MonnefCorePlugin.classLoader = (LaunchClassLoader) data.get(CLASS_LOADER_TAG);
         }
     }
 

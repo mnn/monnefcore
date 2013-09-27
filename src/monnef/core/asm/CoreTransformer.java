@@ -5,9 +5,9 @@
 
 package monnef.core.asm;
 
-import cpw.mods.fml.relauncher.IClassTransformer;
 import monnef.core.asm.cloakHook.RenderGlobalVisitor;
 import monnef.core.asm.lightningHook.WorldServerVisitor;
+import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
