@@ -9,6 +9,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import monnef.core.utils.ColorHelper;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.client.model.obj.WavefrontObject;
@@ -18,10 +19,12 @@ public class ModelObj extends ModelBase implements IModelObj {
     private final WavefrontObject model;
     private float rotationFix;
     private String texture;
+    private ResourceLocation textureResource;
 
     public ModelObj(String resourceName, float rotationFix, String texture) {
         this.rotationFix = rotationFix;
         this.texture = texture;
+        this.textureResource = new ResourceLocation(texture);
         IModelCustom tmp = AdvancedModelLoader.loadModel(resourceName);
         if (!(tmp instanceof WavefrontObject))
             throw new RuntimeException("Loaded model is not " + WavefrontObject.class.getSimpleName() + ", cannot continue (Forge probably changes implementation).");
@@ -34,7 +37,7 @@ public class ModelObj extends ModelBase implements IModelObj {
 
     @Override
     public void bindTexture() {
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(texture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(textureResource);
     }
 
     @Override

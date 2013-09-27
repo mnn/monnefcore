@@ -5,7 +5,7 @@
 
 package monnef.core;
 
-import monnef.core.utils.PathHelper;
+import monnef.core.asm.PathHelper;
 
 import java.io.File;
 import java.io.FileInputStream;

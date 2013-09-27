@@ -33,7 +33,8 @@ public class CustomCloaksHandler implements ICloakHandler {
         String url = String.format(JAFFA_CLOAK_URL, name);
         if (specialNames.contains(name)) {
             Log.printFine("setting cloak for [" + name + "]");
-            player.cloakUrl = url;
+            // TODO: finish cloak handler!
+            //player.cloakUrl = url;
         }
     }
 }

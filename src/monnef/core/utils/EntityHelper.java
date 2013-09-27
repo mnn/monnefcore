@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import monnef.core.MonnefCorePlugin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
@@ -24,7 +25,7 @@ public class EntityHelper {
 
     public static final float MAX_UP_MOTION = 0.5f;
 
-    public static boolean animalIsAdult(EntityLiving animal) {
+    public static boolean animalIsAdult(EntityLivingBase animal) {
         return animal instanceof EntityAnimal ? ((EntityAnimal) animal).getGrowingAge() >= 0 : true;
     }
 
@@ -38,7 +39,7 @@ public class EntityHelper {
         return s.toString();
     }
 
-    public static void pushEntitiesBack(World w, Vec3 hitVec, float force, float radius, float damage, float yBoost, EntityLiving thrower) {
+    public static void pushEntitiesBack(World w, Vec3 hitVec, float force, float radius, float damage, float yBoost, EntityLivingBase thrower) {
         AxisAlignedBB area = AxisAlignedBB.getAABBPool().getAABB(hitVec.xCoord, hitVec.yCoord, hitVec.zCoord, hitVec.xCoord, hitVec.yCoord, hitVec.zCoord).expand(radius, radius, radius);
         List entities = w.getEntitiesWithinAABB(Entity.class, area);
         for (Entity entity : (List<Entity>) entities) {
@@ -87,7 +88,7 @@ public class EntityHelper {
         EntityRegistry.registerModEntity(entityClass, entityName, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates);
     }
 
-    public static void kickEntityInDirection(EntityLiving entity, ForgeDirection direction, float force) {
+    public static void kickEntityInDirection(EntityLivingBase entity, ForgeDirection direction, float force) {
         entity.addVelocity(direction.offsetX * force, direction.offsetY * force, direction.offsetZ * force);
     }
 }

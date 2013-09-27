@@ -5,8 +5,6 @@
 
 package monnef.core.asm;
 
-import monnef.core.utils.PathHelper;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -29,7 +29,10 @@ public class McpParser {
 
     private static void parsePackaged(HashMap<MappedObjectType, MappingDictionary> database, String filePath) {
         //format:
+        //old
         //CL: aat net/minecraft/world/WorldProviderEnd
+        //new
+        // MD: zp/a (IZ)I net/minecraft/potion/PotionHelper/func_77915_a (IZ)I #C
 
         MappingDictionary classes = database.get(MappedObjectType.CLASS);
         if (classes.countKeys() > 0) {
@@ -47,9 +50,12 @@ public class McpParser {
             while (bReader.ready()) {
                 String line = bReader.readLine();
                 String[] chopped = line.split(" ");
-                if (chopped.length != 3 && chopped.length != 5) {
-                    Log.printWarning("Probably damaged packaged file from MCP, weird line: \"" + line + "\"");
+                if (chopped.length < 3 || chopped.length > 6) {
+                    Log.printWarning("Probably damaged packaged file from MCP, weird line: \"" + line + "\".");
                 } else {
+                    if (!line.isEmpty() && chopped[0].length() != 3) {
+                        Log.printWarning(String.format("Fishy line start in packaged parser on line: \"%s\".", line));
+                    }
                     if ("CL:".equals(chopped[0])) {
                         classes.put(chopped[2].replace('/', '.'), chopped[1].replace('/', '.'));
                     } else if ("MD:".equals(chopped[0])) {

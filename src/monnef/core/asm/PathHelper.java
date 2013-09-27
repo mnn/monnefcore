@@ -3,7 +3,7 @@
  * author: monnef
  */
 
-package monnef.core.utils;
+package monnef.core.asm;
 
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import monnef.core.Library;

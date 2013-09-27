@@ -13,18 +13,12 @@ import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
 import monnef.core.calendar.CoreTickHandler;
-import monnef.core.command.CommandMC;
 import monnef.core.utils.WolfFoodRegistry;
-import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.ModLoader;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
@@ -72,6 +66,8 @@ public class CoreModContainer extends DummyModContainer {
     public void load(FMLInitializationEvent event) {
         Side side = FMLCommonHandler.instance().getEffectiveSide();
 
+        // TODO: solve cloak stuff
+        /*
         if (side == Side.CLIENT) {
             CloakHookHandler.registerCloakHandler(new CustomCloaksHandler());
 
@@ -79,6 +75,7 @@ public class CoreModContainer extends DummyModContainer {
                 printDebugDataAndCrash("Unable to install a cloak hook!");
             }
         }
+        */
 
         if (!CoreTransformer.lightningHookApplied) {
             printDebugDataAndCrash("Unable to install a lightning hook!");
@@ -96,6 +93,7 @@ public class CoreModContainer extends DummyModContainer {
 
         MonnefCorePlugin.initialized = true;
         if (debugEnv) doDebuggingThings();
+        MonnefCorePlugin.Log.printInfo("Final checks passed.");
     }
 
     private void printDebugDataAndCrash(String msg) {

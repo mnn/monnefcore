@@ -29,7 +29,6 @@ public class Library implements ILibrarySet {
     }
 
     public Library() {
-        Config.handleConfig();
     }
 
     public static void tryDisableLibrary(String name) {

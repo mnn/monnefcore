@@ -32,6 +32,10 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     public static LaunchClassLoader classLoader;
 
+    static {
+        Config.handleConfig();
+    }
+
     public MonnefCorePlugin() {
     }
 
