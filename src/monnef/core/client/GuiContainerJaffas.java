@@ -5,6 +5,7 @@
 
 package monnef.core.client;
 
+import monnef.core.MonnefCorePlugin;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.GuiHelper;
 import net.minecraft.client.gui.Gui;
@@ -12,6 +13,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -30,6 +32,9 @@ public abstract class GuiContainerJaffas extends GuiContainer {
     private static ArrayList<String> tooltips = new ArrayList<String>();
     protected int x;
     protected int y;
+    private String backgroundTexture = "guimachine.png";
+    private ResourceLocation backgroundTextureResource;
+    private String modId = "";
 
     public GuiContainerJaffas(Container container) {
         super(container);
@@ -45,6 +50,24 @@ public abstract class GuiContainerJaffas extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
         refreshXY();
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        bindBackgroundTexture();
+        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+    }
+
+    protected void bindBackgroundTexture() {
+        this.mc.renderEngine.bindTexture(getBackgroundTextureResource());
+    }
+
+    private ResourceLocation getBackgroundTextureResource() {
+        if (backgroundTextureResource == null) {
+            if (getModId().equals(""))
+                MonnefCorePlugin.Log.printWarning("Class " + this.getClass().getSimpleName() + " seems to not have properly set modId.");
+            String texture = getModId() + ":textures/gui/" + getBackgroundTexture();
+
+            backgroundTextureResource = new ResourceLocation(texture);
+        }
+        return backgroundTextureResource;
     }
 
     public static void drawPlasticBox(GuiContainerJaffas gui, int x, int y, int width, int height) {
@@ -194,5 +217,21 @@ public abstract class GuiContainerJaffas extends GuiContainer {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
+    }
+
+    public String getBackgroundTexture() {
+        return backgroundTexture;
+    }
+
+    public void setBackgroundTexture(String backgroundTexture) {
+        this.backgroundTexture = backgroundTexture;
+    }
+
+    public String getModId() {
+        return modId;
+    }
+
+    public void setModId(String modId) {
+        this.modId = modId.toLowerCase();
     }
 }
