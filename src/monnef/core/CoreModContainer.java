@@ -13,7 +13,10 @@ import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.common.versioning.ArtifactVersion;
+import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
@@ -22,6 +25,8 @@ import monnef.core.utils.WolfFoodRegistry;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static monnef.core.MonnefCorePlugin.Log;
 import static monnef.core.MonnefCorePlugin.debugEnv;
@@ -46,6 +51,13 @@ public class CoreModContainer extends DummyModContainer {
         instance = this;
     }
 
+    @Override
+    public List<ArtifactVersion> getDependants() {
+        LinkedList res = new LinkedList();
+        res.add(VersionParser.parseVersionReference("Jaffas"));
+        return res;
+    }
+
     public static void registerModHelper(Object mod) {
         myMeta.childMods = new ArrayList<ModContainer>();
         myMeta.childMods.add(FMLCommonHandler.instance().findContainerFor(mod));
@@ -61,9 +73,15 @@ public class CoreModContainer extends DummyModContainer {
         return instance;
     }
 
+    @Subscribe
+    public void preLoad(FMLPreInitializationEvent event) {
+        Log.printFinest("container preLoad event");
+    }
+
     // use google subscribe and FML events
     @Subscribe
     public void load(FMLInitializationEvent event) {
+        Log.printFinest("container Load event");
         Side side = FMLCommonHandler.instance().getEffectiveSide();
 
         // TODO: solve cloak stuff
@@ -82,7 +100,13 @@ public class CoreModContainer extends DummyModContainer {
         }
 
         if (MonnefCorePlugin.debugEnv && MonnefCorePlugin.jaffasEnv) {
-            ObfuscationHelper.dumpUsedItemsToConfig();
+            try {
+                Log.printInfo("calling item dumping procedure");
+                ObfuscationHelper.dumpUsedItemsToConfig();
+                Log.printInfo("item dumping procedure finished");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         CoreTickHandler tickHandler = new CoreTickHandler();
