@@ -5,9 +5,7 @@
 
 package monnef.core.client;
 
-import cpw.mods.fml.common.Mod;
 import monnef.core.MonnefCorePlugin;
-import monnef.core.utils.CallerFinder;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.GuiHelper;
 import net.minecraft.client.gui.Gui;
@@ -21,10 +19,9 @@ import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
+import static monnef.core.client.ResourcePathHelper.ResourceTextureType.GUI;
 import static monnef.core.utils.GuiHelper.COLOR_DARK_GRAY;
 import static monnef.core.utils.GuiHelper.COLOR_GRAY;
 import static monnef.core.utils.GuiHelper.COLOR_WHITE;
@@ -47,8 +44,7 @@ public abstract class GuiContainerJaffas extends GuiContainer {
     }
 
     private void setupModIdByCallerClass() {
-        String caller = CallerFinder.getCallerClassName(2); // <- mind depth if refactoring!
-        modId = Registry.searchModId(caller);
+        modId = PackageToModIdRegistry.searchModIdFromCurrentPackage(2); // <- mind depth if refactoring!
     }
 
     @Override
@@ -73,9 +69,7 @@ public abstract class GuiContainerJaffas extends GuiContainer {
         if (backgroundTextureResource == null) {
             if (getModId().equals(""))
                 MonnefCorePlugin.Log.printWarning("Class " + this.getClass().getSimpleName() + " seems to not have properly set modId.");
-            String texture = getModId() + ":textures/gui/" + getBackgroundTexture();
-
-            backgroundTextureResource = new ResourceLocation(texture);
+            backgroundTextureResource = ResourcePathHelper.assembleAndCreate(getBackgroundTexture(), getModId(), GUI);
         }
         return backgroundTextureResource;
     }
@@ -245,40 +239,4 @@ public abstract class GuiContainerJaffas extends GuiContainer {
         this.modId = modId.toLowerCase();
     }
 
-    public static class Registry {
-        private static LinkedHashMap<String, String> packagePathToModId = new LinkedHashMap<String, String>();
-
-        public static void registerClassToModId(String packagePath, String modId) {
-            if (!searchModId(packagePath).equals("")) {
-                throw new RuntimeException(String.format("Overwriting GuiConainerJaffas registration! %s -> %s", packagePath, modId));
-            }
-            MonnefCorePlugin.Log.printFine(String.format("Registering GuiContainerJaffas: %s -> %s", packagePath, modId));
-            packagePathToModId.put(packagePath, modId);
-        }
-
-        public static void registerClassToModId() {
-            registerClassToModId(0);
-        }
-
-        public static void registerClassToModId(int depth) {
-            int currDepth = depth + 1;
-            String callerPackage = CallerFinder.getCallerPackage(currDepth);
-            Class callerModId = CallerFinder.getCallerClass(currDepth);
-            Mod ann = (Mod) callerModId.getAnnotation(Mod.class);
-            if (ann == null) {
-                throw new RuntimeException("Mod class doesn't have proper annotation, incorrect class?");
-            }
-            registerClassToModId(callerPackage, ann.name());
-        }
-
-        public static String searchModId(String packagePath) {
-            if (packagePathToModId.containsValue(packagePath)) return packagePathToModId.get(packagePath);
-            for (Map.Entry<String, String> item : packagePathToModId.entrySet()) {
-                if (packagePath.startsWith(item.getKey())) {
-                    return item.getValue();
-                }
-            }
-            return "";
-        }
-    }
 }
