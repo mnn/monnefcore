@@ -5,7 +5,9 @@
 
 package monnef.core.client;
 
+import cpw.mods.fml.common.Mod;
 import monnef.core.MonnefCorePlugin;
+import monnef.core.utils.CallerFinder;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.GuiHelper;
 import net.minecraft.client.gui.Gui;
@@ -19,7 +21,9 @@ import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static monnef.core.utils.GuiHelper.COLOR_DARK_GRAY;
 import static monnef.core.utils.GuiHelper.COLOR_GRAY;
@@ -34,11 +38,17 @@ public abstract class GuiContainerJaffas extends GuiContainer {
     protected int y;
     private String backgroundTexture = "guimachine.png";
     private ResourceLocation backgroundTextureResource;
-    private String modId = "";
+    private String modId;
 
     public GuiContainerJaffas(Container container) {
         super(container);
         refreshXY();
+        setupModIdByCallerClass();
+    }
+
+    private void setupModIdByCallerClass() {
+        String caller = CallerFinder.getCallerClassName(2); // <- mind depth if refactoring!
+        modId = Registry.searchModId(caller);
     }
 
     @Override
@@ -227,11 +237,37 @@ public abstract class GuiContainerJaffas extends GuiContainer {
         this.backgroundTexture = backgroundTexture;
     }
 
-    public String getModId() {
+    protected String getModId() {
         return modId;
     }
 
-    public void setModId(String modId) {
+    private void setModId(String modId) {
         this.modId = modId.toLowerCase();
+    }
+
+    public static class Registry {
+        private static LinkedHashMap<String, String> packagePathToModId = new LinkedHashMap<String, String>();
+
+        public static void registerClassToModId(String packagePath, String modId) {
+            MonnefCorePlugin.Log.printFine(String.format("Registering GuiContainerJaffas: %s -> %s", packagePath, modId));
+            packagePathToModId.put(packagePath, modId);
+        }
+
+        public static void registerClassToModId() {
+            String callerPackage = CallerFinder.getCallerPackage(1);
+            Class callerModId = CallerFinder.getCallerClass(1);
+            Mod ann = (Mod) callerModId.getAnnotation(Mod.class);
+            registerClassToModId(callerPackage, ann.name());
+        }
+
+        public static String searchModId(String packagePath) {
+            if (packagePathToModId.containsValue(packagePath)) return packagePathToModId.get(packagePath);
+            for (Map.Entry<String, String> item : packagePathToModId.entrySet()) {
+                if (packagePath.startsWith(item.getKey())) {
+                    return item.getValue();
+                }
+            }
+            return "";
+        }
     }
 }
