@@ -5,6 +5,7 @@
 
 package monnef.core.client;
 
+import monnef.core.MonnefCorePlugin;
 import net.minecraft.util.ResourceLocation;
 
 public class ResourcePathHelper {
@@ -13,7 +14,8 @@ public class ResourcePathHelper {
         BLOCK("textures/blocks"),
         GUI("textures/gui"),
         ENTITY("textures/entities"),
-        TILE("textures/tiles"),;
+        TILE("textures/tiles"),
+        ARMOR("textures/armor");
 
         private String path;
 
@@ -27,6 +29,9 @@ public class ResourcePathHelper {
     }
 
     public static String assemble(String fileName, String modId, ResourceTextureType type) {
+        if (MonnefCorePlugin.debugEnv && fileName.startsWith("/")) {
+            MonnefCorePlugin.Log.printWarning("Redundant slash symbol: '" + fileName + "'.");
+        }
         return modId + ":" + type.getPath() + "/" + fileName;
     }
 
