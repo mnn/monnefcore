@@ -249,14 +249,25 @@ public abstract class GuiContainerJaffas extends GuiContainer {
         private static LinkedHashMap<String, String> packagePathToModId = new LinkedHashMap<String, String>();
 
         public static void registerClassToModId(String packagePath, String modId) {
+            if (!searchModId(packagePath).equals("")) {
+                throw new RuntimeException(String.format("Overwriting GuiConainerJaffas registration! %s -> %s", packagePath, modId));
+            }
             MonnefCorePlugin.Log.printFine(String.format("Registering GuiContainerJaffas: %s -> %s", packagePath, modId));
             packagePathToModId.put(packagePath, modId);
         }
 
         public static void registerClassToModId() {
-            String callerPackage = CallerFinder.getCallerPackage(1);
-            Class callerModId = CallerFinder.getCallerClass(1);
+            registerClassToModId(0);
+        }
+
+        public static void registerClassToModId(int depth) {
+            int currDepth = depth + 1;
+            String callerPackage = CallerFinder.getCallerPackage(currDepth);
+            Class callerModId = CallerFinder.getCallerClass(currDepth);
             Mod ann = (Mod) callerModId.getAnnotation(Mod.class);
+            if (ann == null) {
+                throw new RuntimeException("Mod class doesn't have proper annotation, incorrect class?");
+            }
             registerClassToModId(callerPackage, ann.name());
         }
 
