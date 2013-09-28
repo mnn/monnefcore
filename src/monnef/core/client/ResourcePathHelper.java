@@ -11,7 +11,9 @@ public class ResourcePathHelper {
     public enum ResourceTextureType {
         ITEM("textures/items"),
         BLOCK("textures/blocks"),
-        GUI("textures/gui");
+        GUI("textures/gui"),
+        ENTITY("textures/entities"),
+        TILE("textures/tiles"),;
 
         private String path;
 
