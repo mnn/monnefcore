@@ -48,6 +48,10 @@ public class PackageToModIdRegistry {
         return "";
     }
 
+    public static String searchModIdFromCurrentPackage() {
+        return searchModIdFromCurrentPackage(1);
+    }
+
     public static String searchModIdFromCurrentPackage(int depth) {
         String caller = CallerFinder.getCallerPackage(depth + 1);
         return PackageToModIdRegistry.searchModId(caller);
