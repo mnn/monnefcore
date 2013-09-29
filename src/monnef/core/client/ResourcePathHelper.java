@@ -15,7 +15,8 @@ public class ResourcePathHelper {
         GUI("textures/gui"),
         ENTITY("textures/entities"),
         TILE("textures/tiles"),
-        ARMOR("textures/armor");
+        ARMOR("textures/armor"),
+        SOUND(""),;
 
         private String path;
 
@@ -32,7 +33,12 @@ public class ResourcePathHelper {
         if (MonnefCorePlugin.debugEnv && fileName.startsWith("/")) {
             MonnefCorePlugin.Log.printWarning("Redundant slash symbol: '" + fileName + "'.");
         }
-        return modId + ":" + type.getPath() + "/" + fileName;
+        StringBuilder sb = new StringBuilder(modId);
+        sb.append(":");
+        sb.append(type.getPath());
+        if (type.getPath().length() > 0) sb.append("/");
+        sb.append(fileName);
+        return sb.toString();
     }
 
     public static ResourceLocation assembleAndCreate(String fileName, String modId, ResourceTextureType type) {
