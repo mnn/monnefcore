@@ -67,4 +67,8 @@ public class BiomeHelper {
     public static BiomeGenBase[] compileListAsArray(BiomeDictionary.Type[]... types) {
         return compileList(types).toArray(new BiomeGenBase[]{});
     }
+
+    public static float computeBiomeTemperatureInCelsius(BiomeGenBase biome) {
+        return Math.round(-15f + Math.sqrt(biome.getFloatTemperature()) * (26f + 15f));
+    }
 }
