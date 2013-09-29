@@ -29,6 +29,10 @@ public class ResourcePathHelper {
         }
     }
 
+    public static String assemble(String fileName, ResourceTextureType type) {
+        return assemble(fileName, PackageToModIdRegistry.searchModIdFromCurrentPackage(1), type);
+    }
+
     public static String assemble(String fileName, String modId, ResourceTextureType type) {
         if (MonnefCorePlugin.debugEnv && fileName.startsWith("/")) {
             MonnefCorePlugin.Log.printWarning("Redundant slash symbol: '" + fileName + "'.");
@@ -39,6 +43,10 @@ public class ResourcePathHelper {
         if (type.getPath().length() > 0) sb.append("/");
         sb.append(fileName);
         return sb.toString();
+    }
+
+    public static ResourceLocation assembleAndCreate(String fileName, ResourceTextureType type) {
+        return assembleAndCreate(fileName, PackageToModIdRegistry.searchModIdFromCurrentPackage(1), type);
     }
 
     public static ResourceLocation assembleAndCreate(String fileName, String modId, ResourceTextureType type) {
