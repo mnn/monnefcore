@@ -84,17 +84,6 @@ public class CoreModContainer extends DummyModContainer {
         Log.printFinest("container Load event");
         Side side = FMLCommonHandler.instance().getEffectiveSide();
 
-        // TODO: solve cloak stuff
-        /*
-        if (side == Side.CLIENT) {
-            CloakHookHandler.registerCloakHandler(new CustomCloaksHandler());
-
-            if (!CoreTransformer.cloakHookApplied) {
-                printDebugDataAndCrash("Unable to install a cloak hook!");
-            }
-        }
-        */
-
         if (!CoreTransformer.lightningHookApplied) {
             printDebugDataAndCrash("Unable to install a lightning hook!");
         }
