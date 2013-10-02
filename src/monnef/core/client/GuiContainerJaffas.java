@@ -239,4 +239,12 @@ public abstract class GuiContainerJaffas extends GuiContainer {
         this.modId = modId.toLowerCase();
     }
 
+    public boolean isMouseInRect(int mouseX, int mouseY, int guiX, int guiY, int guiWidth, int guiHeight) {
+        int x = (width - xSize) / 2;
+        int y = (height - ySize) / 2;
+        int mouseXinGui = mouseX - x;
+        int mouseYinGui = mouseY - y;
+        return mouseXinGui >= guiX && mouseXinGui < guiX + guiWidth &&
+                mouseYinGui >= guiY && mouseYinGui < guiY + guiHeight;
+    }
 }
