@@ -24,7 +24,7 @@ public class PackageToModIdRegistry {
     }
 
     public static void registerClassToModId() {
-        registerClassToModId(0);
+        registerClassToModId(1);
     }
 
     public static void registerClassToModId(int depth) {

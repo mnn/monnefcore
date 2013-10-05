@@ -34,6 +34,7 @@ import static monnef.core.MonnefCorePlugin.Log;
 public class CustomCloaksHandler {
     private static final String JAFFA_CLOAK_URL_BASE = Reference.URL_JAFFAS + "/skin/cloak/_get.php";
     private static final String JAFFA_CLOAK_URL = JAFFA_CLOAK_URL_BASE + "?name=%s";
+    private static final boolean SHOW_CLOAK_DEBUG_MESSAGES = false; // WARNING: it's really spammy!
 
     private static Set<String> specialNames = new HashSet<String>();
     private Set<AbstractClientPlayer> processedPlayers = new HashSet<AbstractClientPlayer>();
@@ -69,7 +70,8 @@ public class CustomCloaksHandler {
                 }
 
                 String cloakURL = getCloakUrl(player.username);
-                Log.printDebug("Setting cloak for [" + playerName + "]");
+                if (SHOW_CLOAK_DEBUG_MESSAGES)
+                    Log.printDebug("Setting cloak for [" + playerName + "]");
 
                 setCloak(player, playerName, cloakURL);
 
@@ -88,7 +90,8 @@ public class CustomCloaksHandler {
         //TODO: remove reflection?
         Boolean capeAlreadyLoaded = ObfuscationReflectionHelper.getPrivateValue(ThreadDownloadImageData.class, player.getTextureCape(), "textureUploaded", "field_110559_g");
         if (capeAlreadyLoaded) {
-            Log.printDebug("Skipping cape set for [" + playerName + "]");
+            if (SHOW_CLOAK_DEBUG_MESSAGES)
+                Log.printDebug("Skipping cape set for [" + playerName + "]");
             return;
         }
 
@@ -108,7 +111,8 @@ public class CustomCloaksHandler {
     }
 
     private void purgeCloakCache() {
-        Log.printDebug("Purging cloaks cache.");
+        if (SHOW_CLOAK_DEBUG_MESSAGES)
+            Log.printDebug("Purging cloaks cache.");
         processedPlayers.clear();
     }
 
