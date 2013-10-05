@@ -29,7 +29,7 @@ import static monnef.core.utils.GuiHelper.EnumFillRotation;
 import static monnef.core.utils.GuiHelper.drawPixel;
 import static monnef.core.utils.GuiHelper.setTessellatorColor;
 
-public abstract class GuiContainerJaffas extends GuiContainer {
+public abstract class GuiContainerMonnefCore extends GuiContainer {
     private static ArrayList<String> tooltips = new ArrayList<String>();
     protected int x;
     protected int y;
@@ -37,7 +37,7 @@ public abstract class GuiContainerJaffas extends GuiContainer {
     private ResourceLocation backgroundTextureResource;
     private String modId;
 
-    public GuiContainerJaffas(Container container) {
+    public GuiContainerMonnefCore(Container container) {
         super(container);
         refreshXY();
         setupModIdByCallerClass();
@@ -74,7 +74,7 @@ public abstract class GuiContainerJaffas extends GuiContainer {
         return backgroundTextureResource;
     }
 
-    public static void drawPlasticBox(GuiContainerJaffas gui, int x, int y, int width, int height) {
+    public static void drawPlasticBox(GuiContainerMonnefCore gui, int x, int y, int width, int height) {
         gui.drawHorizontalLine(x, width - 2, y, COLOR_DARK_GRAY);
         gui.drawVerticalLine(x, y, height - 1, COLOR_DARK_GRAY);
 

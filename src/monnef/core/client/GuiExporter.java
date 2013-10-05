@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 
-public class GuiExporter extends GuiContainerJaffas {
+public class GuiExporter extends GuiContainerMonnefCore {
     public static final int BUTTON_TAKE_SHOT = 0;
     public static final int BUTTON_TAKE_SHOTS = 1;
     public static final int BUTTON_PROCESS_ALL = 2;

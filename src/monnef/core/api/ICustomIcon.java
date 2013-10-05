@@ -3,7 +3,7 @@
  * author: monnef
  */
 
-package monnef.core.base;
+package monnef.core.api;
 
 import net.minecraft.util.Icon;
 

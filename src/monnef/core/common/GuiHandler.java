@@ -6,6 +6,7 @@
 package monnef.core.common;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import monnef.core.block.ContainerExporter;
 import monnef.core.client.GuiExporter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

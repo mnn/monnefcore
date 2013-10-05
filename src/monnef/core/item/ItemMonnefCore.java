@@ -3,29 +3,25 @@
  * author: monnef
  */
 
-package monnef.core.base;
+package monnef.core.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import monnef.core.common.CustomIconHelper;
+import monnef.core.api.ICustomIcon;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 
-public abstract class BlockMonnefCore extends Block implements ICustomIcon {
+public abstract class ItemMonnefCore extends Item implements ICustomIcon {
     protected int customIconIndex;
     protected int sheetNumber;
     protected int iconsCount = 1;
     protected Icon[] icons;
 
-    public BlockMonnefCore(int id, Material material) {
-        super(id, material);
+    public ItemMonnefCore(int id) {
+        super(id);
         this.sheetNumber = getDefaultSheetNumber();
-    }
-
-    public BlockMonnefCore(int id, int index, Material material) {
-        this(id, material);
-        this.customIconIndex = index;
     }
 
     @Override
@@ -63,13 +59,12 @@ public abstract class BlockMonnefCore extends Block implements ICustomIcon {
         this.iconsCount = iconsCount;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IconRegister iconRegister) {
-        this.blockIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this));
+        this.itemIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this));
         if (iconsCount > 1) {
             icons = new Icon[iconsCount];
-            icons[0] = this.blockIcon;
+            icons[0] = this.itemIcon;
             for (int i = 1; i < iconsCount; i++) {
                 icons[i] = iconRegister.registerIcon(CustomIconHelper.generateShiftedId(this, i));
             }
@@ -79,5 +74,9 @@ public abstract class BlockMonnefCore extends Block implements ICustomIcon {
     @Override
     public Icon getCustomIcon(int index) {
         return icons[index];
+    }
+
+    public static void initNBT(ItemStack stack) {
+        if (stack.getTagCompound() == null) stack.setTagCompound(new NBTTagCompound());
     }
 }

@@ -3,9 +3,10 @@
  * author: monnef
  */
 
-package monnef.core.base;
+package monnef.core.common;
 
 import monnef.core.Reference;
+import monnef.core.api.ICustomIcon;
 import net.minecraft.util.Icon;
 
 public class CustomIconHelper {

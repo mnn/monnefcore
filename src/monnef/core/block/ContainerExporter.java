@@ -3,9 +3,10 @@
  * author: monnef
  */
 
-package monnef.core.common;
+package monnef.core.block;
 
 import monnef.core.client.SlotLocked;
+import monnef.core.common.DummyInventory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

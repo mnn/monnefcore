@@ -5,6 +5,7 @@
 
 package monnef.core;
 
+@Deprecated
 public class LibraryInfo {
     private final String Name;
     private final String Sha1Hash;

@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import static monnef.core.MonnefCorePlugin.Log;
 
+@Deprecated
 public class Library implements ILibrarySet {
 
     public static final String DOWNLOAD_URL = Reference.URL_JAFFAS + "/lib/%s";

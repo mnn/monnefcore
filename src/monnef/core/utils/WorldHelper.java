@@ -15,6 +15,20 @@ import java.util.List;
 public class WorldHelper {
     public static final int WORLD_HEIGHT = 256;
 
+    /**
+     * Searches for a given block and fills matching coordinates.
+     *
+     * @param res        Results
+     * @param w          World
+     * @param x          X coordinate of centre of bottom box
+     * @param y          Y coordinate of centre of bottom box
+     * @param z          Z coordinate of centre of bottom box
+     * @param radius     Radius of box
+     * @param bottomSize Bottom padding size (-1 for ~y)
+     * @param topSize    Top padding size (-1 for to the top of a world)
+     * @param blockId    Block id to look for
+     * @param metadata   Metadata of block to look for (-1 denotes any metadata)
+     */
     public static void getBlocksInBox(List<IntegerCoordinates> res, World w, int x, int y, int z, int radius, int bottomSize, int topSize, int blockId, int metadata) {
         if (bottomSize == -1) bottomSize = y;
         if (topSize == -1) topSize = WORLD_HEIGHT - y;

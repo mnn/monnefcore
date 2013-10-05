@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-class DummyInventory implements IInventory {
+public class DummyInventory implements IInventory {
 
     private ItemStack stack;
 

@@ -3,7 +3,7 @@
  * author: monnef
  */
 
-package monnef.core.common;
+package monnef.core.block;
 
 import monnef.core.MonnefCorePlugin;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +14,13 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class ContainerJaffas extends Container {
+public abstract class ContainerMonnefCore extends Container {
     private static final boolean PRINT_DEBUG_TRANSFER_MESSAGES = false;
 
     protected TileEntity tile;
     private boolean dummy;
 
-    protected ContainerJaffas() {
+    protected ContainerMonnefCore() {
         dummy = true;
     }
 
@@ -28,7 +28,7 @@ public abstract class ContainerJaffas extends Container {
         if (dummy) throw new RuntimeException("invalid operation called on dummy jaffas container");
     }
 
-    protected ContainerJaffas(InventoryPlayer inventoryPlayer, TileEntity tile) {
+    protected ContainerMonnefCore(InventoryPlayer inventoryPlayer, TileEntity tile) {
         this.tile = tile;
         if (!(tile instanceof IInventory)) {
             throw new RuntimeException("Linked tile entity must implement IInventory.");
