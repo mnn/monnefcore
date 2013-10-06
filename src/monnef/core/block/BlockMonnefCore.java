@@ -7,6 +7,7 @@ package monnef.core.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import monnef.core.MonnefCorePlugin;
 import monnef.core.api.ICustomIcon;
 import monnef.core.common.CustomIconHelper;
 import net.minecraft.block.Block;
@@ -81,5 +82,9 @@ public abstract class BlockMonnefCore extends Block implements ICustomIcon {
     @Override
     public Icon getCustomIcon(int index) {
         return icons[index];
+    }
+
+    public void removeFromCreativeTab() {
+        if (!MonnefCorePlugin.debugEnv) setCreativeTab(null);
     }
 }
