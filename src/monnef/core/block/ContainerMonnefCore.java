@@ -6,6 +6,7 @@
 package monnef.core.block;
 
 import monnef.core.MonnefCorePlugin;
+import monnef.core.common.ContainerRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,15 +19,7 @@ public abstract class ContainerMonnefCore extends Container {
     private static final boolean PRINT_DEBUG_TRANSFER_MESSAGES = false;
 
     protected TileEntity tile;
-    private boolean dummy;
-
-    protected ContainerMonnefCore() {
-        dummy = true;
-    }
-
-    private void haltIfDummy() {
-        if (dummy) throw new RuntimeException("invalid operation called on dummy jaffas container");
-    }
+    private ContainerRegistry.ContainerDescriptor descriptor;
 
     protected ContainerMonnefCore(InventoryPlayer inventoryPlayer, TileEntity tile) {
         this.tile = tile;
@@ -34,14 +27,18 @@ public abstract class ContainerMonnefCore extends Container {
             throw new RuntimeException("Linked tile entity must implement IInventory.");
         }
 
+        setupDescriptor();
+
         constructSlots((IInventory) tile);
 
         bindPlayerInventory(inventoryPlayer);
     }
 
-    protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
-        haltIfDummy();
+    private void setupDescriptor() {
+        descriptor = ContainerRegistry.getContainerPrototype(tile.getClass());
+    }
 
+    protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
@@ -56,8 +53,6 @@ public abstract class ContainerMonnefCore extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
-        haltIfDummy();
-
         ItemStack stack = null;
         Slot slotObject = (Slot) inventorySlots.get(slot);
 
@@ -99,9 +94,13 @@ public abstract class ContainerMonnefCore extends Container {
         return stack;
     }
 
-    public abstract int getSlotsCount();
+    public int getSlotsCount() {
+        return descriptor.getSlotsCount();
+    }
 
-    public abstract int getOutputSlotsCount();
+    public int getOutputSlotsCount() {
+        return descriptor.getOutputSlotsCount();
+    }
 
     public int getInputSlotsCount() {
         return getSlotsCount() - getOutputSlotsCount();
@@ -113,20 +112,18 @@ public abstract class ContainerMonnefCore extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        haltIfDummy();
         return ((IInventory) tile).isUseableByPlayer(player);
     }
 
     /**
      * Creates slots via addSlotToContainer.
-     * Output slots *must* be creates last!
+     * Output slots *must* be created last!
      *
      * @param inv The inventory.
      */
     public abstract void constructSlots(IInventory inv);
 
     protected boolean mergeItemStack(ItemStack stack, int startingIndex, int endingIndex, boolean fromEnd) {
-        haltIfDummy();
         return super.mergeItemStack(stack, startingIndex, endingIndex, fromEnd);
     }
 }
