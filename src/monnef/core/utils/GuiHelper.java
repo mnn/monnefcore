@@ -7,9 +7,7 @@ package monnef.core.utils;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
-import org.lwjgl.opengl.GL11;
 
 public class GuiHelper {
     public static final int COLOR_GRAY = ColorHelper.getInt(139, 139, 139);

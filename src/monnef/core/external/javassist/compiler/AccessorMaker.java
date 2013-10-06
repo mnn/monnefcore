@@ -16,8 +16,20 @@
 
 package monnef.core.external.javassist.compiler;
 
-import monnef.core.external.javassist.*;
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.ExceptionsAttribute;
+import monnef.core.external.javassist.bytecode.FieldInfo;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.SyntheticAttribute;
+
 import java.util.HashMap;
 
 /**

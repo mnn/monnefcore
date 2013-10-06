@@ -16,8 +16,8 @@
 
 package monnef.core.external.javassist.util.proxy;
 
-import java.io.Serializable;
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;

@@ -16,12 +16,20 @@
 
 package monnef.core.external.javassist.tools.rmi;
 
-import java.io.*;
-
-import monnef.core.external.javassist.tools.web.*;
 import monnef.core.external.javassist.CannotCompileException;
-import monnef.core.external.javassist.NotFoundException;
 import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.tools.web.BadHttpRequest;
+import monnef.core.external.javassist.tools.web.Webserver;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InvalidClassException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 import java.util.Vector;

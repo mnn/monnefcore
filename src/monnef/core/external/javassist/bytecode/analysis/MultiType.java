@@ -15,11 +15,11 @@
  */
 package monnef.core.external.javassist.bytecode.analysis;
 
+import monnef.core.external.javassist.CtClass;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import monnef.core.external.javassist.CtClass;
 
 /**
  * MultiType represents an unresolved type. Whenever two <literal>Type</literal>

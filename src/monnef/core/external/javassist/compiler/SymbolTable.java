@@ -16,8 +16,9 @@
 
 package monnef.core.external.javassist.compiler;
 
-import java.util.HashMap;
 import monnef.core.external.javassist.compiler.ast.Declarator;
+
+import java.util.HashMap;
 
 public final class SymbolTable extends HashMap {
     private SymbolTable parent;

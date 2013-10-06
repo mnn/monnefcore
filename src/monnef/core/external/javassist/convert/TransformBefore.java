@@ -19,7 +19,12 @@ package monnef.core.external.javassist.convert;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtMethod;
 import monnef.core.external.javassist.NotFoundException;
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
 
 public class TransformBefore extends TransformCall {
     protected CtClass[] parameterTypes;

@@ -11,11 +11,11 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.Config;
@@ -25,6 +25,7 @@ import monnef.core.client.ExporterTickHandler;
 import monnef.core.command.CommandMC;
 import monnef.core.common.CommonProxy;
 import monnef.core.common.GuiHandler;
+import monnef.core.utils.BreakableIronMaterial;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
@@ -40,7 +41,7 @@ public class MonnefCoreNormalMod {
     public static MonnefCoreNormalMod instance;
 
     @Mod.EventHandler
-    public void preLoad(FMLPreInitializationEvent event) {
+    public void preLoad(FMLPreInitializationEvent evt) {
         handleMetadata();
     }
 
@@ -53,6 +54,10 @@ public class MonnefCoreNormalMod {
         }
 
         proxy.registerClientStuff();
+    }
+
+    public void postLoad(FMLPostInitializationEvent evt) {
+        BreakableIronMaterial.onPostLoad();
     }
 
     @Mod.EventHandler

@@ -16,9 +16,17 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.Javac;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.Opcode;
 import monnef.core.external.javassist.compiler.CompileError;
+import monnef.core.external.javassist.compiler.Javac;
 
 /**
  * An instance of CtConstructor represents a constructor.

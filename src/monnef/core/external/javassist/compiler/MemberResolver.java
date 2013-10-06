@@ -16,14 +16,26 @@
 
 package monnef.core.external.javassist.compiler;
 
-import java.util.Hashtable;
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.CtField;
+import monnef.core.external.javassist.Modifier;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.compiler.ast.ASTList;
+import monnef.core.external.javassist.compiler.ast.ASTree;
+import monnef.core.external.javassist.compiler.ast.Declarator;
+import monnef.core.external.javassist.compiler.ast.Keyword;
+import monnef.core.external.javassist.compiler.ast.Symbol;
+
 import java.lang.ref.WeakReference;
-import java.util.WeakHashMap;
-import java.util.List;
+import java.util.Hashtable;
 import java.util.Iterator;
-import monnef.core.external.javassist.*;
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.ast.*;
+import java.util.List;
+import java.util.WeakHashMap;
 
 /* Code generator methods depending on javassist.* classes.
  */

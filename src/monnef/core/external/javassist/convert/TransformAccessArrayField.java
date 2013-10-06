@@ -16,9 +16,9 @@
 package monnef.core.external.javassist.convert;
 
 import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.CodeConverter.ArrayAccessReplacementMethodNames;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.NotFoundException;
-import monnef.core.external.javassist.CodeConverter.ArrayAccessReplacementMethodNames;
 import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.CodeIterator;
 import monnef.core.external.javassist.bytecode.ConstPool;

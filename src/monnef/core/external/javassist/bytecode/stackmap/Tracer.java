@@ -16,12 +16,12 @@
 
 package monnef.core.external.javassist.bytecode.stackmap;
 
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.ByteArray;
-import monnef.core.external.javassist.bytecode.Opcode;
 import monnef.core.external.javassist.bytecode.ConstPool;
 import monnef.core.external.javassist.bytecode.Descriptor;
-import monnef.core.external.javassist.bytecode.BadBytecode;
-import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.bytecode.Opcode;
 
 /*
  * A class for performing abstract interpretation.

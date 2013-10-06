@@ -16,8 +16,9 @@
 
 package monnef.core.external.javassist.bytecode;
 
-import java.io.PrintWriter;
 import monnef.core.external.javassist.Modifier;
+
+import java.io.PrintWriter;
 import java.util.List;
 
 /**

@@ -15,8 +15,6 @@
  */
 package monnef.core.external.javassist.bytecode.analysis;
 
-import java.io.PrintStream;
-
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtMethod;
 import monnef.core.external.javassist.Modifier;
@@ -28,6 +26,8 @@ import monnef.core.external.javassist.bytecode.ConstPool;
 import monnef.core.external.javassist.bytecode.Descriptor;
 import monnef.core.external.javassist.bytecode.InstructionPrinter;
 import monnef.core.external.javassist.bytecode.MethodInfo;
+
+import java.io.PrintStream;
 
 /**
  * A utility class for printing a merged view of the frame state and the

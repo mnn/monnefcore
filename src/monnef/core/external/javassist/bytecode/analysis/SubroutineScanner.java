@@ -15,17 +15,17 @@
  */
 package monnef.core.external.javassist.bytecode.analysis;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.CodeAttribute;
 import monnef.core.external.javassist.bytecode.CodeIterator;
 import monnef.core.external.javassist.bytecode.ExceptionTable;
 import monnef.core.external.javassist.bytecode.MethodInfo;
 import monnef.core.external.javassist.bytecode.Opcode;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Discovers the subroutines in a method, and tracks all callers.

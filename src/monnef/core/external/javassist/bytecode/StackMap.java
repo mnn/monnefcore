@@ -16,12 +16,12 @@
 
 package monnef.core.external.javassist.bytecode;
 
+import monnef.core.external.javassist.CannotCompileException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Map;
-
-import monnef.core.external.javassist.CannotCompileException;
 
 /**
  * Another <code>stack_map</code> attribute defined in CLDC 1.1 for J2ME.

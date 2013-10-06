@@ -16,16 +16,16 @@
 
 package monnef.core.external.javassist.bytecode.annotation;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.NotFoundException;
 import monnef.core.external.javassist.bytecode.AnnotationDefaultAttribute;
 import monnef.core.external.javassist.bytecode.ClassFile;
 import monnef.core.external.javassist.bytecode.MethodInfo;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * Internal-use only.  This is a helper class internally used for implementing

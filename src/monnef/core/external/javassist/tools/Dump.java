@@ -16,9 +16,12 @@
 
 package monnef.core.external.javassist.tools;
 
-import java.io.*;
 import monnef.core.external.javassist.bytecode.ClassFile;
 import monnef.core.external.javassist.bytecode.ClassFilePrinter;
+
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.PrintWriter;
 
 /**
  * Dump is a tool for viewing the class definition in the given

@@ -16,31 +16,16 @@
 
 package monnef.core.external.javassist;
 
-import java.lang.ref.WeakReference;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Set;
-
 import monnef.core.external.javassist.bytecode.AccessFlag;
-import monnef.core.external.javassist.bytecode.AttributeInfo;
 import monnef.core.external.javassist.bytecode.AnnotationsAttribute;
+import monnef.core.external.javassist.bytecode.AttributeInfo;
 import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.Bytecode;
 import monnef.core.external.javassist.bytecode.ClassFile;
 import monnef.core.external.javassist.bytecode.CodeAttribute;
-import monnef.core.external.javassist.bytecode.ConstantAttribute;
 import monnef.core.external.javassist.bytecode.CodeIterator;
 import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.ConstantAttribute;
 import monnef.core.external.javassist.bytecode.Descriptor;
 import monnef.core.external.javassist.bytecode.EnclosingMethodAttribute;
 import monnef.core.external.javassist.bytecode.FieldInfo;
@@ -53,6 +38,21 @@ import monnef.core.external.javassist.compiler.AccessorMaker;
 import monnef.core.external.javassist.compiler.CompileError;
 import monnef.core.external.javassist.compiler.Javac;
 import monnef.core.external.javassist.expr.ExprEditor;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Class types.

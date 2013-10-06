@@ -18,7 +18,8 @@ package monnef.core.external.javassist.convert;
 
 import monnef.core.external.javassist.CtMethod;
 import monnef.core.external.javassist.NotFoundException;
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.CodeIterator;
 
 public class TransformAfter extends TransformBefore {
     public TransformAfter(Transformer next,

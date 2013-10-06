@@ -16,9 +16,9 @@
 
 package monnef.core.external.javassist.scopedpool;
 
-import java.util.Map;
-
 import monnef.core.external.javassist.ClassPool;
+
+import java.util.Map;
 
 /**
  * An interface to <code>ScopedClassPoolRepositoryImpl</code>.

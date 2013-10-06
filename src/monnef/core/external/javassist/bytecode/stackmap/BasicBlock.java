@@ -16,9 +16,15 @@
 
 package monnef.core.external.javassist.bytecode.stackmap;
 
-import monnef.core.external.javassist.bytecode.*;
-import java.util.HashMap;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ExceptionTable;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.Opcode;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A basic block is a sequence of bytecode that does not contain jump/branch

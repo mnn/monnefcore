@@ -16,8 +16,21 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.convert.*;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.convert.TransformAccessArrayField;
+import monnef.core.external.javassist.convert.TransformAfter;
+import monnef.core.external.javassist.convert.TransformBefore;
+import monnef.core.external.javassist.convert.TransformCall;
+import monnef.core.external.javassist.convert.TransformFieldAccess;
+import monnef.core.external.javassist.convert.TransformNew;
+import monnef.core.external.javassist.convert.TransformNewClass;
+import monnef.core.external.javassist.convert.TransformReadField;
+import monnef.core.external.javassist.convert.TransformWriteField;
+import monnef.core.external.javassist.convert.Transformer;
 
 /**
  * Simple translator of method bodies

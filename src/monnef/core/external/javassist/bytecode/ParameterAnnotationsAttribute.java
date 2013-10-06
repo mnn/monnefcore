@@ -16,16 +16,17 @@
 
 package monnef.core.external.javassist.bytecode;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.io.IOException;
-import java.io.DataInputStream;
-import java.io.ByteArrayOutputStream;
-
 import monnef.core.external.javassist.bytecode.AnnotationsAttribute.Copier;
 import monnef.core.external.javassist.bytecode.AnnotationsAttribute.Parser;
 import monnef.core.external.javassist.bytecode.AnnotationsAttribute.Renamer;
-import monnef.core.external.javassist.bytecode.annotation.*;
+import monnef.core.external.javassist.bytecode.annotation.Annotation;
+import monnef.core.external.javassist.bytecode.annotation.AnnotationsWriter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A class representing <code>RuntimeVisibleAnnotations_attribute</code> and

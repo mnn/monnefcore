@@ -16,9 +16,27 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.Javac;
+import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.AnnotationsAttribute;
+import monnef.core.external.javassist.bytecode.AttributeInfo;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.ExceptionsAttribute;
+import monnef.core.external.javassist.bytecode.LineNumberAttribute;
+import monnef.core.external.javassist.bytecode.LocalVariableAttribute;
+import monnef.core.external.javassist.bytecode.LocalVariableTypeAttribute;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.Opcode;
+import monnef.core.external.javassist.bytecode.ParameterAnnotationsAttribute;
+import monnef.core.external.javassist.bytecode.SignatureAttribute;
+import monnef.core.external.javassist.bytecode.StackMap;
+import monnef.core.external.javassist.bytecode.StackMapTable;
 import monnef.core.external.javassist.compiler.CompileError;
+import monnef.core.external.javassist.compiler.Javac;
 import monnef.core.external.javassist.expr.ExprEditor;
 
 /**

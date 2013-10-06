@@ -17,8 +17,8 @@
 package monnef.core.external.javassist.tools.reflect;
 
 import monnef.core.external.javassist.CannotCompileException;
-import monnef.core.external.javassist.NotFoundException;
 import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.NotFoundException;
 
 /**
  * A class loader for reflection.

@@ -16,13 +16,34 @@
 
 package monnef.core.external.javassist.compiler;
 
+import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtField;
-import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.Modifier;
 import monnef.core.external.javassist.NotFoundException;
-import monnef.core.external.javassist.compiler.ast.*;
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.bytecode.FieldInfo;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.Opcode;
+import monnef.core.external.javassist.compiler.ast.ASTList;
+import monnef.core.external.javassist.compiler.ast.ASTree;
+import monnef.core.external.javassist.compiler.ast.ArrayInit;
+import monnef.core.external.javassist.compiler.ast.AssignExpr;
+import monnef.core.external.javassist.compiler.ast.BinExpr;
+import monnef.core.external.javassist.compiler.ast.CallExpr;
+import monnef.core.external.javassist.compiler.ast.CastExpr;
+import monnef.core.external.javassist.compiler.ast.CondExpr;
+import monnef.core.external.javassist.compiler.ast.Declarator;
+import monnef.core.external.javassist.compiler.ast.DoubleConst;
+import monnef.core.external.javassist.compiler.ast.Expr;
+import monnef.core.external.javassist.compiler.ast.InstanceOfExpr;
+import monnef.core.external.javassist.compiler.ast.IntConst;
+import monnef.core.external.javassist.compiler.ast.Keyword;
+import monnef.core.external.javassist.compiler.ast.Member;
+import monnef.core.external.javassist.compiler.ast.NewExpr;
+import monnef.core.external.javassist.compiler.ast.StringL;
+import monnef.core.external.javassist.compiler.ast.Symbol;
+import monnef.core.external.javassist.compiler.ast.Variable;
+import monnef.core.external.javassist.compiler.ast.Visitor;
 
 public class TypeChecker extends Visitor implements Opcode, TokenId {
     static final String javaLangObject = "java.lang.Object";

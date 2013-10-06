@@ -7,8 +7,8 @@ package monnef.core.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import monnef.core.common.CustomIconHelper;
 import monnef.core.api.ICustomIcon;
+import monnef.core.common.CustomIconHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;

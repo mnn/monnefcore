@@ -16,14 +16,14 @@
 
 package monnef.core.external.javassist.scopedpool;
 
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.LoaderClassPath;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
-
-import monnef.core.external.javassist.ClassPool;
-import monnef.core.external.javassist.LoaderClassPath;
 
 /**
  * An implementation of <code>ScopedClassPoolRepository</code>.

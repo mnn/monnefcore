@@ -16,10 +16,15 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.Javac;
-import monnef.core.external.javassist.compiler.CompileError;
 import monnef.core.external.javassist.CtMethod.ConstParameter;
+import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.ExceptionsAttribute;
+import monnef.core.external.javassist.bytecode.FieldInfo;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.compiler.CompileError;
+import monnef.core.external.javassist.compiler.Javac;
 
 /**
  * A collection of static methods for creating a <code>CtMethod</code>.

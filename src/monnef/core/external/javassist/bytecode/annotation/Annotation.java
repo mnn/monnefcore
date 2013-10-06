@@ -16,17 +16,17 @@
 
 package monnef.core.external.javassist.bytecode.annotation;
 
-import monnef.core.external.javassist.bytecode.ConstPool;
-import monnef.core.external.javassist.bytecode.Descriptor;
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtMethod;
 import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
-import java.util.Iterator;
 
 /**
  * The <code>annotation</code> structure.

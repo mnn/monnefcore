@@ -16,8 +16,9 @@
 
 package monnef.core.external.javassist.compiler.ast;
 
-import java.io.Serializable;
 import monnef.core.external.javassist.compiler.CompileError;
+
+import java.io.Serializable;
 
 /**
  * Abstract Syntax Tree.  An ASTree object represents a node of

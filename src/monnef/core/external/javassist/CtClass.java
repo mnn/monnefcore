@@ -16,6 +16,11 @@
 
 package monnef.core.external.javassist;
 
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.Opcode;
+import monnef.core.external.javassist.expr.ExprEditor;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -26,10 +31,6 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.security.ProtectionDomain;
 import java.util.Collection;
-import monnef.core.external.javassist.bytecode.ClassFile;
-import monnef.core.external.javassist.bytecode.Descriptor;
-import monnef.core.external.javassist.bytecode.Opcode;
-import monnef.core.external.javassist.expr.ExprEditor;
 
 /* Note:
  *

@@ -16,13 +16,21 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.AnnotationsAttribute;
+import monnef.core.external.javassist.bytecode.AttributeInfo;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.FieldInfo;
+import monnef.core.external.javassist.bytecode.SignatureAttribute;
+import monnef.core.external.javassist.compiler.CompileError;
 import monnef.core.external.javassist.compiler.Javac;
 import monnef.core.external.javassist.compiler.SymbolTable;
-import monnef.core.external.javassist.compiler.CompileError;
 import monnef.core.external.javassist.compiler.ast.ASTree;
-import monnef.core.external.javassist.compiler.ast.IntConst;
 import monnef.core.external.javassist.compiler.ast.DoubleConst;
+import monnef.core.external.javassist.compiler.ast.IntConst;
 import monnef.core.external.javassist.compiler.ast.StringL;
 
 /**

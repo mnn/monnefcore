@@ -16,9 +16,10 @@
 
 package monnef.core.external.javassist;
 
+import monnef.core.external.javassist.bytecode.ClassFile;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
-import monnef.core.external.javassist.bytecode.ClassFile;
 
 class CtNewClass extends CtClassType {
     /* true if the class is an interface.

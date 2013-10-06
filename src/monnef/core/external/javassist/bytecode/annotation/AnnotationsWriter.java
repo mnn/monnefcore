@@ -16,10 +16,11 @@
 
 package monnef.core.external.javassist.bytecode.annotation;
 
-import java.io.*;
-
 import monnef.core.external.javassist.bytecode.ByteArray;
 import monnef.core.external.javassist.bytecode.ConstPool;
+
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * A convenience class for constructing a

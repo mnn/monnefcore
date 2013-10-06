@@ -16,12 +16,13 @@
 
 package monnef.core.external.javassist.bytecode.analysis;
 
-import java.util.ArrayList;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtMethod;
 import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.MethodInfo;
 import monnef.core.external.javassist.bytecode.stackmap.BasicBlock;
+
+import java.util.ArrayList;
 
 /**
  * Represents the control flow graph of a given method.

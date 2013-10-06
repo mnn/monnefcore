@@ -16,6 +16,8 @@
 
 package monnef.core.external.javassist;
 
+import monnef.core.external.javassist.bytecode.Descriptor;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +29,10 @@ import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.security.ProtectionDomain;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import monnef.core.external.javassist.bytecode.Descriptor;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 /**
  * A container of <code>CtClass</code> objects.

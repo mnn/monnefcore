@@ -16,10 +16,16 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.JvstCodeGen;
-import java.util.Hashtable;
 import monnef.core.external.javassist.CtMethod.ConstParameter;
+import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.SyntheticAttribute;
+import monnef.core.external.javassist.compiler.JvstCodeGen;
+
+import java.util.Hashtable;
 
 class CtNewWrappedMethod {
 

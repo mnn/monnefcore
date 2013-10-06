@@ -15,8 +15,6 @@
  */
 package monnef.core.external.javassist.bytecode.analysis;
 
-import java.util.Iterator;
-
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtMethod;
@@ -30,6 +28,8 @@ import monnef.core.external.javassist.bytecode.Descriptor;
 import monnef.core.external.javassist.bytecode.ExceptionTable;
 import monnef.core.external.javassist.bytecode.MethodInfo;
 import monnef.core.external.javassist.bytecode.Opcode;
+
+import java.util.Iterator;
 
 /**
  * A data-flow analyzer that determines the type state of the stack and local

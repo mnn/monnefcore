@@ -16,10 +16,21 @@
 
 package monnef.core.external.javassist.tools.rmi;
 
-import monnef.core.external.javassist.*;
+import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.CtConstructor;
+import monnef.core.external.javassist.CtField;
+import monnef.core.external.javassist.CtMethod;
+import monnef.core.external.javassist.CtMethod.ConstParameter;
+import monnef.core.external.javassist.CtNewConstructor;
+import monnef.core.external.javassist.CtNewMethod;
+import monnef.core.external.javassist.Modifier;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.Translator;
+
 import java.lang.reflect.Method;
 import java.util.Hashtable;
-import monnef.core.external.javassist.CtMethod.ConstParameter;
 
 /**
  * A stub-code generator.  It is used for producing a proxy class.

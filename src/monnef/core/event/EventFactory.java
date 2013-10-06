@@ -5,7 +5,6 @@
 
 package monnef.core.event;
 
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event;

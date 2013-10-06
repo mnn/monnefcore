@@ -16,8 +16,8 @@
 
 package monnef.core.external.javassist.compiler.ast;
 
-import monnef.core.external.javassist.compiler.CompileError;
 import monnef.core.external.javassist.CtField;
+import monnef.core.external.javassist.compiler.CompileError;
 
 /**
  * Member name.

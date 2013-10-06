@@ -16,8 +16,10 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.*;
 import monnef.core.external.javassist.CtMethod.ConstParameter;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.Descriptor;
 
 class CtNewWrappedConstructor extends CtNewWrappedMethod {
     private static final int PASS_NONE = CtNewConstructor.PASS_NONE;

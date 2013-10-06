@@ -5,8 +5,8 @@
 
 package monnef.core.item;
 
-import monnef.core.common.CustomIconHelper;
 import monnef.core.api.ICustomIcon;
+import monnef.core.common.CustomIconHelper;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

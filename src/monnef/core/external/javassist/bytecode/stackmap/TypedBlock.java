@@ -16,7 +16,11 @@
 
 package monnef.core.external.javassist.bytecode.stackmap;
 
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.MethodInfo;
 
 public class TypedBlock extends BasicBlock {
     public int stackTop, numLocals;

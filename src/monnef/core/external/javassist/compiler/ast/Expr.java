@@ -16,8 +16,8 @@
 
 package monnef.core.external.javassist.compiler.ast;
 
-import monnef.core.external.javassist.compiler.TokenId;
 import monnef.core.external.javassist.compiler.CompileError;
+import monnef.core.external.javassist.compiler.TokenId;
 
 /**
  * Expression.

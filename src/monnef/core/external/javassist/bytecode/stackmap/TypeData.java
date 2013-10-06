@@ -19,13 +19,14 @@ package monnef.core.external.javassist.bytecode.stackmap;
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.ConstPool;
 import monnef.core.external.javassist.bytecode.Descriptor;
 import monnef.core.external.javassist.bytecode.StackMapTable;
-import monnef.core.external.javassist.bytecode.BadBytecode;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.ArrayList;
 
 public abstract class TypeData {
     /* Memo:

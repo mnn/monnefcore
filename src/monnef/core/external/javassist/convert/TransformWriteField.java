@@ -18,7 +18,10 @@ package monnef.core.external.javassist.convert;
 
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtField;
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
 
 final public class TransformWriteField extends TransformReadField {
     public TransformWriteField(Transformer next, CtField field,

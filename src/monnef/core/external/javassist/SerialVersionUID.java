@@ -16,12 +16,17 @@
 
 package monnef.core.external.javassist;
 
-import java.io.*;
-import java.lang.reflect.Modifier;
+import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.bytecode.Descriptor;
 
-import monnef.core.external.javassist.bytecode.*;
-import java.util.*;
-import java.security.*;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Modifier;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Utility for calculating serialVersionUIDs for Serializable classes.

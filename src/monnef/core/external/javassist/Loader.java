@@ -16,10 +16,10 @@
 
 package monnef.core.external.javassist;
 
-import java.io.*;
+import java.io.InputStream;
+import java.security.ProtectionDomain;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.security.ProtectionDomain;
 
 /**
  * The class loader for Javassist.

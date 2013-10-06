@@ -16,9 +16,19 @@
 
 package monnef.core.external.javassist.expr;
 
-import monnef.core.external.javassist.*;
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.*;
+import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.CtBehavior;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.ExceptionTable;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.Opcode;
+import monnef.core.external.javassist.compiler.CompileError;
+import monnef.core.external.javassist.compiler.Javac;
 
 /**
  * A <code>catch</code> clause or a <code>finally</code> block.

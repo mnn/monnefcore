@@ -16,6 +16,8 @@
 
 package monnef.core.external.javassist.bytecode;
 
+import monnef.core.external.javassist.CannotCompileException;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import monnef.core.external.javassist.CannotCompileException;
 
 /**
  * <code>ClassFile</code> represents a Java <code>.class</code> file, which

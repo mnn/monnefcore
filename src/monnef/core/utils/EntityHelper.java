@@ -9,7 +9,6 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import monnef.core.MonnefCorePlugin;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;

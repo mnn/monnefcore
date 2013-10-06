@@ -16,10 +16,35 @@
 
 package monnef.core.external.javassist.compiler;
 
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.Opcode;
+import monnef.core.external.javassist.compiler.ast.ASTList;
+import monnef.core.external.javassist.compiler.ast.ASTree;
+import monnef.core.external.javassist.compiler.ast.ArrayInit;
+import monnef.core.external.javassist.compiler.ast.AssignExpr;
+import monnef.core.external.javassist.compiler.ast.BinExpr;
+import monnef.core.external.javassist.compiler.ast.CallExpr;
+import monnef.core.external.javassist.compiler.ast.CastExpr;
+import monnef.core.external.javassist.compiler.ast.CondExpr;
+import monnef.core.external.javassist.compiler.ast.Declarator;
+import monnef.core.external.javassist.compiler.ast.DoubleConst;
+import monnef.core.external.javassist.compiler.ast.Expr;
+import monnef.core.external.javassist.compiler.ast.FieldDecl;
+import monnef.core.external.javassist.compiler.ast.InstanceOfExpr;
+import monnef.core.external.javassist.compiler.ast.IntConst;
+import monnef.core.external.javassist.compiler.ast.Keyword;
+import monnef.core.external.javassist.compiler.ast.Member;
+import monnef.core.external.javassist.compiler.ast.MethodDecl;
+import monnef.core.external.javassist.compiler.ast.NewExpr;
+import monnef.core.external.javassist.compiler.ast.Pair;
+import monnef.core.external.javassist.compiler.ast.Stmnt;
+import monnef.core.external.javassist.compiler.ast.StringL;
+import monnef.core.external.javassist.compiler.ast.Symbol;
+import monnef.core.external.javassist.compiler.ast.Variable;
+import monnef.core.external.javassist.compiler.ast.Visitor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import monnef.core.external.javassist.compiler.ast.*;
-import monnef.core.external.javassist.bytecode.*;
 
 /* The code generator is implemeted by three files:
  * CodeGen.java, MemberCodeGen.java, and JvstCodeGen.

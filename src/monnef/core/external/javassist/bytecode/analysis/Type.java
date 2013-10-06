@@ -15,15 +15,15 @@
  */
 package monnef.core.external.javassist.bytecode.analysis;
 
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.NotFoundException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import monnef.core.external.javassist.ClassPool;
-import monnef.core.external.javassist.CtClass;
-import monnef.core.external.javassist.NotFoundException;
 
 /**
  * Represents a JVM type in data-flow analysis. This abstraction is necessary since

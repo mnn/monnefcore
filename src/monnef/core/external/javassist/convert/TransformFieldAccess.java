@@ -16,10 +16,12 @@
 
 package monnef.core.external.javassist.convert;
 
-import monnef.core.external.javassist.bytecode.*;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtField;
 import monnef.core.external.javassist.Modifier;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
 
 final public class TransformFieldAccess extends Transformer {
     private String newClassname, newFieldname;

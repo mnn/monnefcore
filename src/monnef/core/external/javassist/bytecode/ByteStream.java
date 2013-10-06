@@ -16,8 +16,8 @@
 
 package monnef.core.external.javassist.bytecode;
 
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 final class ByteStream extends OutputStream {
     private byte[] buf;

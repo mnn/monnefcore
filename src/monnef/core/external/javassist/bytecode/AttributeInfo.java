@@ -19,11 +19,11 @@ package monnef.core.external.javassist.bytecode;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Map;
 import java.util.ArrayList;
-import java.util.ListIterator;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 // Note: if you define a new subclass of AttributeInfo, then
 //       update AttributeInfo.read(), .copy(), and (maybe) write().

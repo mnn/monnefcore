@@ -6,7 +6,6 @@
 package monnef.core.asm;
 
 import static monnef.core.asm.MappedObjectType.CLASS;
-import static monnef.core.asm.MappedObjectType.FIELD;
 import static monnef.core.asm.MappedObjectType.METHOD;
 
 public enum MappedObject {

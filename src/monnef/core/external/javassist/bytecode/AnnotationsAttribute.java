@@ -16,12 +16,28 @@
 
 package monnef.core.external.javassist.bytecode;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.io.IOException;
-import java.io.DataInputStream;
+import monnef.core.external.javassist.bytecode.annotation.Annotation;
+import monnef.core.external.javassist.bytecode.annotation.AnnotationMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.AnnotationsWriter;
+import monnef.core.external.javassist.bytecode.annotation.ArrayMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.BooleanMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.ByteMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.CharMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.ClassMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.DoubleMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.EnumMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.FloatMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.IntegerMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.LongMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.MemberValue;
+import monnef.core.external.javassist.bytecode.annotation.ShortMemberValue;
+import monnef.core.external.javassist.bytecode.annotation.StringMemberValue;
+
 import java.io.ByteArrayOutputStream;
-import monnef.core.external.javassist.bytecode.annotation.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A class representing

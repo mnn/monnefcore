@@ -16,12 +16,14 @@
 
 package monnef.core.external.javassist.convert;
 
-import monnef.core.external.javassist.bytecode.*;
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CtField;
-import monnef.core.external.javassist.NotFoundException;
 import monnef.core.external.javassist.Modifier;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
 
 public class TransformReadField extends Transformer {
     protected String fieldname;

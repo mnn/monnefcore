@@ -16,9 +16,14 @@
 
 package monnef.core.external.javassist.convert;
 
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.StackMap;
+import monnef.core.external.javassist.bytecode.StackMapTable;
 
 final public class TransformNew extends Transformer {
     private int nested;

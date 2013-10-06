@@ -16,12 +16,22 @@
 
 package monnef.core.external.javassist.tools.reflect;
 
-import java.util.Iterator;
-import monnef.core.external.javassist.*;
+import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CodeConverter;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.CtField;
+import monnef.core.external.javassist.CtMethod;
 import monnef.core.external.javassist.CtMethod.ConstParameter;
-import monnef.core.external.javassist.bytecode.ClassFile;
+import monnef.core.external.javassist.CtNewMethod;
+import monnef.core.external.javassist.Modifier;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.Translator;
 import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.ClassFile;
 import monnef.core.external.javassist.bytecode.MethodInfo;
+
+import java.util.Iterator;
 
 /**
  * The class implementing the behavioral reflection mechanism.

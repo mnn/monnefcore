@@ -16,11 +16,12 @@
 
 package monnef.core.external.javassist.bytecode;
 
+import monnef.core.external.javassist.CtClass;
+
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.Map;
 import java.util.ArrayList;
-import monnef.core.external.javassist.CtClass;
+import java.util.Map;
 
 /**
  * <code>Signature_attribute</code>.

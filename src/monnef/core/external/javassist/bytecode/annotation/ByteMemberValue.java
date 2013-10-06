@@ -17,6 +17,7 @@ package monnef.core.external.javassist.bytecode.annotation;
 
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.bytecode.ConstPool;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 

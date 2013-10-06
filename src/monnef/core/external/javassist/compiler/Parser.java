@@ -16,7 +16,29 @@
 
 package monnef.core.external.javassist.compiler;
 
-import monnef.core.external.javassist.compiler.ast.*;
+import monnef.core.external.javassist.compiler.ast.ASTList;
+import monnef.core.external.javassist.compiler.ast.ASTree;
+import monnef.core.external.javassist.compiler.ast.ArrayInit;
+import monnef.core.external.javassist.compiler.ast.AssignExpr;
+import monnef.core.external.javassist.compiler.ast.BinExpr;
+import monnef.core.external.javassist.compiler.ast.CallExpr;
+import monnef.core.external.javassist.compiler.ast.CastExpr;
+import monnef.core.external.javassist.compiler.ast.CondExpr;
+import monnef.core.external.javassist.compiler.ast.Declarator;
+import monnef.core.external.javassist.compiler.ast.DoubleConst;
+import monnef.core.external.javassist.compiler.ast.Expr;
+import monnef.core.external.javassist.compiler.ast.FieldDecl;
+import monnef.core.external.javassist.compiler.ast.InstanceOfExpr;
+import monnef.core.external.javassist.compiler.ast.IntConst;
+import monnef.core.external.javassist.compiler.ast.Keyword;
+import monnef.core.external.javassist.compiler.ast.Member;
+import monnef.core.external.javassist.compiler.ast.MethodDecl;
+import monnef.core.external.javassist.compiler.ast.NewExpr;
+import monnef.core.external.javassist.compiler.ast.Pair;
+import monnef.core.external.javassist.compiler.ast.Stmnt;
+import monnef.core.external.javassist.compiler.ast.StringL;
+import monnef.core.external.javassist.compiler.ast.Symbol;
+import monnef.core.external.javassist.compiler.ast.Variable;
 
 public final class Parser implements TokenId {
     private Lex lex;

@@ -16,15 +16,16 @@
 
 package monnef.core.external.javassist.scopedpool;
 
-import java.lang.ref.WeakReference;
-import java.security.ProtectionDomain;
-import java.util.Iterator;
-import java.util.Map;
 import monnef.core.external.javassist.CannotCompileException;
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.LoaderClassPath;
 import monnef.core.external.javassist.NotFoundException;
+
+import java.lang.ref.WeakReference;
+import java.security.ProtectionDomain;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A scoped class pool.

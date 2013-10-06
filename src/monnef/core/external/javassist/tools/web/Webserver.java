@@ -16,10 +16,23 @@
 
 package monnef.core.external.javassist.tools.web;
 
-import java.net.*;
-import java.io.*;
+import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.Translator;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Date;
-import monnef.core.external.javassist.*;
 
 /**
  * A web server for running sample programs.

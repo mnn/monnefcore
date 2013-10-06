@@ -16,8 +16,8 @@
 
 package monnef.core.external.javassist;
 
-import monnef.core.external.javassist.bytecode.ClassFile;
 import monnef.core.external.javassist.bytecode.AccessFlag;
+import monnef.core.external.javassist.bytecode.ClassFile;
 import monnef.core.external.javassist.bytecode.InnerClassesAttribute;
 
 /**

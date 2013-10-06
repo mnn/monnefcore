@@ -16,17 +16,17 @@
 
 package monnef.core.external.javassist.bytecode;
 
+import monnef.core.external.javassist.CtClass;
+
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import monnef.core.external.javassist.CtClass;
 
 /**
  * Constant pool table.

@@ -16,12 +16,12 @@
 
 package monnef.core.external.javassist.bytecode.annotation;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.bytecode.ConstPool;
 import monnef.core.external.javassist.bytecode.Descriptor;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
 
 /**
  * Enum constant value.

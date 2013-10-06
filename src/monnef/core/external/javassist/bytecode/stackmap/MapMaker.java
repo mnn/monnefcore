@@ -16,10 +16,18 @@
 
 package monnef.core.external.javassist.bytecode.stackmap;
 
-import java.util.ArrayList;
 import monnef.core.external.javassist.ClassPool;
 import monnef.core.external.javassist.NotFoundException;
-import monnef.core.external.javassist.bytecode.*;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.ByteArray;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.bytecode.StackMap;
+import monnef.core.external.javassist.bytecode.StackMapTable;
+
+import java.util.ArrayList;
 
 /**
  * Stack map maker.

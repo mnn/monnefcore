@@ -16,8 +16,9 @@
 
 package monnef.core.external.javassist.tools.reflect;
 
-import monnef.core.external.javassist.CtClass;
 import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtClass;
+
 import java.io.PrintStream;
 
 class CompiledClass {

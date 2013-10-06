@@ -16,9 +16,21 @@
 
 package monnef.core.external.javassist.expr;
 
-import monnef.core.external.javassist.*;
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.*;
+import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtBehavior;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.CtMethod;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.BadBytecode;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.CodeAttribute;
+import monnef.core.external.javassist.bytecode.CodeIterator;
+import monnef.core.external.javassist.bytecode.ConstPool;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.bytecode.MethodInfo;
+import monnef.core.external.javassist.compiler.CompileError;
+import monnef.core.external.javassist.compiler.Javac;
 
 /**
  * Method invocation (caller-side expression).

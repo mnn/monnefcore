@@ -16,17 +16,17 @@
 
 package monnef.core.external.javassist.util.proxy;
 
-import java.lang.reflect.Method;
+import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.bytecode.ClassFile;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
-
-import monnef.core.external.javassist.CannotCompileException;
-import monnef.core.external.javassist.bytecode.ClassFile;
 
 /**
  * A helper class for implementing <code>ProxyFactory</code>.

@@ -15,9 +15,9 @@
  */
 package monnef.core.external.javassist.bytecode;
 
-import java.io.PrintStream;
-
 import monnef.core.external.javassist.CtMethod;
+
+import java.io.PrintStream;
 
 /**
  * Simple utility class for printing the bytecode instructions of a method.

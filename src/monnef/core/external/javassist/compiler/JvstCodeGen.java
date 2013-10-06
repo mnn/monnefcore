@@ -16,9 +16,21 @@
 
 package monnef.core.external.javassist.compiler;
 
-import monnef.core.external.javassist.*;
-import monnef.core.external.javassist.bytecode.*;
-import monnef.core.external.javassist.compiler.ast.*;
+import monnef.core.external.javassist.ClassPool;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.CtPrimitiveType;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.Bytecode;
+import monnef.core.external.javassist.bytecode.Descriptor;
+import monnef.core.external.javassist.compiler.ast.ASTList;
+import monnef.core.external.javassist.compiler.ast.ASTree;
+import monnef.core.external.javassist.compiler.ast.CallExpr;
+import monnef.core.external.javassist.compiler.ast.CastExpr;
+import monnef.core.external.javassist.compiler.ast.Declarator;
+import monnef.core.external.javassist.compiler.ast.Expr;
+import monnef.core.external.javassist.compiler.ast.Member;
+import monnef.core.external.javassist.compiler.ast.Stmnt;
+import monnef.core.external.javassist.compiler.ast.Symbol;
 
 /* Code generator accepting extended Java syntax for Javassist.
  */

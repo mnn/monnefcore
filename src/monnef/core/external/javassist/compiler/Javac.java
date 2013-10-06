@@ -16,23 +16,31 @@
 
 package monnef.core.external.javassist.compiler;
 
-import monnef.core.external.javassist.CtClass;
-import monnef.core.external.javassist.CtPrimitiveType;
-import monnef.core.external.javassist.CtMember;
-import monnef.core.external.javassist.CtField;
-import monnef.core.external.javassist.CtBehavior;
-import monnef.core.external.javassist.CtMethod;
-import monnef.core.external.javassist.CtConstructor;
 import monnef.core.external.javassist.CannotCompileException;
+import monnef.core.external.javassist.CtBehavior;
+import monnef.core.external.javassist.CtClass;
+import monnef.core.external.javassist.CtConstructor;
+import monnef.core.external.javassist.CtField;
+import monnef.core.external.javassist.CtMember;
+import monnef.core.external.javassist.CtMethod;
+import monnef.core.external.javassist.CtPrimitiveType;
 import monnef.core.external.javassist.Modifier;
+import monnef.core.external.javassist.NotFoundException;
+import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.Bytecode;
 import monnef.core.external.javassist.bytecode.CodeAttribute;
 import monnef.core.external.javassist.bytecode.LocalVariableAttribute;
-import monnef.core.external.javassist.bytecode.BadBytecode;
 import monnef.core.external.javassist.bytecode.Opcode;
-import monnef.core.external.javassist.NotFoundException;
-
-import monnef.core.external.javassist.compiler.ast.*;
+import monnef.core.external.javassist.compiler.ast.ASTList;
+import monnef.core.external.javassist.compiler.ast.ASTree;
+import monnef.core.external.javassist.compiler.ast.CallExpr;
+import monnef.core.external.javassist.compiler.ast.Declarator;
+import monnef.core.external.javassist.compiler.ast.Expr;
+import monnef.core.external.javassist.compiler.ast.FieldDecl;
+import monnef.core.external.javassist.compiler.ast.Member;
+import monnef.core.external.javassist.compiler.ast.MethodDecl;
+import monnef.core.external.javassist.compiler.ast.Stmnt;
+import monnef.core.external.javassist.compiler.ast.Symbol;
 
 public class Javac {
     JvstCodeGen gen;
