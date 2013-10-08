@@ -5,6 +5,8 @@
 
 package monnef.core.asm;
 
+import monnef.core.MonnefCorePlugin;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -65,7 +67,8 @@ public class ObfuscationHelper {
         if (runningInObfuscatedMode) {
             loadConfigFromJar();
         } else {
-            McpParser.parse(database, PathHelper.getMinecraftPath() + "/../conf/");
+            //McpParser.parse(database, PathHelper.getMinecraftPath() + "/../conf/");
+            McpParser.parse(database, MonnefCorePlugin.getMcPath() + "/../conf/");
             Log.printInfo("After MCP parser we have " + formatDatabaseStats(database) + ".");
         }
 
@@ -73,7 +76,8 @@ public class ObfuscationHelper {
     }
 
     private static void loadConfigFromJar() {
-        String myJar = PathHelper.getMyPath();
+        //String myJar = PathHelper.getMyPath();
+        String myJar = MonnefCorePlugin.getMyJarPath();
         URL url;
         InputStream inputStream = null;
         try {
@@ -121,7 +125,8 @@ public class ObfuscationHelper {
     }
 
     public static void dumpUsedItemsToConfig() {
-        String path = PathHelper.getMinecraftPath() + "/../bin_data/" + JAFFAS_MAPPINGS_CFG;
+        //String path = PathHelper.getMinecraftPath() + "/../bin_data/" + JAFFAS_MAPPINGS_CFG;
+        String path = MonnefCorePlugin.getMcPath() + "/../bin_data/" + JAFFAS_MAPPINGS_CFG;
         try {
             OutputStream output = new FileOutputStream(path);
             HashMap<MappedObjectType, MappingDictionary> usedOnlyDatabase = constructOnlyUsed(database, usedFlags);

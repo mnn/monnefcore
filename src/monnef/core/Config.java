@@ -61,7 +61,8 @@ public class Config {
         }
         initialized = true;
 
-        String fullPathToConfig = PathHelper.getMinecraftPath() + "/" + CONFIG_DIR;
+        //String fullPathToConfig = PathHelper.getMinecraftPath() + "/" + CONFIG_DIR;
+        String fullPathToConfig = MonnefCorePlugin.getMcPath() + "/" + CONFIG_DIR;
         String configFileName = fullPathToConfig + "/" + Reference.ModId + ".cfg";
         Log.printFine("Opening config file: \"" + configFileName + "\"");
         File config = new File(configFileName);

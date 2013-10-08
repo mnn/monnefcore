@@ -5,6 +5,7 @@
 
 package monnef.core.asm;
 
+import monnef.core.MonnefCorePlugin;
 import monnef.core.asm.lightningHook.WorldServerVisitor;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
@@ -24,6 +25,10 @@ public class CoreTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         if (bytes == null) return null;
+        if (!MonnefCorePlugin.isMcPathInitialized()) {
+            Log.printFine("ObfuscationHelper not ready, skipping transformation of class: " + name);
+            return bytes;
+        }
 
         if (ObfuscationHelper.namesAreEqual(name, C_WORLD_SERVER)) {
             Log.printFine("Found WorldServer class.");

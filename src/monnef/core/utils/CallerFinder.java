@@ -5,6 +5,8 @@
 
 package monnef.core.utils;
 
+import static monnef.core.MonnefCorePlugin.Log;
+
 public class CallerFinder {
     private final static MySecurityManager manager = new MySecurityManager();
     public static final int DEPTH_OFFSET = 2;
@@ -14,7 +16,14 @@ public class CallerFinder {
     }
 
     public static String getCallerPackage(int depth) {
-        return getCallerClass(depth + 1).getPackage().getName();
+        Class callerClass = getCallerClass(depth + 1);
+        if (callerClass == null) {
+            manager.dumpStack();
+            throw new RuntimeException("Caller class is null, depth was " + depth + ".");
+        }
+        String classCallerName = callerClass.getName();
+
+        return classCallerName.substring(0, classCallerName.lastIndexOf('.'));
     }
 
     public static String getMyPackage() {
@@ -32,6 +41,14 @@ public class CallerFinder {
     static class MySecurityManager extends SecurityManager {
         public String getCallerClassName(int callStackDepth) {
             return getClassContext()[callStackDepth].getName();
+        }
+
+        public void dumpStack() {
+            Class[] ctx = getClassContext();
+            Log.printInfo(String.format("Printing current context - %d items:", ctx.length));
+            for (int i = 0; i < ctx.length; i++) {
+                Log.printInfo(String.format("%d: %s", i, ctx[i].getName()));
+            }
         }
     }
 }
