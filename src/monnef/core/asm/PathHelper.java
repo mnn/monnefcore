@@ -19,15 +19,23 @@ import static monnef.core.MonnefCorePlugin.Log;
 
 public class PathHelper {
     public static String getMyPath() {
-        File file = getMyPathFile();
+        return getMyPath(Library.class);
+    }
+
+    public static String getMyPath(Class classToLocate) {
+        File file = getMyPathFile(classToLocate);
 
         String absPath = file.getAbsolutePath();
-        Log.printFine("my jar's absolute path: [" + absPath + "]");
+        Log.printFine("my jar's absolute path: [" + absPath + "], detected from class: [" + classToLocate.getSimpleName() + "]");
         return absPath;
     }
 
-    private static File getMyPathFile() {
-        URL url = Library.class.getProtectionDomain().getCodeSource().getLocation();
+    private static File getCorePathFile() {
+        return getMyPathFile(Library.class);
+    }
+
+    private static File getMyPathFile(Class classToLocate) {
+        URL url = classToLocate.getProtectionDomain().getCodeSource().getLocation();
         File file;
         URI uri = null;
         try {
@@ -61,7 +69,7 @@ public class PathHelper {
     }
 
     public static String getMcPath() {
-        File f = getMyPathFile();
+        File f = getCorePathFile();
         String absPath = f.getParent();
         Log.printFine("MC's absolute path: [" + absPath + "]");
         return absPath;
