@@ -29,7 +29,7 @@ public class ContainerRegistry {
     public @interface ContainerTag {
         int slotsCount();
 
-        int outputSlotsCount();
+        int outputSlotsCount() default 1;
 
         int inputSlotsCount() default -1;
     }
@@ -174,5 +174,17 @@ public class ContainerRegistry {
 
     public static MachineItem getItem(Class tileClass) {
         return db.get(tileClass);
+    }
+
+    public static boolean containsRegistration(TileEntity tile) {
+        return db.containsKey(tile.getClass());
+    }
+
+    public static Object createGui(TileEntity tile, InventoryPlayer inventory) {
+        try {
+            return ContainerRegistry.getItem(tile.getClass()).getGuiConstructor().newInstance(inventory, tile, ContainerRegistry.createContainer(tile, inventory));
+        } catch (Throwable e) {
+            throw new RuntimeException("Cannot create new GUI for container for tile class: " + tile.getClass().getSimpleName());
+        }
     }
 }

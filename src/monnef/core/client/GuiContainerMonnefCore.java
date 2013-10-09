@@ -6,6 +6,7 @@
 package monnef.core.client;
 
 import monnef.core.MonnefCorePlugin;
+import monnef.core.block.ContainerMonnefCore;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.GuiHelper;
 import net.minecraft.client.gui.Gui;
@@ -39,6 +40,7 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
 
     public GuiContainerMonnefCore(Container container) {
         super(container);
+        ySize = ((ContainerMonnefCore) container).getYSize();
         refreshXY();
         setupModIdByCallerClass();
     }
