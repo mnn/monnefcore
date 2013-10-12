@@ -9,6 +9,8 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.entity.player.EntityPlayer
 import scala.collection.JavaConverters._
+import java.lang.Integer
+import scala.collection.mutable.ListBuffer
 
 object CraftingHelper {
 
@@ -34,17 +36,14 @@ object CraftingHelper {
    * @param player A player who is doing the crafting.
    * @param transferItemsDirectlyToPlayer Is preferred to return items to player's inventory (can be later overwritten when player is faulty).
    */
-  def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean) {
+  def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean): Seq[Int] =
     returnLeftovers(stacks, craftMatrix, player, if (transferItemsDirectlyToPlayer) EnumReturnMode.PlayerInventoryPreferred else EnumReturnMode.CraftingMatrixPreferred)
-  }
 
-  def returnLeftover(stack: ItemStack, craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean) {
-    returnLeftovers(List(stack), craftMatrix, player, transferItemsDirectlyToPlayer)
-  }
+  def returnLeftover(stack: ItemStack, craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean): Option[Int] =
+    returnLeftovers(List(stack), craftMatrix, player, transferItemsDirectlyToPlayer).headOption
 
-  def returnLeftovers(stacks: java.util.List[ItemStack], craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean) {
-    returnLeftovers(stacks.asScala, craftMatrix, player, transferItemsDirectlyToPlayer)
-  }
+  def returnLeftovers(stacks: java.util.List[ItemStack], craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean): java.util.Collection[Integer] =
+    returnLeftovers(stacks.asScala, craftMatrix, player, transferItemsDirectlyToPlayer).map(_.asInstanceOf[Integer]).asJava
 
   private val forceMatrixPlayerPackages = List(".immibis.")
 
@@ -53,7 +52,7 @@ object CraftingHelper {
     forceMatrixPlayerPackages.exists(playerClassName.contains)
   }
 
-  def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.NothingPreferred) {
+  def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.NothingPreferred): Seq[Int] = {
     val canGiveToPlayer = player != null && player.inventory != null && !shouldGoToMatrix(craftMatrix, player)
     val wantGiveToPlayer = preferredMode == EnumReturnMode.PlayerInventoryPreferred
 
@@ -61,28 +60,29 @@ object CraftingHelper {
     else returnLeftoversToCraftingMatrix(stacks, craftMatrix, player)
   }
 
+  /*
   def returnLeftover(stack: ItemStack, craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.NothingPreferred) {
     returnLeftovers(List(stack), craftMatrix, player, preferredMode)
   }
-
-  /*
-  def returnLeftovers(stacks: java.util.List[ItemStack], craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.none) {
-    returnLeftovers(stacks.asScala, craftMatrix, player, preferredMode)
-  }
   */
 
-  def returnLeftoversToPlayer(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer) {
-    if (player.worldObj.isRemote) return
-    for (stack <- stacks) PlayerHelper.giveItemToPlayer(player, stack)
+  def returnLeftoversToPlayer(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer): Seq[Int] = {
+    for (stack <- stacks) {
+      PlayerHelper.giveItemToPlayer(player, stack)
+    }
+    List.empty
   }
 
-  def returnLeftoversToCraftingMatrix(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer) {
+  def returnLeftoversToCraftingMatrix(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer): Seq[Int] = {
+    val ret = new ListBuffer[Int]
     for (stack <- stacks) {
       val freeSlot = getFreeSlot(craftMatrix)
       if (freeSlot == -1) throw new RuntimeException("No free slot for leftovers.")
       val newStack = stack.copy
       newStack.stackSize += 1 // the crafting table will decrease it by 1
       craftMatrix.setInventorySlotContents(freeSlot, newStack)
+      ret += freeSlot
     }
+    ret
   }
 }
