@@ -14,7 +14,7 @@ object CraftingHelper {
 
   object EnumReturnMode extends Enumeration {
     type EnumReturnMode = Value
-    val none, craftingMatrix, playerInventory = Value
+    val NothingPreferred, CraftingMatrixPreferred, PlayerInventoryPreferred = Value
   }
 
   import monnef.core.utils.CraftingHelper.EnumReturnMode._
@@ -35,7 +35,7 @@ object CraftingHelper {
    * @param transferItemsDirectlyToPlayer Is preferred to return items to player's inventory (can be later overwritten when player is faulty).
    */
   def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean) {
-    returnLeftovers(stacks, craftMatrix, player, if (transferItemsDirectlyToPlayer) EnumReturnMode.playerInventory else EnumReturnMode.craftingMatrix)
+    returnLeftovers(stacks, craftMatrix, player, if (transferItemsDirectlyToPlayer) EnumReturnMode.PlayerInventoryPreferred else EnumReturnMode.CraftingMatrixPreferred)
   }
 
   def returnLeftover(stack: ItemStack, craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean) {
@@ -46,15 +46,22 @@ object CraftingHelper {
     returnLeftovers(stacks.asScala, craftMatrix, player, transferItemsDirectlyToPlayer)
   }
 
-  def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.none) {
-    val canToPlayer = player != null && player.inventory != null
-    val wantGiveToPlayer = preferredMode == EnumReturnMode.playerInventory
+  private val forceMatrixPlayerPackages = List(".immibis.")
 
-    if (wantGiveToPlayer && canToPlayer) returnLeftoversToPlayer(stacks, craftMatrix, player)
+  private def shouldGoToMatrix(craftMatrix: IInventory, player: EntityPlayer): Boolean = {
+    val playerClassName = player.getClass.getName
+    forceMatrixPlayerPackages.exists(playerClassName.contains)
+  }
+
+  def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.NothingPreferred) {
+    val canGiveToPlayer = player != null && player.inventory != null && !shouldGoToMatrix(craftMatrix, player)
+    val wantGiveToPlayer = preferredMode == EnumReturnMode.PlayerInventoryPreferred
+
+    if (wantGiveToPlayer && canGiveToPlayer) returnLeftoversToPlayer(stacks, craftMatrix, player)
     else returnLeftoversToCraftingMatrix(stacks, craftMatrix, player)
   }
 
-  def returnLeftover(stack: ItemStack, craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.none) {
+  def returnLeftover(stack: ItemStack, craftMatrix: IInventory, player: EntityPlayer, preferredMode: EnumReturnMode = EnumReturnMode.NothingPreferred) {
     returnLeftovers(List(stack), craftMatrix, player, preferredMode)
   }
 
@@ -65,7 +72,7 @@ object CraftingHelper {
   */
 
   def returnLeftoversToPlayer(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer) {
-    if(player.worldObj.isRemote) return
+    if (player.worldObj.isRemote) return
     for (stack <- stacks) PlayerHelper.giveItemToPlayer(player, stack)
   }
 
