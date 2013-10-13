@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -37,10 +38,13 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
     private String backgroundTexture = "guimachine.png";
     private ResourceLocation backgroundTextureResource;
     private String modId;
+    protected final ContainerMonnefCore myContainer;
 
     public GuiContainerMonnefCore(Container container) {
         super(container);
-        ySize = ((ContainerMonnefCore) container).getYSize();
+        myContainer = (ContainerMonnefCore) container;
+        ySize = myContainer.getYSize();
+        xSize = myContainer.getXSize();
         refreshXY();
         setupModIdByCallerClass();
     }
@@ -55,12 +59,29 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
         refreshXY();
     }
 
+    protected boolean usesDoubleTexture() {
+        return false;
+    }
+
+    protected String getContainerTitle() {
+        return null;
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
+        super.drawGuiContainerForegroundLayer(par1, par2);
+        if (getContainerTitle() != null) {
+            fontRenderer.drawString(getContainerTitle(), 8, 4, COLOR_DARK_GRAY);
+        }
+        fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + myContainer.getXPlayerInvShift(), ySize - 96 + 4 + myContainer.getYPlayerInvShift(), COLOR_DARK_GRAY);
+    }
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
         refreshXY();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         bindBackgroundTexture();
-        this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+        drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
     }
 
     protected void bindBackgroundTexture() {
@@ -248,5 +269,22 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
         int mouseYinGui = mouseY - y;
         return mouseXinGui >= guiX && mouseXinGui < guiX + guiWidth &&
                 mouseYinGui >= guiY && mouseYinGui < guiY + guiHeight;
+    }
+
+    @Override
+    public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height) {
+        if (usesDoubleTexture()) {
+            float uCoef = 0.00390625F / 2;
+            float vCoef = 0.00390625F / 2;
+            Tessellator tessellator = Tessellator.instance;
+            tessellator.startDrawingQuads();
+            tessellator.addVertexWithUV((double) (x + 0), (double) (y + height), (double) this.zLevel, (double) ((float) (u + 0) * uCoef), (double) ((float) (v + height) * vCoef));
+            tessellator.addVertexWithUV((double) (x + width), (double) (y + height), (double) this.zLevel, (double) ((float) (u + width) * uCoef), (double) ((float) (v + height) * vCoef));
+            tessellator.addVertexWithUV((double) (x + width), (double) (y + 0), (double) this.zLevel, (double) ((float) (u + width) * uCoef), (double) ((float) (v + 0) * vCoef));
+            tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) this.zLevel, (double) ((float) (u + 0) * uCoef), (double) ((float) (v + 0) * vCoef));
+            tessellator.draw();
+        } else {
+            super.drawTexturedModalRect(x, y, u, v, width, height);
+        }
     }
 }

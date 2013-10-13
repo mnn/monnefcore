@@ -32,6 +32,16 @@ public class DyeHelper {
         }
     }
 
+    public static String compileColorList() {
+        String r = "";
+        for (int i = 0; i < ItemDye.dyeColorNames.length; i++) {
+            ColorHelper.IntColor c = ColorHelper.getColor(getIntColor(i));
+            if (!r.equals("")) r = r + " ";
+            r += String.format("\"rgb(%d,%d,%d)\"", c.getRed(), c.getGreen(), c.getBlue());
+        }
+        return r;
+    }
+
     public static int getDyeNum(DyeColor color) {
         Integer index = dyeNames.get(color.getColorName());
         if (index == null) {

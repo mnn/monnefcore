@@ -8,6 +8,7 @@ package monnef.core.command;
 import monnef.core.Config;
 import monnef.core.common.GuiHandler;
 import monnef.core.mod.MonnefCoreNormalMod;
+import monnef.core.utils.DyeHelper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +40,12 @@ public class CommandMC extends CommandBase {
                 }
             } else {
                 addMessage(commandsender, "Exporter is disabled in a config file.");
+            }
+        } else if (parameters.length == 2 && parameters[0].equals("debug")) {
+            if (parameters[1].equals("dumpColors")) {
+                addMessage(commandsender, DyeHelper.compileColorList());
+            } else {
+                addMessage(commandsender, "Unknown debug sub-command.");
             }
         } else {
             addMessage(commandsender, "Unknown sub-command.");

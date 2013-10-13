@@ -42,22 +42,31 @@ public abstract class ContainerMonnefCore extends Container {
         return 166;
     }
 
+    public int getYPlayerInvShift() {
+        return 0;
+    }
+
+    public int getXSize() {
+        return 176;
+    }
+
+    public int getXPlayerInvShift() {
+        return 0;
+    }
+
     protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
         int yShift = getYSize() - 82 + getYPlayerInvShift(); // 84
+        int xShift = getXSize() - 168 + getXPlayerInvShift(); // 8
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
-                        8 + j * 18, yShift + i * 18));
+                        xShift + j * 18, yShift + i * 18));
             }
         }
 
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142 - 84 + yShift));
+            addSlotToContainer(new Slot(inventoryPlayer, i, xShift + i * 18, 142 - 84 + yShift));
         }
-    }
-
-    protected int getYPlayerInvShift() {
-        return 0;
     }
 
     @Override
