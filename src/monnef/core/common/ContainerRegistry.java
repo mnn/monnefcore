@@ -5,6 +5,7 @@
 
 package monnef.core.common;
 
+import monnef.core.MonnefCorePlugin;
 import monnef.core.block.ContainerMonnefCore;
 import monnef.core.client.GuiContainerMonnefCore;
 import monnef.core.external.eu.infomas.annotation.AnnotationDetector;
@@ -12,6 +13,7 @@ import monnef.core.utils.ReflectionTools;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -57,6 +59,7 @@ public class ContainerRegistry {
 
             @Override
             public void reportTypeAnnotation(Class<? extends Annotation> annotation, String className) {
+                Log.printFinest(String.format("Discovered ContainerTag annotation on class: %s", className));
                 try {
                     result.add(this.getClass().getClassLoader().loadClass(className));
                 } catch (ClassNotFoundException e) {
@@ -68,12 +71,23 @@ public class ContainerRegistry {
         long timeStart = System.currentTimeMillis();
         try {
             cf.detect();
+            long timeStop = System.currentTimeMillis();
+            Log.printFine(String.format("%s-side annotation class-path scanning for ContainerTag took %ss", clientSide ? "Client" : "Server", decimalFormatter.format((timeStop - timeStart) / 1000f)));
+
+            timeStart = System.currentTimeMillis();
+            File file = new File(MonnefCorePlugin.getMcPath() + "/mods/");
+            if (file.isDirectory()) {
+                for (File f : file.listFiles()) {
+                    Log.printFinest(String.format("Scanning file: %s", f.getName()));
+                    cf.detect(f);
+                }
+            }
+            timeStop = System.currentTimeMillis();
+            Log.printFine(String.format("%s-side annotation mods directory scanning for ContainerTag took %ss", clientSide ? "Client" : "Server", decimalFormatter.format((timeStop - timeStart) / 1000f)));
         } catch (IOException e) {
             Log.printSevere("Encountered IO error:" + e.getMessage());
             e.printStackTrace();
         }
-        long timeStop = System.currentTimeMillis();
-        Log.printFine(String.format("%s-side annotation scanning for ContainerTag took %ss", clientSide ? "Client" : "Server", decimalFormatter.format((timeStop - timeStart) / 1000f)));
 
         for (Class<?> c : result) {
             ContainerTag tag = c.getAnnotation(ContainerTag.class);
