@@ -35,6 +35,7 @@ object CraftingHelper {
    * @param craftMatrix Crafting matrix.
    * @param player A player who is doing the crafting.
    * @param transferItemsDirectlyToPlayer Is preferred to return items to player's inventory (can be later overwritten when player is faulty).
+   * @return List filled with numbers of slots in crafting matrix which were modified.
    */
   def returnLeftovers(stacks: Seq[ItemStack], craftMatrix: IInventory, player: EntityPlayer, transferItemsDirectlyToPlayer: Boolean): Seq[Int] =
     returnLeftovers(stacks, craftMatrix, player, if (transferItemsDirectlyToPlayer) EnumReturnMode.PlayerInventoryPreferred else EnumReturnMode.CraftingMatrixPreferred)

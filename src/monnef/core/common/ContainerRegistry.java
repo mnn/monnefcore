@@ -5,9 +5,9 @@
 
 package monnef.core.common;
 
-import monnef.core.external.eu.infomas.annotation.AnnotationDetector;
 import monnef.core.block.ContainerMonnefCore;
 import monnef.core.client.GuiContainerMonnefCore;
+import monnef.core.external.eu.infomas.annotation.AnnotationDetector;
 import monnef.core.utils.ReflectionTools;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,11 +19,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static monnef.core.MonnefCorePlugin.Log;
 
@@ -32,7 +32,9 @@ public class ContainerRegistry {
     private static HashMap<Class<? extends TileEntity>, MachineItem> db = new HashMap<Class<? extends TileEntity>, MachineItem>();
     private static boolean filledFromAnnotationsServer = false;
     private static boolean filledFromAnnotationsClient = false;
+    private static DecimalFormat decimalFormatter = new DecimalFormat("#.##");
 
+    @SuppressWarnings("unchecked")
     public static void fillRegistrationsFromAnnotations(boolean clientSide) {
         if (!clientSide) {
             if (filledFromAnnotationsServer)
@@ -58,37 +60,42 @@ public class ContainerRegistry {
                 try {
                     result.add(this.getClass().getClassLoader().loadClass(className));
                 } catch (ClassNotFoundException e) {
-                    Log.printWarning("Container registry: unable to load " + className + "!");
+                    Log.printWarning("Container registry: unable to load \"" + className + "\"!");
                 }
             }
         };
         final AnnotationDetector cf = new AnnotationDetector(reporter);
+        long timeStart = System.currentTimeMillis();
         try {
             cf.detect();
         } catch (IOException e) {
             Log.printSevere("Encountered IO error:" + e.getMessage());
             e.printStackTrace();
         }
+        long timeStop = System.currentTimeMillis();
+        Log.printFine(String.format("%s-side annotation scanning for ContainerTag took %ss", clientSide ? "Client" : "Server", decimalFormatter.format((timeStop - timeStart) / 1000f)));
 
-        Set<Class<?>> taggedTypes = result;
-
-        for (Class<?> c : taggedTypes) {
+        for (Class<?> c : result) {
             ContainerTag tag = c.getAnnotation(ContainerTag.class);
             if (TileEntity.class.isAssignableFrom(c)) {
                 Class<TileEntity> tec = (Class<TileEntity>) c;
                 if (clientSide) {
-                    try {
-                        Class<? extends GuiContainerMonnefCore> clazz = (Class<? extends GuiContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.guiClassName());
-                        registerOnClient(tec, clazz);
-                    } catch (ClassNotFoundException e) {
-                        Log.printWarning("Client-side registration failed, class " + tag.guiClassName() + " cannot be loaded.");
+                    if (!"".equals(tag.guiClassName())) {
+                        try {
+                            Class<? extends GuiContainerMonnefCore> clazz = (Class<? extends GuiContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.guiClassName());
+                            registerOnClient(tec, clazz);
+                        } catch (ClassNotFoundException e) {
+                            Log.printWarning("Client-side registration failed, class \"" + tag.guiClassName() + "\" cannot be loaded.");
+                        }
                     }
                 } else {
-                    try {
-                        Class<? extends ContainerMonnefCore> clazz = (Class<? extends ContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.containerClassName());
-                        register(tec, clazz);
-                    } catch (ClassNotFoundException e) {
-                        Log.printWarning("Registration failed, class " + tag.containerClassName() + " cannot be loaded.");
+                    if (!"".equals(tag.containerClassName())) {
+                        try {
+                            Class<? extends ContainerMonnefCore> clazz = (Class<? extends ContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.containerClassName());
+                            register(tec, clazz);
+                        } catch (ClassNotFoundException e) {
+                            Log.printWarning("Registration failed, class \"" + tag.containerClassName() + "\" cannot be loaded.");
+                        }
                     }
                 }
             } else {
