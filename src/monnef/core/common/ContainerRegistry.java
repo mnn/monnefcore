@@ -5,12 +5,15 @@
 
 package monnef.core.common;
 
+import monnef.core.external.eu.infomas.annotation.AnnotationDetector;
 import monnef.core.block.ContainerMonnefCore;
 import monnef.core.client.GuiContainerMonnefCore;
 import monnef.core.utils.ReflectionTools;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,11 +21,81 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import static monnef.core.MonnefCorePlugin.Log;
 
 public class ContainerRegistry {
     public static final String CANNOT_INSTANTIATE_CONTAINER = "Cannot instantiate container.";
     private static HashMap<Class<? extends TileEntity>, MachineItem> db = new HashMap<Class<? extends TileEntity>, MachineItem>();
+    private static boolean filledFromAnnotationsServer = false;
+    private static boolean filledFromAnnotationsClient = false;
+
+    public static void fillRegistrationsFromAnnotations(boolean clientSide) {
+        if (!clientSide) {
+            if (filledFromAnnotationsServer)
+                throw new RuntimeException("Server registry are already filled from annotations.");
+            filledFromAnnotationsServer = true;
+        } else {
+            if (filledFromAnnotationsClient)
+                throw new RuntimeException("Client registry are already filled from annotations.");
+            filledFromAnnotationsClient = true;
+        }
+
+        final HashSet<Class<?>> result = new HashSet<Class<?>>();
+        final AnnotationDetector.TypeReporter reporter = new AnnotationDetector.TypeReporter() {
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public Class<? extends Annotation>[] annotations() {
+                return new Class[]{ContainerTag.class};
+            }
+
+            @Override
+            public void reportTypeAnnotation(Class<? extends Annotation> annotation, String className) {
+                try {
+                    result.add(this.getClass().getClassLoader().loadClass(className));
+                } catch (ClassNotFoundException e) {
+                    Log.printWarning("Container registry: unable to load " + className + "!");
+                }
+            }
+        };
+        final AnnotationDetector cf = new AnnotationDetector(reporter);
+        try {
+            cf.detect();
+        } catch (IOException e) {
+            Log.printSevere("Encountered IO error:" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        Set<Class<?>> taggedTypes = result;
+
+        for (Class<?> c : taggedTypes) {
+            ContainerTag tag = c.getAnnotation(ContainerTag.class);
+            if (TileEntity.class.isAssignableFrom(c)) {
+                Class<TileEntity> tec = (Class<TileEntity>) c;
+                if (clientSide) {
+                    try {
+                        Class<? extends GuiContainerMonnefCore> clazz = (Class<? extends GuiContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.guiClassName());
+                        registerOnClient(tec, clazz);
+                    } catch (ClassNotFoundException e) {
+                        Log.printWarning("Client-side registration failed, class " + tag.guiClassName() + " cannot be loaded.");
+                    }
+                } else {
+                    try {
+                        Class<? extends ContainerMonnefCore> clazz = (Class<? extends ContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.containerClassName());
+                        register(tec, clazz);
+                    } catch (ClassNotFoundException e) {
+                        Log.printWarning("Registration failed, class " + tag.containerClassName() + " cannot be loaded.");
+                    }
+                }
+            } else {
+                Log.printWarning(String.format("Class %s is annotated with ContainerTag but is not TileEntity, mistake?", c.getName()));
+            }
+        }
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
@@ -32,6 +105,10 @@ public class ContainerRegistry {
         int outputSlotsCount() default 1;
 
         int inputSlotsCount() default -1;
+
+        String guiClassName() default "";
+
+        String containerClassName() default "";
     }
 
     public static class ContainerDescriptor {

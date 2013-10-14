@@ -7,6 +7,7 @@ package monnef.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import monnef.core.common.CommonProxy;
+import monnef.core.common.ContainerRegistry;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -20,5 +21,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public World getClientWorld() {
         return FMLClientHandler.instance().getClient().theWorld;
+    }
+
+    @Override
+    public void registerContainers() {
+        super.registerContainers();
+        ContainerRegistry.fillRegistrationsFromAnnotations(true);
     }
 }

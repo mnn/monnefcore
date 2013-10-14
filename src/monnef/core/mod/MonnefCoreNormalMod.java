@@ -24,6 +24,7 @@ import monnef.core.Reference;
 import monnef.core.client.ExporterTickHandler;
 import monnef.core.command.CommandMC;
 import monnef.core.common.CommonProxy;
+import monnef.core.common.ContainerRegistry;
 import monnef.core.common.GuiHandler;
 import monnef.core.utils.BreakableIronMaterial;
 import net.minecraft.command.ICommandManager;
@@ -43,6 +44,7 @@ public class MonnefCoreNormalMod {
     @Mod.EventHandler
     public void preLoad(FMLPreInitializationEvent evt) {
         handleMetadata();
+        proxy.registerContainers();
     }
 
     @Mod.EventHandler
