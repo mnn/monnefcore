@@ -203,6 +203,10 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
         y = (height - ySize) / 2;
     }
 
+    protected void drawGradientRectWithSize(int x, int y, int width, int height, int colorA, int colorB) {
+        super.drawGradientRect(x, y, x + width, y + height, colorA, colorB);
+    }
+
     public void drawGradientRect(Gui gui, int x, int y, int width, int height, ColorHelper.IntColor topColor, ColorHelper.IntColor bottomColor, EnumFillRotation rotation) {
         drawGradientRectInternal(x, y, x + width, y + height, topColor, bottomColor, rotation, zLevel);
     }

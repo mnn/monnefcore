@@ -30,6 +30,9 @@ public abstract class ContainerMonnefCore extends Container {
         setupDescriptor();
 
         constructSlots((IInventory) tile);
+        if (inventorySlots.size() != getSlotsCount()) {
+            throw new RuntimeException("Expected count of slots is " + getSlotsCount() + ", but current number of slots is " + inventorySlots.size() + ".");
+        }
 
         bindPlayerInventory(inventoryPlayer);
     }

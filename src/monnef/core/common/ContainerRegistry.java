@@ -266,7 +266,7 @@ public class ContainerRegistry {
         try {
             return db.get(tile.getClass()).containerConstructor.newInstance(inventory, tile);
         } catch (Throwable e) {
-            throw new RuntimeException("Cannot create new container for tile class: " + tile.getClass().getSimpleName());
+            throw new RuntimeException("Cannot create new container for tile class: " + tile.getClass().getSimpleName(), e);
         }
     }
 
@@ -282,7 +282,7 @@ public class ContainerRegistry {
         try {
             return ContainerRegistry.getItem(tile.getClass()).getGuiConstructor().newInstance(inventory, tile, ContainerRegistry.createContainer(tile, inventory));
         } catch (Throwable e) {
-            throw new RuntimeException("Cannot create new GUI for container for tile class: " + tile.getClass().getSimpleName());
+            throw new RuntimeException("Cannot create new GUI for container for tile class: " + tile.getClass().getSimpleName(), e);
         }
     }
 }
