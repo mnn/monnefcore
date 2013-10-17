@@ -59,7 +59,7 @@ public abstract class ContainerMonnefCore extends Container {
 
     protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
         int yShift = getYSize() - 82 + getYPlayerInvShift(); // 84
-        int xShift = getXSize() - 168 + getXPlayerInvShift(); // 8
+        int xShift = 8 + getXPlayerInvShift(); // 8
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9,
@@ -144,7 +144,17 @@ public abstract class ContainerMonnefCore extends Container {
      */
     public abstract void constructSlots(IInventory inv);
 
-    protected boolean mergeItemStack(ItemStack stack, int startingIndex, int endingIndex, boolean fromEnd) {
+    /**
+     * Merges provided ItemStack with the first available one in the (container/player) inventory
+     *
+     * @param stack         Item to move/insert/merge.
+     * @param startingIndex Starting index in inventory.
+     * @param endingIndex   Last index in inventory.
+     * @param fromEnd       Start searching from end of an inventory.
+     * @return True on partial merge, False on full merge (nothing in {@code stack} is left).
+     */
+    @Override
+    public boolean mergeItemStack(ItemStack stack, int startingIndex, int endingIndex, boolean fromEnd) {
         return super.mergeItemStack(stack, startingIndex, endingIndex, fromEnd);
     }
 }

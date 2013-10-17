@@ -12,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -66,5 +67,9 @@ public class InventoryUtils {
         if (index == -1) return null;
 
         return new ItemStackInInventory(inventory, index);
+    }
+
+    public static ItemStack insertStackToExternalInventory(IInventory inventory, ItemStack stack, int side) {
+        return TileEntityHopper.insertStack(inventory, stack, side);
     }
 }
