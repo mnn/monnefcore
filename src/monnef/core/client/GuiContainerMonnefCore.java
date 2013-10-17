@@ -5,11 +5,14 @@
 
 package monnef.core.client;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.block.ContainerMonnefCore;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.GuiHelper;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -39,6 +42,7 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
     private ResourceLocation backgroundTextureResource;
     private String modId;
     protected final ContainerMonnefCore myContainer;
+    protected int lastMouseButtonProcessed = -1;
 
     public GuiContainerMonnefCore(Container container) {
         super(container);
@@ -290,5 +294,29 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
         } else {
             super.drawTexturedModalRect(x, y, u, v, width, height);
         }
+    }
+
+    @Override
+    protected void mouseClicked(int x, int y, int mouseButton) {
+        lastMouseButtonProcessed = mouseButton;
+        super.mouseClicked(x, y, mouseButton);
+        if (mouseButton == 0) return;
+        for (int l = 0; l < this.buttonList.size(); ++l) {
+            GuiButton button = (GuiButton) this.buttonList.get(l);
+
+            if (button instanceof AdvancedButton && ((AdvancedButton) button).mousePressedAdvanced(mc, x, y, mouseButton)) {
+                setSelectedButton(button);
+                playButtonSound();
+                actionPerformed(button);
+            }
+        }
+    }
+
+    protected void setSelectedButton(GuiButton button) {
+        ObfuscationReflectionHelper.setPrivateValue(GuiScreen.class, this, button, "selectedButton");
+    }
+
+    private void playButtonSound() {
+        this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
     }
 }
