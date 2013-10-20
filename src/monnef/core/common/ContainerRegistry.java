@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -97,18 +98,18 @@ public class ContainerRegistry {
                     if (!"".equals(tag.guiClassName())) {
                         try {
                             Class<? extends GuiContainerMonnefCore> clazz = (Class<? extends GuiContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.guiClassName());
-                            registerOnClient(tec, clazz);
+                            registerOnClientInternal(tec, clazz);
                         } catch (ClassNotFoundException e) {
-                            Log.printWarning("Client-side registration failed, class \"" + tag.guiClassName() + "\" cannot be loaded.");
+                            Log.printWarning("Client-side registration failed, class \"" + tag.guiClassName() + "\" cannot be loaded. TE class: " + tec.getName());
                         }
                     }
                 } else {
                     if (!"".equals(tag.containerClassName())) {
                         try {
                             Class<? extends ContainerMonnefCore> clazz = (Class<? extends ContainerMonnefCore>) ContainerRegistry.class.getClassLoader().loadClass(tag.containerClassName());
-                            register(tec, clazz);
+                            registerInternal(tec, clazz);
                         } catch (ClassNotFoundException e) {
-                            Log.printWarning("Registration failed, class \"" + tag.containerClassName() + "\" cannot be loaded.");
+                            Log.printWarning("Registration failed, class \"" + tag.containerClassName() + "\" cannot be loaded. TE class: " + tec.getName());
                         }
                     }
                 }
@@ -120,6 +121,7 @@ public class ContainerRegistry {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
+    @Inherited
     public @interface ContainerTag {
         int slotsCount();
 
@@ -222,6 +224,17 @@ public class ContainerRegistry {
         }
     }
 
+    @SuppressWarnings("deprecation")
+    private static void registerInternal(Class<? extends TileEntity> clazz, Class<? extends ContainerMonnefCore> container) {
+        register(clazz, container);
+    }
+
+    @SuppressWarnings("deprecation")
+    private static void registerOnClientInternal(Class<? extends TileEntity> clazz, Class<?> gui) {
+        registerOnClient(clazz, gui);
+    }
+
+    @Deprecated
     public static void register(Class<? extends TileEntity> clazz, Class<? extends ContainerMonnefCore> container) {
         if (db.containsKey(clazz)) {
             throw new RuntimeException("containerPrototype already contains this class, cannot re-register");
@@ -234,9 +247,12 @@ public class ContainerRegistry {
         db.put(clazz, new MachineItem(clazz, container, new ContainerDescriptor(tag)));
     }
 
+    @Deprecated
     public static void registerOnClient(Class<? extends TileEntity> clazz, Class<?> gui) {
         MachineItem item = db.get(clazz);
-        if (item == null) throw new RuntimeException("Registering GUI container with unknown TE.");
+        if (item == null) {
+            throw new RuntimeException(String.format("Registering GUI container with unknown TE. TE: %s, GUI: %s", clazz.getName(), gui.getName()));
+        }
         if (!GuiContainerMonnefCore.class.isAssignableFrom(gui)) {
             throw new RuntimeException("Class doesn't inherit from proper ancestor!");
         }
