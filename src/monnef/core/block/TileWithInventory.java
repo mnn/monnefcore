@@ -10,7 +10,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 
 public abstract class TileWithInventory extends TileMonnefCore implements ISidedInventory {
     protected ItemStack[] inv;

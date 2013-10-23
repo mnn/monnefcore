@@ -8,7 +8,11 @@ package monnef.core.api;
 import net.minecraft.util.Icon;
 
 public interface ICustomIcon {
+    String getDefaultModName();
+
     String getModName();
+
+    void setModName(String newModName);
 
     int getDefaultSheetNumber();
 

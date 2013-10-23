@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 
-
 abstract class TileMachineWithInventory extends TileMachine with IInventory {
   protected var inventory: Array[ItemStack] = null
   var guiPowerMax: Int = _

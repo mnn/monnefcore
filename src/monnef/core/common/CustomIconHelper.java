@@ -60,8 +60,18 @@ public class CustomIconHelper {
         }
 
         @Override
+        public String getDefaultModName() {
+            return this.modName;
+        }
+
+        @Override
         public String getModName() {
             return modName;
+        }
+
+        @Override
+        public void setModName(String newModName) {
+            modName = newModName;
         }
 
         @Override
