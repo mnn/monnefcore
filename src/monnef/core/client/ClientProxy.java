@@ -8,6 +8,7 @@ package monnef.core.client;
 import cpw.mods.fml.client.FMLClientHandler;
 import monnef.core.common.CommonProxy;
 import monnef.core.common.ContainerRegistry;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -27,5 +28,20 @@ public class ClientProxy extends CommonProxy {
     public void registerContainers() {
         super.registerContainers();
         ContainerRegistry.fillRegistrationsFromAnnotations(true);
+    }
+
+    @Override
+    public int getCommonRarity() {
+        return EnumRarity.common.ordinal();
+    }
+
+    @Override
+    public int getEpicRarity() {
+        return EnumRarity.epic.ordinal();
+    }
+
+    @Override
+    public int getUncommonRarity() {
+        return EnumRarity.uncommon.ordinal();
     }
 }

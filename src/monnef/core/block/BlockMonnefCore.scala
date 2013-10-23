@@ -10,12 +10,8 @@ import net.minecraft.client.renderer.texture.IconRegister
 import net.minecraft.util.Icon
 
 
-abstract class BlockMonnefCore(_id: Int, _material: Material) extends Block(_id, _material) with CustomIcon {
-  if (!classOf[CustomIconDescriptor].isAssignableFrom(this.getClass())) {
-    throw new RuntimeException(this.getClass().getSimpleName() + " does not implement CustomIconDescriptor.")
-  } else {
-    this.asInstanceOf[CustomIconDescriptor].setupDefaultValuesFromBlockDescriptor(this)
-  }
+abstract class BlockMonnefCore(_id: Int, _material: Material) extends Block(_id, _material) with GameObjectDescriptor {
+  initCustomIcon()
 
   def this(id: Int, index: Int, material: Material) = {
     this(id, material)
@@ -23,7 +19,7 @@ abstract class BlockMonnefCore(_id: Int, _material: Material) extends Block(_id,
   }
 
   @SideOnly(Side.CLIENT)
-  override def registerIcons(iconRegister: IconRegister): Unit = {
+  override def registerIcons(iconRegister: IconRegister) {
     this.blockIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this))
     if (iconsCount > 1) {
       icons = new Array[Icon](iconsCount)
@@ -36,7 +32,7 @@ abstract class BlockMonnefCore(_id: Int, _material: Material) extends Block(_id,
     }
   }
 
-  def removeFromCreativeTab(): Unit = {
+  def removeFromCreativeTab() {
     if (!MonnefCorePlugin.debugEnv)
       setCreativeTab(null)
   }

@@ -20,4 +20,16 @@ public class CommonProxy {
     public void registerContainers() {
         ContainerRegistry.fillRegistrationsFromAnnotations(false);
     }
+
+    public int getCommonRarity() {
+        return 0;
+    }
+
+    public int getEpicRarity() {
+        return 0;
+    }
+
+    public int getUncommonRarity() {
+        return 0;
+    }
 }

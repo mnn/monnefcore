@@ -8,7 +8,7 @@ package monnef.core.block
 import monnef.core.api.ICustomIcon
 import net.minecraft.util.Icon
 
-trait CustomIcon extends ICustomIcon {
+trait GameObjectDescriptor extends ICustomIcon {
   protected var customIconIndex: Int = _
   protected var sheetNumber: Int = _
   protected var iconsCount: Int = 1
@@ -41,7 +41,7 @@ trait CustomIcon extends ICustomIcon {
 
   override final def getModName: String = {
     if (modName == null) {
-      throw new RuntimeException(String.format("Item %s was not properly initialized, it is missing mod mapping.", this.getClass.getSimpleName))
+      throw new RuntimeException(String.format("Item/block %s was not properly initialized, it is missing mod mapping.", this.getClass.getSimpleName))
     }
     modName
   }
