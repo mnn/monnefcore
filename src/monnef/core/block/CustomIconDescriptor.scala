@@ -8,18 +8,25 @@ package monnef.core.block
 import monnef.core.api.ICustomIcon
 
 trait CustomIconDescriptor {
-  def getBlockDescriptorModName: String
+  def getDescriptorModName: String
 
-  def getBlockDescriptorSheetNumber: Int
+  def getDescriptorSheetNumber: Int
 
-  def setupDefaultValuesFromBlockDescriptor(block: ICustomIcon) {
-    block.setModName(getBlockDescriptorModName)
-    block.setSheetNumber(getBlockDescriptorSheetNumber)
+  def setupDefaultValuesFromBlockDescriptor(obj: ICustomIcon) {
+    obj.setModName(getDescriptorModName)
+    obj.setSheetNumber(getDescriptorSheetNumber)
+  }
+
+  @Deprecated
+  def setupFromOldDefaultProperties() {
+    val ici = this.asInstanceOf[ICustomIcon]
+    ici.setModName(getDefaultModName)
+    ici.setSheetNumber(getDefaultSheetNumber)
   }
 
   @deprecated
-  def getDefaultSheetNumber: Int = getBlockDescriptorSheetNumber
+  def getDefaultSheetNumber: Int = getDescriptorSheetNumber
 
   @deprecated
-  def getDefaultModName: String = getBlockDescriptorModName
+  def getDefaultModName: String = getDescriptorModName
 }
