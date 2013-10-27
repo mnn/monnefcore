@@ -54,7 +54,16 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
     }
 
     private void setupModIdByCallerClass() {
-        modId = PackageToModIdRegistry.searchModIdFromCurrentPackage(2); // <- mind depth if refactoring!
+        modId = PackageToModIdRegistry.searchModIdFromCurrentPackage(getCallerDepthForPackageIdentification()); // <- mind depth if refactoring!
+    }
+
+    /**
+     * Every non-end class should return super's value increased by 1.
+     *
+     * @return How deep in caller structure has to be walked to get correct package.
+     */
+    public int getCallerDepthForPackageIdentification() {
+        return 2;
     }
 
     @Override

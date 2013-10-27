@@ -5,9 +5,9 @@
 
 package monnef.core.client;
 
+import monnef.core.block.ContainerMachine;
 import monnef.core.block.TileMachineWithInventory;
 import monnef.core.utils.ColorHelper;
-import monnef.core.block.ContainerMachine;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -27,6 +27,11 @@ public class GuiContainerMachine extends GuiContainerMonnefCore {
     public GuiContainerMachine(InventoryPlayer inventoryPlayer, TileMachineWithInventory tileEntity, ContainerMachine container) {
         super(container);
         this.tile = tileEntity;
+    }
+
+    @Override
+    public int getCallerDepthForPackageIdentification() {
+        return 1 + super.getCallerDepthForPackageIdentification();
     }
 
     @Override
