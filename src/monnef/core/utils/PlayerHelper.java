@@ -29,11 +29,12 @@ public class PlayerHelper {
 
     public static void giveItemToPlayer(EntityPlayer player, ItemStack item) {
         World world = player.worldObj;
-        if (item == null || item.stackSize <= 0 ) return;
+        if (item == null || item.stackSize <= 0) return;
         InventoryPlayer inv = player.inventory;
         if (inv.getFirstEmptyStack() == -1) {
-            if(!world.isRemote){
-                Entity entity = new EntityItem(world, player.posX, player.posY + 0.5, player.posZ, item.copy());
+            if (!world.isRemote) {
+                EntityItem entity = new EntityItem(world, player.posX, player.posY + 0.5, player.posZ, item.copy());
+                entity.delayBeforeCanPickup = 10;
                 world.spawnEntityInWorld(entity);
             }
         } else {

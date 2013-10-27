@@ -291,6 +291,7 @@ public class ContainerRegistry {
     }
 
     public static boolean containsRegistration(TileEntity tile) {
+        if (tile == null) return false;
         return db.containsKey(tile.getClass());
     }
 
