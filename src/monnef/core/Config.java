@@ -25,6 +25,7 @@ public class Config {
     public static final String USE_ASM_LIGHTNING = "useASMLightning";
     public static final String EXPORTER_ENABLED = "exporterEnabled";
     public static final String CORE_COMMAND_ENABLED = "coreCommandEnabled";
+    public static final String DISABLE_CLOAKS_WITH_SHADERS = "disableCloaksWithShadersMod";
 
     public static final String FALSE_VALUE = Boolean.FALSE.toString().toLowerCase();
     public static final String TRUE_VALUE = Boolean.TRUE.toString().toLowerCase();
@@ -33,6 +34,11 @@ public class Config {
     private static boolean useASMLightning;
     private static boolean exporterEnabled;
     private static boolean commandEnabled;
+    private static boolean disableCloaksWithShaders;
+
+    public static boolean areDisabledCloaksWithShaders() {
+        return disableCloaksWithShaders;
+    }
 
     public static boolean useOldASMLightning() {
         assertLoadedConfig();
@@ -125,6 +131,7 @@ public class Config {
         useASMLightning = processBoolValue(prop, USE_ASM_LIGHTNING);
         exporterEnabled = processBoolValue(prop, EXPORTER_ENABLED);
         commandEnabled = processBoolValue(prop, CORE_COMMAND_ENABLED, TRUE_VALUE);
+        disableCloaksWithShaders = processBoolValue(prop, DISABLE_CLOAKS_WITH_SHADERS);
     }
 
     private static boolean processBoolValue(Properties prop, String key) {
@@ -140,5 +147,6 @@ public class Config {
         prop.setProperty(USE_ASM_LIGHTNING, FALSE_VALUE);
         prop.setProperty(EXPORTER_ENABLED, FALSE_VALUE);
         prop.setProperty(CORE_COMMAND_ENABLED, TRUE_VALUE);
+        prop.setProperty(DISABLE_CLOAKS_WITH_SHADERS, FALSE_VALUE);
     }
 }

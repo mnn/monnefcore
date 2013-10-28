@@ -8,6 +8,7 @@ package monnef.core.client;
 import com.google.common.base.Joiner;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import monnef.core.Config;
 import monnef.core.Reference;
 import monnef.core.utils.WebHelper;
 import net.minecraft.client.Minecraft;
@@ -54,7 +55,7 @@ public class CustomCloaksHandler {
 
     @ForgeSubscribe
     public void onPreRenderSpecials(RenderPlayerEvent.Specials.Pre event) {
-        if (Loader.isModLoaded("shadersmod")) {
+        if (Config.areDisabledCloaksWithShaders() && Loader.isModLoaded("shadersmod")) {
             return;
         }
         if (event.entityPlayer instanceof AbstractClientPlayer) {
