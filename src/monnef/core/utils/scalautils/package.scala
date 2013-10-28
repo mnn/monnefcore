@@ -27,4 +27,10 @@ package object scalautils {
     def |>[O](f: (A, B, C, D) => O): O = f(value._1, value._2, value._3, value._4)
   }
 
+  implicit class ListUtils[T](l: List[T]) {
+    def shiftTrivial(v: Int) = {
+      if (v < 0 || v > l.size) throw new IllegalArgumentException
+      l.takeRight(l.size - v) ::: l.take(v)
+    }
+  }
 }

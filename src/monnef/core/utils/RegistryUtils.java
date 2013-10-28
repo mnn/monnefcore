@@ -13,6 +13,7 @@ import cpw.mods.fml.common.registry.BlockProxy;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.ReflectionHelper;
+import monnef.core.MonnefCorePlugin;
 import monnef.core.api.IItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -130,8 +131,12 @@ public class RegistryUtils {
 
     public static String getTitle(ItemStack stack) {
         String title = stack.getDisplayName();
-        if (title == null || title.isEmpty()) {
+        if (title == null || title.isEmpty() || title.contains("item.") || title.contains("tile.") || title.contains(".name")) {
             title = LanguageRegistry.instance().getStringLocalization(stack.getItem().getUnlocalizedName() + ".name");
+        }
+        if (title == null || title.isEmpty()) {
+            title = stack.getUnlocalizedName();
+            MonnefCorePlugin.Log.printWarning(String.format("Unable to find translation of %s.", title));
         }
         return title;
     }
