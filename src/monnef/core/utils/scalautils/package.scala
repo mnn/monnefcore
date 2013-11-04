@@ -33,4 +33,15 @@ package object scalautils {
       l.takeRight(l.size - v) ::: l.take(v)
     }
   }
+
+  implicit class StringUtils(s: String) {
+    def toIntOpt: Option[Int] = {
+      try {
+        Some(s.toInt)
+      } catch {
+        case e: Exception => None
+      }
+    }
+  }
+
 }
