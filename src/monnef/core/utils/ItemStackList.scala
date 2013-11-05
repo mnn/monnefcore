@@ -50,6 +50,8 @@ class ItemStackList(val name: String) {
     name + ": " + (for {i <- db} yield s"${i.itemID}:${formattedDamage(i.getItemDamage)}").mkString(", ")
   }
 
+  def printToLog(log: CustomLogger) { log.printInfo(s"${this.getClass.getSimpleName} - $toString") }
+
   def loadFromString(s: String): ItemStackList = {
     clear()
     val idsWithMeta: Seq[Seq[String]] = s.replaceAll(" |\n", "").split(",|;").toList.map(_.split(":").toList)
