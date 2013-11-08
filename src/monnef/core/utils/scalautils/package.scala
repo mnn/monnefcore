@@ -51,7 +51,6 @@ package object scalautils {
     type BOARD2D = List[POS2D]
 
     def centeredSquares(rad: Int): Stream[BOARD2D] =
-    //      List((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)) #::
       generateOneSquare(rad) #::
         centeredSquares(rad + 1)
 
@@ -69,6 +68,5 @@ package object scalautils {
       }
     }
   }
-
 
 }
