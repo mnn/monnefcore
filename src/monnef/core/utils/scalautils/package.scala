@@ -11,8 +11,8 @@ package object scalautils {
     def |>[B](f: A => B): B = f(value)
   }
 
-  implicit class PipedObjectTuple1[A](value: (A)) {
-    def |>[B](f: (A) => B): B = f(value)
+  implicit class PipedObjectTuple1[A](value: Tuple1[A]) {
+    def |>[B](f: (A) => B): B = f(value._1)
   }
 
   implicit class PipedObjectTuple2[A, B](value: (A, B)) {
@@ -43,5 +43,32 @@ package object scalautils {
       }
     }
   }
+
+  lazy val centeredSquares = CenteredSquareGenerator.centeredSquares(0)
+
+  object CenteredSquareGenerator {
+    type POS2D = (Int, Int)
+    type BOARD2D = List[POS2D]
+
+    def centeredSquares(rad: Int): Stream[BOARD2D] =
+    //      List((-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1)) #::
+      generateOneSquare(rad) #::
+        centeredSquares(rad + 1)
+
+    def generateOneSquare(rad: Int): BOARD2D = {
+      if (rad <= 0) {
+        List((0, 0))
+      } else {
+        // "half"
+        val largerHalf: BOARD2D = (for {
+          x <- -rad to rad
+          y <- List(rad, -rad)
+        } yield (x, y)).toList
+        val smallerHalf = largerHalf.filter {case (x, y) => x != y && x != -y}.map {case (x, y) => (y, x)}
+        largerHalf ++ smallerHalf
+      }
+    }
+  }
+
 
 }
