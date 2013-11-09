@@ -55,4 +55,11 @@ public class WorldHelper {
     public static void createExplosion(World world, Entity exploder, double x, double y, double z, float size, boolean flaming, boolean smoking) {
         world.newExplosion(exploder, x, y, z, size, flaming, smoking);
     }
+
+    public static void dropItem(World world, int x, int y, int z, ItemStack stack) {
+        if (world.isRemote) return;
+        EntityItem i = new EntityItem(world, x, y, z, stack);
+        i.delayBeforeCanPickup = 10;
+        world.spawnEntityInWorld(i);
+    }
 }

@@ -69,6 +69,13 @@ public class InventoryUtils {
         return new ItemStackInInventory(inventory, index);
     }
 
+    /**
+     * Tries to insert a stack into given inventory.
+     * @param inventory Target inventory.
+     * @param stack Item to be inserted.
+     * @param side Side.
+     * @return Leftover item.
+     */
     public static ItemStack insertStackToExternalInventory(IInventory inventory, ItemStack stack, int side) {
         return TileEntityHopper.insertStack(inventory, stack, side);
     }

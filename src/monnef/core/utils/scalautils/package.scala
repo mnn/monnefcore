@@ -5,6 +5,8 @@
 
 package monnef.core.utils
 
+import scala.collection.IterableLike
+
 package object scalautils {
 
   implicit class PipedObject[A](value: A) {
@@ -66,6 +68,19 @@ package object scalautils {
         val smallerHalf = largerHalf.filter {case (x, y) => x != y && x != -y}.map {case (x, y) => (y, x)}
         largerHalf ++ smallerHalf
       }
+    }
+  }
+
+  implicit class IterableLikePimps[A, Repr](s: IterableLike[A, Repr]) {
+    def zipWithIndexFirst[A1 >: A, That](implicit bf: scala.collection.generic.CanBuildFrom[Repr, Tuple2[Int, A1], That]): That = {
+      var i = -1
+      val b = bf(s.repr)
+      b.sizeHint(s)
+      for {a <- s} {
+        i += 1
+        b += Tuple2(i, a)
+      }
+      b.result()
     }
   }
 
