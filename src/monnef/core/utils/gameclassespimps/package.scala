@@ -8,8 +8,13 @@ package monnef.core.utils
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.util.AxisAlignedBB
+import net.minecraft.command.IEntitySelector
+import net.minecraft.entity.Entity
+import net.minecraft.world.World
+import scala.collection.JavaConversions._
 
-package object gameclassespimps {
+package object scalagameutils {
 
   implicit class ItemStackPimps(s: ItemStack) {
     def initTag() { if (s.getTagCompound == null) s.setTagCompound(new NBTTagCompound()) }
@@ -32,6 +37,15 @@ package object gameclassespimps {
     def allInvAndArmorStacks: Seq[ItemStack] = p.inventory.mainInventory ++ armorStacks
 
     def armorStacks: Seq[ItemStack] = p.inventory.armorInventory
+  }
+
+  class EntityTypeSelector(c: Class[_]) extends IEntitySelector {
+    def isEntityApplicable(entity: Entity): Boolean = entity != null && c.isAssignableFrom(entity.getClass)
+  }
+
+  implicit class WorldPimps(w: World) {
+    def findEntitiesInRangeOfType[A](x: Int, y: Int, z: Int, radius: Int, c: Class[A]): List[A] =
+      w.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getAABBPool.getAABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius), new EntityTypeSelector(c)).asInstanceOf[java.util.List[A]].toList
   }
 
 }
