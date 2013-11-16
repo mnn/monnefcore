@@ -76,6 +76,7 @@ abstract class ItemMonnefCore(_id: Int) extends Item(_id) with GameObjectDescrip
 
   def getCustomDamageVsEntity(itemStack: ItemStack): Int = getCustomDamageVsEntity
 
+  override def setHasSubtypes(hasSubtypes: Boolean): Item = super.setHasSubtypes(hasSubtypes)
 }
 
 object ItemMonnefCore {
