@@ -44,6 +44,15 @@ package object scalautils {
         case e: Exception => None
       }
     }
+
+    def makeFirstCapital: String = {
+      val (first, rest) = s.splitAt(1)
+      first.toUpperCase + rest
+    }
+
+    def insertSpaceOnLowerUpperCaseChange: String = {
+      s.replaceAll("(\\p{javaLowerCase})(\\p{javaUpperCase})", "$1 $2")
+    }
   }
 
   lazy val centeredSquares = CenteredSquareGenerator.centeredSquares(0)
