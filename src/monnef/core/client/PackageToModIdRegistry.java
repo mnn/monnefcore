@@ -58,7 +58,7 @@ public class PackageToModIdRegistry {
     }
 
     public static String searchModId(Class clazz) {
-        String packageName = clazz.getPackage().getName();
+        String packageName = CallerFinder.getPackageFromClassName(clazz.getName());
         return PackageToModIdRegistry.searchModId(packageName);
     }
 }

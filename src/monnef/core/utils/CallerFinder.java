@@ -23,7 +23,11 @@ public class CallerFinder {
         }
         String classCallerName = callerClass.getName();
 
-        return classCallerName.substring(0, classCallerName.lastIndexOf('.'));
+        return getPackageFromClassName(classCallerName);
+    }
+
+    public static String getPackageFromClassName(String className) {
+        return className.substring(0, className.lastIndexOf('.'));
     }
 
     public static String getMyPackage() {
