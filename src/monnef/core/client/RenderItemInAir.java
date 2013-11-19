@@ -7,6 +7,7 @@ package monnef.core.client;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
@@ -15,44 +16,43 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderItemInAir extends Render {
-    private Icon icon;
     private final Item item;
+    private int dmg;
 
     public RenderItemInAir(Item item) {
-        super();
-        this.item = item;
+        this(item, 0);
     }
 
-    public void tryLoadIcon() {
-        icon = item.getIconFromDamage(0);
+    public RenderItemInAir(Item item, int dmg) {
+        super();
+        this.item = item;
+        this.dmg = dmg;
     }
 
     @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        if (icon == null) tryLoadIcon();
+        Icon icon = item.getIconFromDamage(dmg);
 
-        GL11.glPushMatrix();
+        if (icon != null) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef((float) par2, (float) par4, (float) par6);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glScalef(0.5F, 0.5F, 0.5F);
+            bindEntityTexture(par1Entity);
+            Tessellator tessellator = Tessellator.instance;
 
-        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glScalef(0.5F, 0.5F, 0.5F);
-        Tessellator var10 = Tessellator.instance;
-
-        //texture.bindTexture(0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 1); // 1 for items
-
-        this.doRender(var10);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-
-        GL11.glPopMatrix();
+            doRender(tessellator, icon);
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GL11.glPopMatrix();
+        }
     }
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return null;
+        return TextureMap.locationItemsTexture;
     }
 
-    private void doRender(Tessellator par1Tessellator) {
+    private void doRender(Tessellator par1Tessellator, Icon icon) {
         float f = icon.getMinU();
         float f1 = icon.getMaxU();
         float f2 = icon.getMinV();
