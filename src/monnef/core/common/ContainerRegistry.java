@@ -80,7 +80,12 @@ public class ContainerRegistry {
             if (file.isDirectory()) {
                 for (File f : file.listFiles()) {
                     Log.printFinest(String.format("Scanning file: %s", f.getName()));
-                    cf.detect(f);
+                    try {
+                        cf.detect(f);
+                    } catch (IOException e) {
+                        Log.printWarning(String.format("Cannot process file: '%s'", f.getName()));
+                        e.printStackTrace();
+                    }
                 }
             }
             timeStop = System.currentTimeMillis();
