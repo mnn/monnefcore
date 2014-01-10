@@ -76,7 +76,7 @@ public class PlayerHelper {
     public static EntityHitResult rayTraceEntity(EntityPlayer player, double distance, Vec3 look) {
         Vec3 playerPosition = getPlayersHeadPositionVector(player);
 
-        Entity entityHit = null;
+        Entity entityHit;
         Vec3 shift = calculatePlayerVectorMultiplied(player, look, distance);
         AxisAlignedBB searchArea = addCoord(player.boundingBox, shift).expand(1.0D, 1.0D, 1.0D);
         List entitiesInArea = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, searchArea);

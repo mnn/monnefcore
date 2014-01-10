@@ -41,7 +41,7 @@ public class McpParser {
 
         MappingDictionary finalMethods = database.get(MappedObjectType.METHOD);
 
-        FileInputStream inputStream = null;
+        FileInputStream inputStream;
         try {
             inputStream = new FileInputStream(filePath);
             InputStreamReader reader = new InputStreamReader(inputStream);
