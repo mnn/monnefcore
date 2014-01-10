@@ -141,9 +141,9 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
     }
 
     @Override
-    public void drawScreen(int mousex, int mousey, float par3) {
-        super.drawScreen(mousex, mousey, par3);
-        drawTooltips(mousex, mousey);
+    public void drawScreen(int mouseX, int mouseY, float par3) {
+        super.drawScreen(mouseX, mouseY, par3);
+        drawTooltips(mouseX, mouseY);
     }
 
     public List<String> fillTooltips(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {

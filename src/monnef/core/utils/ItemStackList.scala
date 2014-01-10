@@ -62,7 +62,7 @@ class ItemStackList(val name: String) {
         for {part <- a} {
           val formattedPart = part.mkString("[", ",", "]")
           if (part.length != 1 && part.length != 2) throw new RuntimeException(s"$name: Invalid length of item after splitting: '$formattedPart'.")
-          for {subPart <- part} if (!subPart.forall(c => c.isDigit || c == '-')) throw new RuntimeException(s"$name: Subpart doesn't seem to be an integer: '$subPart'.")
+          for {subPart <- part} if (!subPart.forall(c => c.isDigit || c == '-')) throw new RuntimeException(s"$name: Sub-part doesn't seem to be an integer: '$subPart'.")
         }
       }
       validate(idsWithMeta)

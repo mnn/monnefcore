@@ -85,5 +85,5 @@ object ItemMonnefCore {
       stack.setTagCompound(new NBTTagCompound())
   }
 
-  val BETA_WARNING_TEXT: String = "\u00A7lnot finished!\u00A7r"
+  val BETA_WARNING_TEXT: String = "\u00A7l" + "not finished!\u00A7r"
 }
