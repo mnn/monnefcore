@@ -62,6 +62,7 @@ public class ContainerMachine extends ContainerMonnefCore {
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int index, int value) {
         if (index < 0 || index > lastValue.size()) {
