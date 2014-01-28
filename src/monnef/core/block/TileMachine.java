@@ -8,10 +8,9 @@ package monnef.core.block;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
+import monnef.core.MonnefCorePlugin;
 import monnef.core.api.IIntegerCoordinates;
 import monnef.core.utils.IntegerCoordinates;
-import monnef.jaffas.food.JaffasFood;
-import monnef.jaffas.power.block.common.BlockMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -188,7 +187,7 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
         }
 
         if (dummyCreationPhaseCounter >= DUMMY_CREATION_PHASE_INSTANCE_COUNTER_LIMIT) {
-            JaffasFood.Log.printSevere(instance.getClass().getSimpleName() + ": limit of dummy creation has been exceeded!");
+            MonnefCorePlugin.Log.printSevere(instance.getClass().getSimpleName() + ": limit of dummy creation has been exceeded!");
         }
     }
 

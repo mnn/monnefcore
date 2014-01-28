@@ -39,6 +39,7 @@ public class MonnefCoreNormalMod {
 
     @Mod.Instance(Reference.ModIdHelper)
     public static MonnefCoreNormalMod instance;
+    public static int renderID;
 
     @Mod.EventHandler
     public void preLoad(FMLPreInitializationEvent evt) {
