@@ -11,4 +11,6 @@ trait CorePacketHandlerTrait extends MessageObjectTypeTrait {
   def onPacket(in: MessageIn[MESSAGE_OBJ#IN], player: Player)
 
   def dispatcher: CorePacketDispatcher
+
+  def manager: PacketManager
 }

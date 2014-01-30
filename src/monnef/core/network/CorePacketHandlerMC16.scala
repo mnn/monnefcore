@@ -15,12 +15,12 @@ trait MessageObjectMC16Trait extends MessageObjectTypeTrait {
   override type MESSAGE_OBJ = MessageObjectMC16
 }
 
-class CorePacketHandlerMC16 extends CorePacketHandlerTrait with MessageObjectMC16Trait {
+abstract class CorePacketHandlerBase extends CorePacketHandlerTrait {
   def onPacket(in: MessageIn[MESSAGE_OBJ#IN], player: Player) {
     try {
       val entityPlayer = player.asInstanceOf[EntityPlayer]
       val packetId = in.readByte()
-      val corePacket = PacketManagerMonnefCore.constructPacket(packetId)
+      val corePacket = manager.constructPacket(packetId)
       corePacket.read(in)
       corePacket.execute(entityPlayer, if (entityPlayer.worldObj.isRemote) Side.CLIENT else Side.SERVER)
     } catch {
@@ -40,6 +40,11 @@ class CorePacketHandlerMC16 extends CorePacketHandlerTrait with MessageObjectMC1
         throw new RuntimeException("Unexpected Reflection exception during Packet construction!", e)
     }
   }
+}
+
+class CorePacketHandlerMC16 extends CorePacketHandlerBase with MessageObjectMC16Trait {
 
   def dispatcher: CorePacketDispatcherMC16.type = CorePacketDispatcherMC16
+
+  def manager: PacketManagerMonnefCoreMC16.type = PacketManagerMonnefCoreMC16
 }
