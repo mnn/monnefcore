@@ -19,5 +19,6 @@ public class Reference {
     public static final String MONNEF = "monnef";
     public static ArrayList<String> Authors = new ArrayList<String>(Arrays.asList(MONNEF));
     public static final String TIARTYOS = "Tiartyos";
+    public static final String CHANNEL = "monnef-core-main";
 }
 
