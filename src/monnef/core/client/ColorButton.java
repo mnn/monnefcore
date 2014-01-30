@@ -57,6 +57,10 @@ public class ColorButton extends AdvancedButton {
         resetState();
     }
 
+    public int getCurrentStateNumber() {
+        return currentStateNumber;
+    }
+
     public void setState(int stateNumber) {
         currentStateNumber = stateNumber;
         refreshState();

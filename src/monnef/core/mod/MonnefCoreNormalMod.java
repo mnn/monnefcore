@@ -58,6 +58,7 @@ public class MonnefCoreNormalMod {
         proxy.registerClientStuff();
     }
 
+    @Mod.EventHandler
     public void postLoad(FMLPostInitializationEvent evt) {
         BreakableIronMaterial.onPostLoad();
     }
