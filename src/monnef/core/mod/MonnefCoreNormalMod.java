@@ -46,7 +46,7 @@ public class MonnefCoreNormalMod {
     public static MonnefCoreNormalMod instance;
     public static int renderID;
 
-    public static CorePacketHandlerTrait packetHandler = new CorePacketHandlerMC16();
+    public static CorePacketHandlerMC16 packetHandler = new CorePacketHandlerMC16();
 //    public static CorePacketDispatcher packetDispatcher = new CorePacketDispatcherMC16();
 
     @Mod.EventHandler

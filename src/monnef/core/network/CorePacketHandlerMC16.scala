@@ -47,4 +47,6 @@ class CorePacketHandlerMC16 extends CorePacketHandlerBase with MessageObjectMC16
   def dispatcher: CorePacketDispatcherMC16.type = CorePacketDispatcherMC16
 
   def manager: PacketManagerMonnefCoreMC16.type = PacketManagerMonnefCoreMC16
+
+  manager.packetHandler = this
 }
