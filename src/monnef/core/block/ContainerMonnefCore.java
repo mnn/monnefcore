@@ -15,6 +15,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
+import java.util.List;
+
 public abstract class ContainerMonnefCore extends Container {
     private static final boolean PRINT_DEBUG_TRANSFER_MESSAGES = false;
 
@@ -156,5 +158,9 @@ public abstract class ContainerMonnefCore extends Container {
     @Override
     public boolean mergeItemStack(ItemStack stack, int startingIndex, int endingIndex, boolean fromEnd) {
         return super.mergeItemStack(stack, startingIndex, endingIndex, fromEnd);
+    }
+
+    public List getCrafters() {
+        return crafters;
     }
 }
