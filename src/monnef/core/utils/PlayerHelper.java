@@ -5,11 +5,16 @@
 
 package monnef.core.utils;
 
+import monnef.core.CoreModContainer;
+import monnef.core.block.ContainerMonnefCore;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatMessageComponent;
@@ -17,6 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerHelper {
@@ -123,5 +129,21 @@ public class PlayerHelper {
         ChatMessageComponent component = new ChatMessageComponent();
         component.addText(msg);
         target.sendChatToPlayer(component);
+    }
+
+    // only server side
+    public static List<EntityPlayerMP> getPlayersWithOpenedContainerAround(EntityPlayerMP centerPlayer, double radius, Class<? extends Container> containerClass) {
+        ArrayList<EntityPlayerMP> res = new ArrayList<EntityPlayerMP>();
+        AxisAlignedBB box = AxisAlignedBB.getBoundingBox(centerPlayer.posX - radius, centerPlayer.posY - radius, centerPlayer.posZ - radius, centerPlayer.posX + radius, centerPlayer.posY + radius, centerPlayer.posZ + radius);
+        List tmp = centerPlayer.worldObj.getEntitiesWithinAABBExcludingEntity(centerPlayer, box);
+        for (Object item : tmp) {
+            if (item instanceof EntityPlayerMP) {
+                EntityPlayerMP player = (EntityPlayerMP) item;
+                if (player.openContainer != null && containerClass.isAssignableFrom(player.openContainer.getClass())) {
+                    res.add(player);
+                }
+            }
+        }
+        return res;
     }
 }
