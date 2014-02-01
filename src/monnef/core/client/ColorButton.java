@@ -7,6 +7,7 @@ package monnef.core.client;
 
 import monnef.core.utils.ColorEnum;
 import net.minecraft.client.Minecraft;
+import sun.text.resources.FormatData_ro;
 
 public class ColorButton extends AdvancedButton {
     private final int defaultStateNumber;
@@ -82,9 +83,17 @@ public class ColorButton extends AdvancedButton {
         refreshState();
     }
 
+    public void nextState(int times) {
+        for (int i = 0; i < times; i++) nextState();
+    }
+
     public void prevState() {
         currentStateNumber--;
         refreshState();
+    }
+
+    public void prevState(int times) {
+        for (int i = 0; i < times; i++) prevState();
     }
 
     private void fixOverflow() {

@@ -6,6 +6,7 @@
 package monnef.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import monnef.core.common.CommonProxy;
 import monnef.core.common.ContainerRegistry;
@@ -20,6 +21,7 @@ public class ClientProxy extends CommonProxy {
         CustomCloaksHandler handler = new CustomCloaksHandler();
         MinecraftForge.EVENT_BUS.register(handler);
         MonnefCoreNormalMod.renderID = RenderingRegistry.getNextAvailableRenderId();
+        KeyBindingRegistry.registerKeyBinding(new MonnefCoreKeyHandler());
     }
 
     @Override

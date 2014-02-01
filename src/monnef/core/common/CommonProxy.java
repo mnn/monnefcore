@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class CommonProxy {
     public void registerClientStuff() {
-        MonnefCorePlugin.Log.printDebug("rCS on server");
+        MonnefCorePlugin.Log.printDebug("rCS");
     }
 
     public World getClientWorld() {
