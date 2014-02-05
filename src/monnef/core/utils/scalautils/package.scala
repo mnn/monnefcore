@@ -6,6 +6,8 @@
 package monnef.core.utils
 
 import scala.collection.IterableLike
+import scala.reflect.runtime.universe._
+import scala.reflect.ClassTag
 
 package object scalautils {
 
@@ -91,6 +93,13 @@ package object scalautils {
       }
       b.result()
     }
+  }
+
+  // behaves strangely
+  implicit class InstancePimps[IN: TypeTag](in: IN) {
+    def isInstanceOfCustom[OUT: TypeTag]: Boolean = typeOf[IN] <:< typeOf[OUT]
+
+    def tryAsInstanceOf[OUT: TypeTag](f: OUT => Unit) { if (in.isInstanceOfCustom[OUT]) f(in.asInstanceOf[OUT]) }
   }
 
 }

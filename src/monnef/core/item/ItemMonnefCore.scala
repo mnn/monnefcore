@@ -6,11 +6,14 @@ import net.minecraft.client.renderer.texture.IconRegister
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.{EnumRarity, Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.Icon
+import net.minecraft.util.{MathHelper, Icon}
 import monnef.core.block.GameObjectDescriptor
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.creativetab.CreativeTabs
 import monnef.core.mod.MonnefCoreNormalMod
+import cpw.mods.fml.common.registry.LanguageRegistry
+import java.util
+import monnef.core.utils.scalautils._
 
 abstract class ItemMonnefCore(_id: Int) extends Item(_id) with GameObjectDescriptor {
 
@@ -23,6 +26,9 @@ abstract class ItemMonnefCore(_id: Int) extends Item(_id) with GameObjectDescrip
 
   initCustomIcon()
   rarity = MonnefCoreNormalMod.proxy.getCommonRarity
+  if (this.isInstanceOf[MultiItem]) this.asInstanceOf[MultiItem].initMulti()
+
+  // this.tryAsInstanceOf((a: MultiItem) => a.initMulti()) // <- not working, maybe too much is erased?
 
   override def registerIcons(iconRegister: IconRegister) {
     this.itemIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this))
@@ -86,4 +92,47 @@ object ItemMonnefCore {
   }
 
   val BETA_WARNING_TEXT: String = "\u00A7l" + "not finished!\u00A7r"
+}
+
+// to overcome Scala's imperfections
+trait MultiItemBase {
+  def getUnlocalizedName: String
+}
+
+trait MultiItem extends MultiItemBase {
+  this: ItemMonnefCore =>
+
+  def initMulti() {
+    setMaxDamage(0)
+    setHasSubtypes(true)
+    setIconsCount(getSubItemsCount)
+  }
+
+  def getSubNames: Array[String]
+
+  def getSubTitles: Array[String]
+
+  def getSubItemsCount: Int = getSubNames.length
+
+  @SideOnly(Side.CLIENT) override def getIconFromDamage(iconId: Int): Icon = {
+    val iconNum = MathHelper.clamp_int(iconId, 0, getSubItemsCount)
+    getCustomIcon(iconNum)
+  }
+
+  abstract override def getUnlocalizedName: String = super.getUnlocalizedName
+
+  override def getUnlocalizedName(stack: ItemStack): String = {
+    val idx = MathHelper.clamp_int(stack.getItemDamage, 0, getSubItemsCount)
+    super.getUnlocalizedName + "." + getSubNames(idx)
+  }
+
+  def registerNames() {
+    for (i <- 0 until getSubItemsCount)
+      LanguageRegistry.instance.addStringLocalization(this.getUnlocalizedName + "." + getSubNames(i) + ".name", getSubTitles(i))
+  }
+
+  @SideOnly(Side.CLIENT) override def getSubItems(par1: Int, par2CreativeTabs: CreativeTabs, par3List: util.List[_]) {
+    val l = par3List.asInstanceOf[util.List[ItemStack]]
+    for (i <- 0 until getSubItemsCount) l.add(new ItemStack(par1, 1, i))
+  }
 }
