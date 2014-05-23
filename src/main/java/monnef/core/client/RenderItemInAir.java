@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -31,7 +31,7 @@ public class RenderItemInAir extends Render {
 
     @Override
     public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-        Icon icon = item.getIconFromDamage(dmg);
+        IIcon icon = item.getIconFromDamage(dmg);
 
         if (icon != null) {
             GL11.glPushMatrix();
@@ -52,7 +52,7 @@ public class RenderItemInAir extends Render {
         return TextureMap.locationItemsTexture;
     }
 
-    private void doRender(Tessellator par1Tessellator, Icon icon) {
+    private void doRender(Tessellator par1Tessellator, IIcon icon) {
         float f = icon.getMinU();
         float f1 = icon.getMaxU();
         float f2 = icon.getMinV();

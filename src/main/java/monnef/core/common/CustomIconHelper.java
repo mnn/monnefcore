@@ -7,7 +7,7 @@ package monnef.core.common;
 
 import monnef.core.Reference;
 import monnef.core.api.ICustomIcon;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 public class CustomIconHelper {
     public static String generateShiftedId(ICustomIcon obj, int shift) {
@@ -114,7 +114,7 @@ public class CustomIconHelper {
         }
 
         @Override
-        public Icon getCustomIcon(int index) {
+        public IIcon getCustomIcon(int index) {
             return null;
         }
     }

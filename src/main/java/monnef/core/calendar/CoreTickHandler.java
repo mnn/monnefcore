@@ -5,35 +5,27 @@
 
 package monnef.core.calendar;
 
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
-import monnef.core.Reference;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 
-import java.util.EnumSet;
-
-public class CoreTickHandler implements ITickHandler {
+public class CoreTickHandler {
     private static EventCalendar coreEventCalendar = new EventCalendar();
 
     public static EventCalendar getCoreEventCalendar() {
         return coreEventCalendar;
     }
 
-    @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
+    public void onTick() {
         coreEventCalendar.tick();
     }
 
-    @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent evt) {
+        onTick();
     }
 
-    @Override
-    public EnumSet<TickType> ticks() {
-        return EnumSet.of(TickType.CLIENT, TickType.SERVER);
-    }
-
-    @Override
-    public String getLabel() {
-        return Reference.ModId;
+    @SubscribeEvent
+    public void onServerTick(TickEvent.ServerTickEvent evt) {
+        onTick();
     }
 }

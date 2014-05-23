@@ -5,8 +5,8 @@
 
 package monnef.core.event;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.world.World;
-import net.minecraftforge.event.Event;
 
 @Event.HasResult
 public class LightningGeneratedEvent extends Event {

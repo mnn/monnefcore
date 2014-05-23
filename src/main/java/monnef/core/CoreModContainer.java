@@ -14,14 +14,13 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
-import monnef.core.calendar.CoreTickHandler;
 import monnef.core.utils.WolfFoodRegistry;
+import monnef.jaffas.food.client.ClientTickHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
@@ -98,9 +97,7 @@ public class CoreModContainer extends DummyModContainer {
             }
         }
 
-        CoreTickHandler tickHandler = new CoreTickHandler();
-        TickRegistry.registerTickHandler(tickHandler, Side.CLIENT);
-        TickRegistry.registerTickHandler(tickHandler, Side.SERVER);
+        FMLCommonHandler.instance().bus().register(new ClientTickHandler());
 
         MinecraftForge.EVENT_BUS.register(new WolfFoodRegistry());
 

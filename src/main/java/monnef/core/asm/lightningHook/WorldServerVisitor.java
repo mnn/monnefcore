@@ -26,9 +26,11 @@ public class WorldServerVisitor extends ClassVisitor {
     @Override
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
         cv.visitInnerClass(name, outerName, innerName, access);
+
         if (outerName.equals("net/minecraftforge/event/world/WorldEvent$Save")) {
             Log.printFine("Injecting forge event inner class reference.");
-            cv.visitInnerClass("net/minecraftforge/event/Event$Result", "net/minecraftforge/event/Event", "Result", ACC_PUBLIC + ACC_FINAL + ACC_STATIC + ACC_ENUM);
+            //cv.visitInnerClass("net/minecraftforge/event/Event$Result", "net/minecraftforge/event/Event", "Result", ACC_PUBLIC + ACC_FINAL + ACC_STATIC + ACC_ENUM);
+            cv.visitInnerClass("cpw/mods/fml/common/eventhandler/Event$Result", "cpw/mods/fml/common/eventhandler/Event", "Result", ACC_PUBLIC + ACC_FINAL + ACC_STATIC + ACC_ENUM);
         }
     }
 

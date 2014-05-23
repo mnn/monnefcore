@@ -7,6 +7,7 @@ package monnef.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import monnef.core.common.CommonProxy;
 import monnef.core.common.ContainerRegistry;
 import monnef.core.mod.MonnefCoreNormalMod;
@@ -21,7 +22,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(handler);
         MonnefCoreNormalMod.renderID = RenderingRegistry.getNextAvailableRenderId();
 
-        MinecraftForge.EVENT_BUS.register(new MonnefCoreKeyHandler());
+        FMLCommonHandler.instance().bus().register(new MonnefCoreKeyHandler());
     }
 
     @Override
