@@ -6,18 +6,18 @@
 package monnef.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import monnef.core.MonnefCorePlugin;
+import monnef.core.utils.PlayerHelper;
 import monnef.core.utils.ScreenShotHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import java.io.File;
-import java.util.EnumSet;
 import java.util.LinkedList;
 
-public class ExporterTickHandler implements ITickHandler {
+public class ExporterTickHandler {
     private static boolean takeShotNow = false;
 
     private static LinkedList<RenderTask> tasks = new LinkedList<RenderTask>();
@@ -27,9 +27,13 @@ public class ExporterTickHandler implements ITickHandler {
         tasks.add(new RenderTask(stack, origId));
     }
 
-    @Override
-    public void tickStart(EnumSet<TickType> type, Object... tickData) {
-        if (type.contains(TickType.CLIENT)) {
+    public void onTickEvent(TickEvent evt) {
+
+    }
+
+    @SubscribeEvent
+    public void tickStart(TickEvent.ClientTickEvent evt) {
+        if (evt.phase == TickEvent.Phase.START) {
             if (!tasks.isEmpty() && !takeShotNow) {
                 GuiExporter gui = (GuiExporter) FMLClientHandler.instance().getClient().currentScreen;
                 currentTask = tasks.pop();
@@ -43,7 +47,7 @@ public class ExporterTickHandler implements ITickHandler {
                         gui.inventorySlots.getSlot(0).inventory.setInventorySlotContents(0, currentTask.stack);
                         takeShotNow = true;
                     } catch (NullPointerException e) {
-                        MonnefCorePlugin.Log.printWarning("NPE while popping task! BlockID: " + currentTask.stack.itemID + " (origId: " + currentTask.origId + ")");
+                        MonnefCorePlugin.Log.printWarning("NPE while popping task! BlockID: " + currentTask.stack.getItem().getUnlocalizedName() + " (origId: " + currentTask.origId + ")");
                         takeShotNow = false;
                     }
                 }
@@ -51,9 +55,8 @@ public class ExporterTickHandler implements ITickHandler {
         }
     }
 
-    @Override
-    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        if (!type.contains(TickType.RENDER)) return;
+    @SubscribeEvent
+    public void tickEnd(TickEvent.RenderTickEvent evt) {
         if (!takeShotNow) return;
         takeShot();
         takeShotNow = false;
@@ -73,20 +76,10 @@ public class ExporterTickHandler implements ITickHandler {
         }
         String res = ScreenShotHelper.saveScreenShot(currDir, fileName, pixX, pixY - iconSize, iconSize, iconSize);
         if (res.startsWith("Saved")) {
-            MonnefCorePlugin.Log.printFinest("Rendered block " + blockName + " (oID:" + currentTask.origId + ", sID:" + currentTask.stack.itemID + ").");
+            MonnefCorePlugin.Log.printFinest("Rendered block " + blockName + " (oID:" + currentTask.origId + ", sID:" + currentTask.stack.getItem().getUnlocalizedName() + ").");
         } else {
-            FMLClientHandler.instance().getClient().thePlayer.addChatMessage("Problem! " + res);
+            PlayerHelper.addMessage(FMLClientHandler.instance().getClient().thePlayer, "Problem! " + res);
         }
-    }
-
-    @Override
-    public EnumSet<TickType> ticks() {
-        return EnumSet.of(TickType.RENDER, TickType.CLIENT);
-    }
-
-    @Override
-    public String getLabel() {
-        return "monnef-core-exporter";
     }
 
     public static class RenderTask {

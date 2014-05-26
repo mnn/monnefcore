@@ -16,7 +16,7 @@ trait MessageObjectMC16Trait extends MessageObjectTypeTrait {
 }
 
 abstract class CorePacketHandlerBase extends CorePacketHandlerTrait {
-  def onPacket(in: MessageIn[MESSAGE_OBJ#IN], player: Player) {
+  def onPacket(in: MessageIn[MESSAGE_OBJ#IN], player: EntityPlayer) {
     try {
       val entityPlayer = player.asInstanceOf[EntityPlayer]
       val packetId = in.readByte()
@@ -47,6 +47,15 @@ class CorePacketHandlerMC16 extends CorePacketHandlerBase with MessageObjectMC16
   def dispatcher: CorePacketDispatcherMC16.type = CorePacketDispatcherMC16
 
   def manager: PacketManagerMonnefCoreMC16.type = PacketManagerMonnefCoreMC16
+
+  manager.packetHandler = this
+}
+
+class CorePacketHandlerMC17 extends CorePacketHandlerBase with MessageObjectMC17Trait {
+
+  def dispatcher: CorePacketDispatcherMC17.type = CorePacketDispatcherMC17
+
+  def manager: PacketManagerMonnefCoreMC17.type = PacketManagerMonnefCoreMC17
 
   manager.packetHandler = this
 }
