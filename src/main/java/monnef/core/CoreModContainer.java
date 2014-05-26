@@ -19,8 +19,8 @@ import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
+import monnef.core.calendar.CoreTickHandler;
 import monnef.core.utils.WolfFoodRegistry;
-import monnef.jaffas.food.client.ClientTickHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class CoreModContainer extends DummyModContainer {
             }
         }
 
-        FMLCommonHandler.instance().bus().register(new ClientTickHandler());
+        FMLCommonHandler.instance().bus().register(new CoreTickHandler());
 
         MinecraftForge.EVENT_BUS.register(new WolfFoodRegistry());
 

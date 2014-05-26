@@ -36,8 +36,8 @@ public class GuiContainerMachine extends GuiContainerMonnefCore {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int param1, int param2) {
-        fontRenderer.drawString(getTitle(), 8, 6, 4210752);
-        fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
+        fontRendererObj.drawString(getTitle(), 8, 6, 4210752);
+        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
     }
 
     protected String getTitle() {

@@ -5,19 +5,17 @@
 
 package monnef.core.utils;
 
-import monnef.core.CoreModContainer;
-import monnef.core.block.ContainerMonnefCore;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -48,11 +46,11 @@ public class PlayerHelper {
         }
     }
 
-    public static boolean playerHasEquipped(EntityPlayer player, int itemId) {
+    public static boolean playerHasEquipped(EntityPlayer player, Item item) {
         if (player == null) return false;
         ItemStack equippedItem = player.getCurrentEquippedItem();
         if (equippedItem == null) return false;
-        return equippedItem.itemID == itemId;
+        return equippedItem.getItem() == item;
     }
 
     public static Vec3 getPlayersHeadPositionVector(EntityPlayer entity) {
@@ -70,7 +68,7 @@ public class PlayerHelper {
     public static MovingObjectPosition rayTraceBlock(EntityPlayer entity, double distance, Vec3 look) {
         Vec3 pos = getPlayersHeadPositionVector(entity);
         Vec3 target = pos.addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
-        return entity.worldObj.clip(pos, target);
+        return entity.worldObj.rayTraceBlocks(pos, target);
     }
 
     public static final float U = 1 / 16f;
@@ -126,9 +124,8 @@ public class PlayerHelper {
     }
 
     public static void addMessage(ICommandSender target, String msg) {
-        ChatMessageComponent component = new ChatMessageComponent();
-        component.addText(msg);
-        target.sendChatToPlayer(component);
+        ChatComponentText component = new ChatComponentText(msg);
+        target.addChatMessage(component);
     }
 
     // only server side
