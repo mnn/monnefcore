@@ -23,14 +23,14 @@ import monnef.core.client.ExporterTickHandler;
 import monnef.core.command.CommandMC;
 import monnef.core.common.CommonProxy;
 import monnef.core.common.GuiHandler;
-import monnef.core.network.CorePacketHandlerMC16;
+import monnef.core.network.CorePacketHandlerMC17;
+import monnef.core.network.CorePacketHandlerTrait;
 import monnef.core.utils.BreakableIronMaterial;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
 
 @Mod(modid = Reference.ModIdHelper, name = Reference.ModNameHelper, version = Reference.Version, dependencies = "required-after:monnef-core")
-//@NetworkMod(channels = Reference.CHANNEL, clientSideRequired = true, serverSideRequired = true, packetHandler = MC16NativeCorePacketHandler.class)
 public class MonnefCoreNormalMod {
     @SidedProxy(clientSide = "monnef.core.client.ClientProxy", serverSide = "monnef.core.common.CommonProxy")
     public static CommonProxy proxy;
@@ -39,8 +39,7 @@ public class MonnefCoreNormalMod {
     public static MonnefCoreNormalMod instance;
     public static int renderID;
 
-    public static CorePacketHandlerMC16 packetHandler = new CorePacketHandlerMC16();
-//    public static CorePacketDispatcher packetDispatcher = new CorePacketDispatcherMC16();
+    public static CorePacketHandlerTrait packetHandler = new CorePacketHandlerMC17();
 
     @Mod.EventHandler
     public void preLoad(FMLPreInitializationEvent evt) {

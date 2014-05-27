@@ -2,14 +2,11 @@ package monnef.core.network
 
 import cpw.mods.fml.relauncher.Side
 import net.minecraft.entity.player.{EntityPlayerMP, EntityPlayer}
-import cpw.mods.fml.common.network.PacketDispatcher
-import monnef.core.network.message.{MessageObjectMC16, MessageObject, MessageIn, MessageOut}
+import monnef.core.network.message.{MessageObject, MessageIn, MessageOut}
 import net.minecraft.client.entity.EntityPlayerSP
 import java.net.ProtocolException
 
-trait PacketMonnefCoreTrait extends MessageObjectTypeTrait {
-  def messageObj: MessageObject
-
+trait PacketMonnefCoreTrait {
   def write(out: MessageOut[_])
 
   def read(in: MessageIn[_])
@@ -23,13 +20,11 @@ trait PacketMonnefCoreTrait extends MessageObjectTypeTrait {
     }
   }
 
-  val WRONG_SIDE = () => throw new ProtocolException("Packet is being processed be an unsupported side.")
+  val WRONG_SIDE = () => throw new ProtocolException("Packet is being processed by wrong/unsupported side.")
 
   def executeServer(player: EntityPlayerMP): Unit = WRONG_SIDE()
 
   def executeClient(player: EntityPlayerSP): Unit = WRONG_SIDE()
-
-  def makePacket(): MESSAGE_OBJ#RAW_PACKET
 
   def manager: PacketManager
 
@@ -38,6 +33,19 @@ trait PacketMonnefCoreTrait extends MessageObjectTypeTrait {
   def sendToClient(player: EntityPlayer)
 }
 
+abstract class PacketMonnefCoreMC17 extends PacketMonnefCoreTrait {
+  override def sendToServer(): Unit = ???
+
+  override def manager: PacketManager = ???
+
+  override def sendToClient(player: EntityPlayer): Unit = ???
+
+  override def write(out: MessageOut[_]): Unit = ???
+
+  override def read(in: MessageIn[_]): Unit = ???
+}
+
+/*
 abstract class PacketMonnefCoreMC16 extends MessageObjectMC16Trait with PacketMonnefCoreTrait with PacketTypeMC16 {
   final val messageObj: MessageObject = new MessageObjectMC16()
 
@@ -56,4 +64,4 @@ abstract class PacketMonnefCoreMC16 extends MessageObjectMC16Trait with PacketMo
 
   final def sendToClient(player: EntityPlayer) { dispatcher.sendToClient(this.makePacket(), player) }
 }
-
+*/

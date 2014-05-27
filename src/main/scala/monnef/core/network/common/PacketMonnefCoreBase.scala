@@ -1,6 +1,6 @@
 package monnef.core.network.common
 
-import monnef.core.network.PacketMonnefCoreMC16
+import monnef.core.network.PacketMonnefCoreMC17
 
 // use this class for new custom packets
-abstract class PacketMonnefCoreBase extends PacketMonnefCoreMC16
+abstract class PacketMonnefCoreBase extends PacketMonnefCoreMC17

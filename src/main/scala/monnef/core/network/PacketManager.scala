@@ -1,6 +1,8 @@
 package monnef.core.network
 
-trait PacketManager extends PacketTypes {
+trait PacketManager {
+  type PACKET <: PacketMonnefCoreTrait
+
   def packetId(packet: Class[_ <: PACKET]): Int
 
   def channelFor(packet: PACKET): String

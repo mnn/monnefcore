@@ -143,4 +143,8 @@ public class PlayerHelper {
         }
         return res;
     }
+
+    public static String formatPlayerID(EntityPlayer player) {
+        return "['" + player.getDisplayName() + "' " + player.getUniqueID() + "]";
+    }
 }

@@ -1,4 +1,3 @@
-
 package monnef.core.network.message
 
 trait MessageOut[OUT] {
