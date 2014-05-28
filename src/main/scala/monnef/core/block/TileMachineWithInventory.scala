@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
+import monnef.core.utils.NBTHelper
 
 abstract class TileMachineWithInventory extends TileMachine with IInventory {
   protected var inventory: Array[ItemStack] = null
@@ -36,7 +37,7 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
     if (stack != null && stack.stackSize > getInventoryStackLimit()) {
       stack.stackSize = getInventoryStackLimit()
     }
-    onInventoryChanged()
+    markDirty()
   }
 
   override def decrStackSize(slot: Int, amt: Int): ItemStack = {
@@ -65,30 +66,30 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
   override def getInventoryStackLimit: Int = 64
 
   override def isUseableByPlayer(player: EntityPlayer): Boolean = {
-    worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
+    worldObj.getTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
   }
 
-  override def openChest(): Unit = {
+  override def openInventory(): Unit = {
   }
 
-  override def closeChest(): Unit = {
+  override def closeInventory(): Unit = {
   }
 
   override def readFromNBT(tagCompound: NBTTagCompound): Unit = {
     super.readFromNBT(tagCompound)
-    val tagList: NBTTagList = tagCompound.getTagList("Inventory")
+    val tagList: NBTTagList = tagCompound.getTagList("Inventory", NBTHelper.TagTypes.TAG_Compound)
 
     var i: Int = 0
     while (i < tagList.tagCount()) {
-      var tag: NBTTagCompound = tagList.tagAt(i).asInstanceOf[NBTTagCompound]
-      var slot: Byte = tag.getByte("Slot")
+      val tag: NBTTagCompound = tagList.getCompoundTagAt(i)
+      val slot: Byte = tag.getByte("Slot")
       if (slot >= 0 && slot < inventory.length) {
         inventory(slot) = ItemStack.loadItemStackFromNBT(tag)
       }
 
       i = i + 1
     }
-    onInventoryChanged()
+    markDirty()
   }
 
   override def writeToNBT(tagCompound: NBTTagCompound): Unit = {
@@ -110,7 +111,7 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
     tagCompound.setTag("Inventory", itemList)
   }
 
-  override def getInvName: String
+  override def getInventoryName: String
 
   def getIntegersToSyncCount: Int = 2
 
@@ -130,7 +131,7 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
     }
   }
 
-  override def isInvNameLocalized: Boolean = false
+  override def hasCustomInventoryName: Boolean = false
 
   override def isItemValidForSlot(i: Int, itemstack: ItemStack): Boolean = true
 
@@ -149,7 +150,7 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
           free = i
           i = slotsCount
         } else
-        if (getStackInSlot(i).itemID == stack.itemID && getStackInSlot(i).stackSize < getStackInSlot(i).getMaxStackSize()) {
+        if (getStackInSlot(i).getItem == stack.getItem && getStackInSlot(i).stackSize < getStackInSlot(i).getMaxStackSize()) {
           addToStack = true
           free = i
           i = slotsCount
@@ -163,10 +164,10 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
         val newStackSize: Int = stack.stackSize + getStackInSlot(free).stackSize
         if (doAdd)
           getStackInSlot(free).stackSize += stack.stackSize
-        if (newStackSize > stack.getMaxStackSize()) {
-          val overflowItemsCount: Int = newStackSize % stack.getMaxStackSize()
+        if (newStackSize > stack.getMaxStackSize) {
+          val overflowItemsCount: Int = newStackSize % stack.getMaxStackSize
           if (doAdd)
-            getStackInSlot(free).stackSize = stack.getMaxStackSize()
+            getStackInSlot(free).stackSize = stack.getMaxStackSize
           val c: ItemStack = stack.copy()
           c.stackSize = overflowItemsCount
           ret = stack.stackSize - overflowItemsCount

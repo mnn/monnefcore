@@ -6,13 +6,13 @@
 package monnef.core.block
 
 import monnef.core.api.ICustomIcon
-import net.minecraft.util.Icon
+import net.minecraft.util.IIcon
 
 trait GameObjectDescriptor extends ICustomIcon {
   protected var customIconIndex: Int = _
   protected var sheetNumber: Int = _
   protected var iconsCount: Int = 1
-  protected var icons: Array[Icon] = null
+  protected var icons: Array[IIcon] = null
   protected var modName: String = null
 
   override def setModName(newModName: String): Unit = { modName = newModName }
@@ -46,5 +46,5 @@ trait GameObjectDescriptor extends ICustomIcon {
     modName
   }
 
-  override def getCustomIcon(index: Int): Icon = icons(index)
+  override def getCustomIcon(index: Int): IIcon = icons(index)
 }

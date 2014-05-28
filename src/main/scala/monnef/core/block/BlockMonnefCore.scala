@@ -8,21 +8,22 @@ import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import javax.swing.Icon
 import net.minecraft.client.renderer.texture.IIconRegister
+import net.minecraft.util.IIcon
 
 
-abstract class BlockMonnefCore(_id: Int, _material: Material) extends Block(_id, _material) with GameObjectDescriptor {
+abstract class BlockMonnefCore(_material: Material) extends Block(_material) with GameObjectDescriptor {
   initCustomIcon()
 
-  def this(id: Int, index: Int, material: Material) = {
-    this(id, material)
+  def this(index: Int, material: Material) = {
+    this(material)
     this.customIconIndex = index
   }
 
   @SideOnly(Side.CLIENT)
-  override def registerIcons(iconRegister: IIconRegister) {
+  override def registerBlockIcons(iconRegister: IIconRegister) {
     this.blockIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this))
     if (iconsCount > 1) {
-      icons = new Array[Icon](iconsCount)
+      icons = new Array[IIcon](iconsCount)
       icons(0) = this.blockIcon
       var i: Int = 1
       while (i < iconsCount) {

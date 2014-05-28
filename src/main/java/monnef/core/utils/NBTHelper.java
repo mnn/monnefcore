@@ -11,6 +11,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 public class NBTHelper {
+    public static class TagTypes {
+        public final static int TAG_End = 0;
+        public final static int TAG_Byte = 1;
+        public final static int TAG_Short = 2;
+        public final static int TAG_Int = 3;
+        public final static int TAG_Long = 4;
+        public final static int TAG_Float = 5;
+        public final static int TAG_Double = 6;
+        public final static int TAG_Byte_Array = 7;
+        public final static int TAG_String = 8;
+        public final static int TAG_List = 9;
+        public final static int TAG_Compound = 10;
+        public final static int TAG_Int_Array = 11;
+    }
+
     public static ItemStack init(ItemStack stack) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
@@ -59,7 +74,7 @@ public class NBTHelper {
         compound.setInteger("y", coords.getY());
         compound.setInteger("z", coords.getZ());
         compound.setInteger("dimm", coords.getWorld().provider.dimensionId);
-        data.setCompoundTag(compoundName, compound);
+        data.setTag(compoundName, compound);
     }
 
     public static boolean hasKey(ItemStack stack, String keyName) {
