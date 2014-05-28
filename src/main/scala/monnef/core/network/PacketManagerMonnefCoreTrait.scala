@@ -1,6 +1,9 @@
 /*
- * Automatic Assembly Table
- * author: monnef
+ * Copyright (c) 2014 monnef.
+ */
+
+/*
+ * Copyright (c) 2014 monnef.
  */
 
 package monnef.core.network
@@ -10,7 +13,7 @@ import monnef.core.Reference
 import monnef.core.network.common.PacketIdMap
 
 trait PacketManagerMonnefCoreTrait extends PacketManager with PacketIdMap {
-  type PACKET = PacketMonnefCoreTrait
+  override type PACKET = PacketMonnefCoreTrait
 
   final val CHANNEL = Reference.CHANNEL
 

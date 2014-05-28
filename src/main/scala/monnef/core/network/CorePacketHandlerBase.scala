@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2014 monnef.
+ */
+
 package monnef.core.network
 
 import monnef.core.network.message.{MessageObjectMC16, MessageObject, MessageIn}
@@ -39,15 +43,17 @@ class CorePacketHandlerMC17 extends CorePacketHandlerBase {
   private var channels: util.EnumMap[Side, FMLEmbeddedChannel] = _
   private var nativeHandler: MC17NativeCorePacketHandler = _
   private var _manager: PacketManagerMonnefCoreMC17 = _
+  private var _dispatcher: CorePacketDispatcherMC17 = _
 
   override def onLoad() {
     super.onLoad()
+    _dispatcher = new CorePacketDispatcherMC17(this)
     _manager = new PacketManagerMonnefCoreMC17(this)
     nativeHandler = new MC17NativeCorePacketHandler(this)
     channels = NetworkRegistry.INSTANCE.newChannel(Reference.CHANNEL, nativeHandler)
   }
 
-  override def dispatcher: CorePacketDispatcher = ???
+  override def dispatcher: CorePacketDispatcher = _dispatcher
 
   override def manager: PacketManager = _manager
 

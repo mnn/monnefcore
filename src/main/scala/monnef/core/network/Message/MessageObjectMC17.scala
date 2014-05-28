@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) 2014 monnef.
+ */
+
 package monnef.core.network.Message
 
 import monnef.core.network.message._
-import com.google.common.io.ByteArrayDataOutput
 import io.netty.buffer.{Unpooled, ByteBuf}
 import monnef.core.network.common.PacketMonnefCoreBase
 
@@ -10,7 +13,12 @@ class MessageInMC17(input: ByteBuf) extends MessageIn[ByteBuf] {
 
   def readInt(): Int = input.readInt()
 
-  def readString(): String = input.readUTF()
+  def readString(): String = {
+    val len = input.readInt()
+    val buff = new Array[Byte](len)
+    input.readBytes(buff)
+    new String(buff, "UTF-8")
+  }
 
   def readChar(): Char = input.readChar()
 
@@ -24,11 +32,12 @@ class MessageOutMC17(output: ByteBuf = Unpooled.buffer()) extends MessageOut[Byt
 
   def writeInt(d: Int): Unit = output.writeInt(d)
 
-  def writeString(d: String): Unit = output.writeUTF(d)
+  def writeString(d: String) {
+    output.writeInt(d.length)
+    output.writeBytes(d.getBytes("UTF-8"))
+  }
 
   def writeChar(d: Char): Unit = output.writeChar(d)
 
-  def get: ByteArrayDataOutput = output
-
-  def toByteArray: Array[Byte] = output.toByteArray
+  def get: ByteBuf = output
 }

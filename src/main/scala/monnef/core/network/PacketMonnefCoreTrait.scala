@@ -2,7 +2,7 @@ package monnef.core.network
 
 import cpw.mods.fml.relauncher.Side
 import net.minecraft.entity.player.{EntityPlayerMP, EntityPlayer}
-import monnef.core.network.message.{MessageObject, MessageIn, MessageOut}
+import monnef.core.network.message.{MessageIn, MessageOut}
 import net.minecraft.client.entity.EntityPlayerSP
 import java.net.ProtocolException
 

@@ -10,6 +10,4 @@ trait MessageOut[OUT] {
   def writeChar(d: Char): Unit
 
   def get: OUT
-
-  def toByteArray: Array[Byte]
 }

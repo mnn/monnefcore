@@ -1,16 +1,15 @@
 package monnef.core.network
 
-import monnef.core.mod.MonnefCoreNormalMod
 import io.netty.handler.codec.MessageToMessageCodec
 import cpw.mods.fml.common.network.internal.FMLProxyPacket
 import monnef.core.network.common.PacketMonnefCoreBase
 import io.netty.channel.{ChannelHandlerContext, ChannelHandler}
-import monnef.core.network.Message.{MessageInMC17}
+import monnef.core.network.Message.{MessageOutMC17, MessageInMC17}
 import net.minecraft.entity.player.EntityPlayer
 import cpw.mods.fml.common.FMLCommonHandler
 import net.minecraft.network.{NetHandlerPlayServer, INetHandler}
 import cpw.mods.fml.common.network.NetworkRegistry
-import cpw.mods.fml.relauncher.{SideOnly, Side}
+import cpw.mods.fml.relauncher.SideOnly
 import net.minecraft.client.Minecraft
 import cpw.mods.fml.relauncher.Side._
 import java.util
@@ -37,7 +36,11 @@ class MC17NativeCorePacketHandler(parentHandler: CorePacketHandlerMC17) extends 
 
   @SideOnly(CLIENT) private def getClientPlayer: EntityPlayer = Minecraft.getMinecraft.thePlayer
 
-  override def encode(ctx: ChannelHandlerContext, msg: PacketMonnefCoreBase, out: util.List[AnyRef]) {
-    // TODO
+  override def encode(ctx: ChannelHandlerContext, msg: PacketMonnefCoreBase, outList: util.List[AnyRef]) {
+    val out = new MessageOutMC17()
+    parentHandler.manager.writePacketId(msg, out)
+    msg.write(out)
+    val proxyPacket = new FMLProxyPacket(out.get.copy(), ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get())
+    outList.add(proxyPacket)
   }
 }
