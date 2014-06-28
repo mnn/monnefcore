@@ -51,7 +51,7 @@ public class ItemHelper {
 
     public static boolean haveStacksSameIdAndDamage(ItemStack template, ItemStack tested) {
         if (template == null || tested == null) return false;
-        if (template.itemID != tested.itemID) return false;
+        if (template.getItem() != tested.getItem()) return false;
         if (template.getItemDamage() == OreDictionary.WILDCARD_VALUE) return true;
         return template.getItemDamage() == tested.getItemDamage();
     }
@@ -61,6 +61,8 @@ public class ItemHelper {
         return tested.stackSize >= template.stackSize;
     }
 
+    /*
+    // to be removed - no IDs anymore
     public static int findItemIdByName(String name) {
         if (name == null || name.isEmpty()) return 0;
         String prefixedName = "item." + name;
@@ -76,6 +78,7 @@ public class ItemHelper {
 
         return 0;
     }
+    */
 
     public static ItemStack[] copyStackArray(ItemStack[] inv) {
         ItemStack[] ret = new ItemStack[inv.length];
@@ -95,7 +98,7 @@ public class ItemHelper {
     }
 
     public static void setItemBlockToFull3D(Block block) {
-        Item.itemsList[block.blockID].setFull3D();
+        Item.getItemFromBlock(block).setFull3D();
     }
 
     public static ItemStack constructDamagedItemStack(Item item, float damagedAmount) {
