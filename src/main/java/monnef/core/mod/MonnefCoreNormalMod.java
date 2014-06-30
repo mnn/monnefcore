@@ -39,7 +39,7 @@ public class MonnefCoreNormalMod {
     public static MonnefCoreNormalMod instance;
     public static int renderID;
 
-    public static CorePacketHandlerTrait packetHandler = new CorePacketHandlerMC17();
+    public static CorePacketHandlerTrait packetHandler = CorePacketHandlerMC17.instance();
 
     @Mod.EventHandler
     public void preLoad(FMLPreInitializationEvent evt) {

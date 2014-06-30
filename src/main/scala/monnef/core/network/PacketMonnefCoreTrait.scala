@@ -34,15 +34,13 @@ trait PacketMonnefCoreTrait {
 }
 
 abstract class PacketMonnefCoreMC17 extends PacketMonnefCoreTrait {
-  override def sendToServer(): Unit = ???
+  def dispatcherMC17: CorePacketDispatcherMC17 = manager.packetHandler.dispatcher.asInstanceOf[CorePacketDispatcherMC17]
 
-  override def manager: PacketManager = ???
+  override def sendToServer(): Unit = dispatcherMC17.sendToServer(this)
 
-  override def sendToClient(player: EntityPlayer): Unit = ???
+  override def manager: PacketManager = CorePacketHandlerMC17.instance.manager
 
-  override def write(out: MessageOut[_]): Unit = ???
-
-  override def read(in: MessageIn[_]): Unit = ???
+  override def sendToClient(player: EntityPlayer): Unit = dispatcherMC17.sendToClient(this, player)
 }
 
 /*

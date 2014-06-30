@@ -23,4 +23,3 @@ trait PacketManager {
 
   def registerPacket(id: Int, packetClass: Class[_ <: PACKET])
 }
-

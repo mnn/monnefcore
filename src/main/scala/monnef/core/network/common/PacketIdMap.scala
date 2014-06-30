@@ -1,7 +1,5 @@
 package monnef.core.network.common
 
-import monnef.core.network.PacketMonnefCoreTrait
-
 trait PacketIdMap {
   type PACKET
 

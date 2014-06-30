@@ -4,7 +4,7 @@
 
 package monnef.core.network
 
-import monnef.core.network.message.{MessageObjectMC16, MessageObject, MessageIn}
+import monnef.core.network.message.MessageIn
 import net.minecraft.entity.player.{EntityPlayerMP, EntityPlayer}
 import cpw.mods.fml.relauncher.Side
 import java.net.ProtocolException
@@ -60,4 +60,8 @@ class CorePacketHandlerMC17 extends CorePacketHandlerBase {
   def channelClient = channels.get(Side.CLIENT)
 
   def channelServer = channels.get(Side.SERVER)
+}
+
+object CorePacketHandlerMC17{
+  val instance = new CorePacketHandlerMC17()
 }
