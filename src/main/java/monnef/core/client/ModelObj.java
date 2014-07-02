@@ -25,7 +25,7 @@ public class ModelObj extends ModelBase implements IModelObj {
         this.rotationFix = rotationFix;
         this.texture = texture;
         this.textureResource = new ResourceLocation(texture);
-        IModelCustom tmp = AdvancedModelLoader.loadModel(resourceName);
+        IModelCustom tmp = AdvancedModelLoader.loadModel(new ResourceLocation(resourceName));
         if (!(tmp instanceof WavefrontObject))
             throw new RuntimeException("Loaded model is not " + WavefrontObject.class.getSimpleName() + ", cannot continue (Forge probably changed implementation).");
         model = (WavefrontObject) tmp;

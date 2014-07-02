@@ -20,7 +20,6 @@ import java.util.Properties;
 import static monnef.core.MonnefCorePlugin.Log;
 
 public class Config {
-    public static final String SKIP_LIBRARY_DOWNLOAD_TAG = "skipLibraryDownload";
     public static final String CONFIG_DIR = "config";
     public static final String USE_ASM_LIGHTNING = "useASMLightning";
     public static final String EXPORTER_ENABLED = "exporterEnabled";
@@ -119,15 +118,6 @@ public class Config {
     }
 
     private static void processConfig(Properties prop) {
-        String skipString = prop.getProperty(SKIP_LIBRARY_DOWNLOAD_TAG, "");
-
-        if (!skipString.isEmpty()) {
-            String[] skipList = skipString.split(", ?");
-            for (String toSkip : skipList) {
-                Library.tryDisableLibrary(toSkip.toLowerCase());
-            }
-        }
-
         useASMLightning = processBoolValue(prop, USE_ASM_LIGHTNING);
         exporterEnabled = processBoolValue(prop, EXPORTER_ENABLED);
         commandEnabled = processBoolValue(prop, CORE_COMMAND_ENABLED, TRUE_VALUE);
@@ -143,7 +133,6 @@ public class Config {
     }
 
     private static void initConfig(Properties prop) {
-        prop.setProperty(SKIP_LIBRARY_DOWNLOAD_TAG, "");
         prop.setProperty(USE_ASM_LIGHTNING, FALSE_VALUE);
         prop.setProperty(EXPORTER_ENABLED, FALSE_VALUE);
         prop.setProperty(CORE_COMMAND_ENABLED, TRUE_VALUE);

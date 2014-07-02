@@ -23,7 +23,7 @@ public class AdvancedButton extends GuiButton {
     }
 
     public boolean mousePressedAdvanced(Minecraft mc, int x, int y, int button) {
-        return this.enabled && this.drawButton && doesReactToThisButton(button) && x >= this.xPosition && y >= this.yPosition && x < this.xPosition + this.width && y < this.yPosition + this.height;
+        return this.enabled && this.visible && doesReactToThisButton(button) && x >= this.xPosition && y >= this.yPosition && x < this.xPosition + this.width && y < this.yPosition + this.height;
     }
 
     public boolean doesReactToThisButton(int button) {

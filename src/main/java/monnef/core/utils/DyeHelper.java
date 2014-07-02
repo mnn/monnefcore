@@ -9,6 +9,8 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -20,21 +22,23 @@ public class DyeHelper {
 
     private static final int EXPECTED_SIZE = 16;
 
+    // field_150923_a -> dyeColorNames
+
     static {
         dyeNames = HashBiMap.create(EXPECTED_SIZE);
         woolNames = HashBiMap.create(EXPECTED_SIZE);
         intColorToDyeIndex = HashBiMap.create(EXPECTED_SIZE);
-        for (int i = 0; i < ItemDye.dyeColorNames.length; i++) {
-            String colorName = ItemDye.dyeColorNames[i];
+        for (int i = 0; i < ItemDye.field_150923_a.length; i++) {
+            String colorName = ItemDye.field_150923_a[i];
             dyeNames.put(colorName, i);
-            woolNames.put(colorName, BlockColored.getBlockFromDye(i));
+            woolNames.put(colorName, BlockColored.func_150031_c(i)); // method should equal "~x & 15"
             intColorToDyeIndex.put(getIntColor(i), i);
         }
     }
 
     public static String compileColorList() {
         String r = "";
-        for (int i = 0; i < ItemDye.dyeColorNames.length; i++) {
+        for (int i = 0; i < ItemDye.field_150923_a.length; i++) {
             ColorHelper.IntColor c = ColorHelper.getColor(getIntColor(i));
             if (!r.equals("")) r = r + " ";
             r += String.format("\"rgb(%d,%d,%d)\"", c.getRed(), c.getGreen(), c.getBlue());
@@ -63,11 +67,11 @@ public class DyeHelper {
     }
 
     public static ItemStack getDye(int color) {
-        return new ItemStack(Item.dyePowder, 1, color);
+        return new ItemStack(Items.dye, 1, color);
     }
 
     public static ItemStack getWool(DyeColor color) {
-        return new ItemStack(Block.cloth, 1, getWoolNum(color));
+        return new ItemStack(Blocks.wool, 1, getWoolNum(color));
     }
 
     public static int getIntColor(DyeColor color) {
@@ -75,7 +79,8 @@ public class DyeHelper {
     }
 
     public static int getIntColor(int color) {
-        return ItemDye.dyeColors[color];
+        // dyeColors -> field_150922_c
+        return ItemDye.field_150922_c[color];
     }
 
     public static String getWoolColorName(int index) {
