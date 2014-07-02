@@ -5,9 +5,9 @@
 
 package monnef.core.event;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event;
 
 public class EventFactory {
     public static boolean onLightningGenerated(World world, int x, int y, int z) {

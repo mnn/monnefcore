@@ -8,7 +8,7 @@ package monnef.core.test;
 import junit.framework.Assert;
 import monnef.core.external.javassist.Modifier;
 import monnef.core.utils.IntegerCoordinates;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

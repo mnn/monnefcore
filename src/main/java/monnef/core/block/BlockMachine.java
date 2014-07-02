@@ -42,8 +42,8 @@ public abstract class BlockMachine extends BlockMonnefCore {
     private BoundingBoxSize customBoundingBox;
     protected boolean useForgeDirectionsInPlacingComputation = false;
 
-    public BlockMachine(int id, int index, Material material, boolean customRenderer, boolean useOwnRenderingId) {
-        super(id, index, material);
+    public BlockMachine(int index, Material material, boolean customRenderer, boolean useOwnRenderingId) {
+        super(index, material);
         this.customRenderer = customRenderer;
         this.useOwnRenderId = useOwnRenderingId;
         if (getUseOwnRenderId()) {

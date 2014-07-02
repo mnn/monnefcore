@@ -5,6 +5,7 @@
 
 package monnef.core.utils;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +22,7 @@ public class BookWriter {
     private NBTTagCompound tag;
 
     public BookWriter(String author, String title) {
-        book = new ItemStack(Item.writtenBook);
+        book = new ItemStack(Items.written_book);
         tag = new NBTTagCompound();
 
         tag.setString("title", title);
@@ -31,7 +32,7 @@ public class BookWriter {
     }
 
     public void endPage() {
-        pages.appendTag(new NBTTagString("page" + (++pageNum), pageBuffer.toString()));
+        pages.appendTag(new NBTTagString(pageBuffer.toString()));
         pageBuffer.setLength(0);
         lines = 0;
     }

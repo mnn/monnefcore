@@ -68,7 +68,7 @@ public class BiomeHelper {
         return compileList(types).toArray(new BiomeGenBase[]{});
     }
 
-    public static float computeBiomeTemperatureInCelsius(BiomeGenBase biome) {
-        return Math.round(-15f + Math.sqrt(biome.getFloatTemperature()) * (26f + 15f));
+    public static float computeBiomeTemperatureInCelsius(BiomeGenBase biome, int x, int y, int z) {
+        return Math.round(-15f + Math.sqrt(biome.getFloatTemperature(x, y, z)) * (26f + 15f));
     }
 }

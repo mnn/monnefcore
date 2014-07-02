@@ -37,7 +37,7 @@ public class RegistryUtils {
     }
 
     public static void registerBlock(Block block, String name, String title) {
-        block.setUnlocalizedName(name);
+        block.setBlockName(name);
         registerBlock(block, title);
     }
 
@@ -59,7 +59,7 @@ public class RegistryUtils {
             if (names != null && names.length != 1) {
                 throw new RuntimeException("cannot have multiple custom names for ItemBlock");
             }
-            block.setUnlocalizedName(names[0]);
+            block.setBlockName(names[0]);
             GameRegistry.registerBlock(block, (Class<? extends ItemBlock>) itemBlock, block.getUnlocalizedName());
         } else if (IItemBlock.class.isAssignableFrom(cls)) {
             registerMyBlock(block, (Class<? extends IItemBlock>) itemBlock, block.getUnlocalizedName(), names);

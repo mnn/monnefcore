@@ -10,10 +10,11 @@ import cpw.mods.fml.relauncher.Side;
 import monnef.core.api.IIntegerCoordinates;
 import monnef.core.mod.MonnefCoreNormalMod;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static monnef.core.utils.MathHelper.square;
 import static net.minecraft.util.MathHelper.sqrt_float;
@@ -30,7 +31,7 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     private static boolean ignoreNullWorld = false;
 
     public IntegerCoordinates(TileEntity tile) {
-        setWorld(tile.worldObj);
+        setWorld(tile.getWorldObj());
         x = tile.xCoord;
         y = tile.yCoord;
         z = tile.zCoord;
@@ -71,7 +72,7 @@ public class IntegerCoordinates implements IIntegerCoordinates {
 
     @Override
     public TileEntity getTile() {
-        return getWorld().getBlockTileEntity(x, y, z);
+        return getWorld().getTileEntity(x, y, z);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class IntegerCoordinates implements IIntegerCoordinates {
         save.setInteger("y", getY());
         save.setInteger("z", getZ());
         save.setInteger("dim", getWorld().provider.dimensionId);
-        tag.setCompoundTag(tagName, save);
+        tag.setTag(tagName, save);
     }
 
     @Override
@@ -173,12 +174,12 @@ public class IntegerCoordinates implements IIntegerCoordinates {
 
     @Override
     public TileEntity getBlockTileEntity() {
-        return getWorld().getBlockTileEntity(getX(), getY(), getZ());
+        return getWorld().getTileEntity(getX(), getY(), getZ());
     }
 
     @Override
-    public int getBlockId() {
-        return getWorld().getBlockId(getX(), getY(), getZ());
+    public Block getBlock() {
+        return getWorld().getBlock(getX(), getY(), getZ());
     }
 
     @Override
@@ -188,7 +189,7 @@ public class IntegerCoordinates implements IIntegerCoordinates {
 
     @Override
     public int getRedstoneWirePowerLevel() {
-        return getBlockId() == Block.redstoneWire.blockID ? getBlockMetadata() : 0;
+        return getBlock() == Blocks.redstone_wire ? getBlockMetadata() : 0;
     }
 
     @Override

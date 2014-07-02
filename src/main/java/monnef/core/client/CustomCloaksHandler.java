@@ -8,6 +8,7 @@ package monnef.core.client;
 import com.google.common.base.Joiner;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import monnef.core.Config;
 import monnef.core.Reference;
 import monnef.core.utils.WebHelper;
@@ -15,12 +16,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 
 import java.util.ArrayList;
@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import static monnef.core.MonnefCorePlugin.Log;
 
@@ -49,11 +50,11 @@ public class CustomCloaksHandler {
         Log.printFine("special names: " + Joiner.on(", ").join(specialNames));
     }
 
-    public String getCloakUrl(String name) {
-        return String.format(JAFFA_CLOAK_URL, name);
+    public String getCloakUrl(UUID uuid) {
+        return String.format(JAFFA_CLOAK_URL, uuid.toString());
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onPreRenderSpecials(RenderPlayerEvent.Specials.Pre event) {
         if (Config.areDisabledCloaksWithShaders() && Loader.isModLoaded("shadersmod")) {
             return;
@@ -62,7 +63,7 @@ public class CustomCloaksHandler {
             AbstractClientPlayer player = (AbstractClientPlayer) event.entityPlayer;
 
             if (!processedPlayers.contains(player)) {
-                String playerName = player.username;
+                String playerName = player.getDisplayName();
                 Log.printFine("Got question on cloak for [" + playerName + "].");
                 processedPlayers.add(player);
 
@@ -70,7 +71,7 @@ public class CustomCloaksHandler {
                     return;
                 }
 
-                String cloakURL = getCloakUrl(player.username);
+                String cloakURL = getCloakUrl(player.getUniqueID());
                 if (SHOW_CLOAK_DEBUG_MESSAGES)
                     Log.printDebug("Setting cloak for [" + playerName + "]");
 
@@ -105,8 +106,8 @@ public class CustomCloaksHandler {
     // from AbstractClientPlayer
     private static ThreadDownloadImageData getDownloadImage(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer) {
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-        TextureObject object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
-        texturemanager.loadTexture(par0ResourceLocation, (TextureObject) object);
+        ITextureObject object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+        texturemanager.loadTexture(par0ResourceLocation, (ITextureObject) object);
 
         return (ThreadDownloadImageData) object;
     }
@@ -117,7 +118,7 @@ public class CustomCloaksHandler {
         processedPlayers.clear();
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         purgeCloakCache();
     }

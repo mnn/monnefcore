@@ -7,18 +7,22 @@ package monnef.core.utils;
 
 import cpw.mods.fml.common.FMLLog;
 import monnef.core.MonnefCorePlugin;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CustomLogger {
     private Logger logger;
 
     public CustomLogger(String logTitle) {
-        logger = Logger.getLogger(logTitle);
         Logger parent = FMLLog.getLogger();
+        logger = LogManager.getLogger(logTitle);
+
+        /*
         logger.setParent(parent);
         logger.setUseParentHandlers(true);
+        */
     }
 
     public void printInfo(String message) {
@@ -26,11 +30,11 @@ public class CustomLogger {
     }
 
     public void printWarning(String message) {
-        print(Level.WARNING, message);
+        print(Level.WARN, message);
     }
 
     public void printSevere(String message) {
-        print(Level.SEVERE, message);
+        print(Level.FATAL, message);
     }
 
     public void print(Level level, String message) {
@@ -44,10 +48,10 @@ public class CustomLogger {
     }
 
     public void printFine(String message) {
-        print(Level.FINE, message);
+        print(Level.TRACE, message);
     }
 
     public void printFinest(String message) {
-        print(Level.FINEST, message);
+        print(Level.TRACE, message);
     }
 }

@@ -5,7 +5,7 @@
 
 package monnef.core.utils;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class DirectionHelper {
     public static boolean isYAxis(ForgeDirection dir) {

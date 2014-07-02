@@ -5,6 +5,7 @@
 
 package monnef.core.api;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -29,7 +30,7 @@ public interface IIntegerCoordinates {
 
     TileEntity getBlockTileEntity();
 
-    int getBlockId();
+    Block getBlock();
 
     int getBlockMetadata();
 

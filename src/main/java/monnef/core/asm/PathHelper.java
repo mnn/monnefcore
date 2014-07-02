@@ -5,7 +5,7 @@
 
 package monnef.core.asm;
 
-import monnef.core.Library;
+import monnef.core.Reference;
 
 import java.io.File;
 import java.net.URI;
@@ -18,7 +18,7 @@ import static monnef.core.MonnefCorePlugin.Log;
 
 public class PathHelper {
     public static String getMyPath() {
-        return getMyPath(Library.class);
+        return getMyPath(Reference.class);
     }
 
     public static String getMyPath(Class classToLocate) {
@@ -30,7 +30,7 @@ public class PathHelper {
     }
 
     private static File getCorePathFile() {
-        return getMyPathFile(Library.class);
+        return getMyPathFile(Reference.class);
     }
 
     private static File getMyPathFile(Class classToLocate) {

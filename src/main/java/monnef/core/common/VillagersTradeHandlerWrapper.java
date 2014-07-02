@@ -7,7 +7,6 @@ package monnef.core.common;
 
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import monnef.core.common.MerchantRecipeListWrapper;
-import monnef.jaffas.food.common.IScalaVillagersTradeHandler;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.village.MerchantRecipeList;
 

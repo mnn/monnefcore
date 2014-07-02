@@ -9,6 +9,7 @@ import monnef.core.client.SlotLocked;
 import monnef.core.common.DummyInventory;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 
@@ -18,7 +19,7 @@ public class ContainerExporter extends Container {
 
     public ContainerExporter() {
         inv = new DummyInventory();
-        inv.setInventorySlotContents(0, new ItemStack(Block.grass));
+        inv.setInventorySlotContents(0, new ItemStack(Blocks.grass));
         addSlotToContainer(new SlotLocked(inv, 0, 0, 0));
     }
 
