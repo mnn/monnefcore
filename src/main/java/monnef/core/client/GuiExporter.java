@@ -9,8 +9,10 @@ import cpw.mods.fml.client.FMLClientHandler;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.utils.ColorEnum;
 import monnef.core.utils.GuiHelper;
+import monnef.core.utils.PlayerHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,13 +45,13 @@ public class GuiExporter extends GuiContainerMonnefCore {
     protected void actionPerformed(GuiButton button) {
         switch (button.id) {
             case BUTTON_TAKE_SHOT:
-                ExporterTickHandler.scheduleTask(new ItemStack(Block.chest), -1);
+                ExporterTickHandler.scheduleTask(new ItemStack(Blocks.chest), -1);
                 break;
 
             case BUTTON_TAKE_SHOTS:
-                ExporterTickHandler.scheduleTask(new ItemStack(Block.blockLapis), -1);
-                ExporterTickHandler.scheduleTask(new ItemStack(Block.hopperBlock), -1);
-                ExporterTickHandler.scheduleTask(new ItemStack(Block.dispenser), -1);
+                ExporterTickHandler.scheduleTask(new ItemStack(Blocks.lapis_block), -1);
+                ExporterTickHandler.scheduleTask(new ItemStack(Blocks.hopper), -1);
+                ExporterTickHandler.scheduleTask(new ItemStack(Blocks.dispenser), -1);
                 break;
 
             case BUTTON_PROCESS_ALL:
@@ -70,7 +72,7 @@ public class GuiExporter extends GuiContainerMonnefCore {
                         }
                     }
                 }
-                FMLClientHandler.instance().getClient().thePlayer.addChatMessage("Queued " + c + " items to process.");
+                PlayerHelper.addMessage(FMLClientHandler.instance().getClient().thePlayer, "Queued " + c + " items to process.");
                 break;
         }
     }

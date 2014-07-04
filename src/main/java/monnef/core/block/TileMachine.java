@@ -262,15 +262,15 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
         return gotPower(getPowerHandler().getActivationEnergy());
     }
 
-    public boolean gotPower(float amount) {
+    public boolean gotPower(double amount) {
         return getPowerHandler().getEnergyStored() >= amount;
     }
 
-    protected float consumeNeededPower() {
+    protected double consumeNeededPower() {
         return consumePower(powerNeeded);
     }
 
-    protected float consumePower(float amount) {
+    protected double consumePower(double amount) {
         return getPowerHandler().useEnergy(amount, amount, true);
     }
 }
