@@ -39,12 +39,12 @@ public class DummyInventory implements IInventory {
     }
 
     @Override
-    public String getInvName() {
+    public String getInventoryName() {
         return "DummyInv";
     }
 
     @Override
-    public boolean isInvNameLocalized() {
+    public boolean hasCustomInventoryName() {
         return false;
     }
 
@@ -54,7 +54,7 @@ public class DummyInventory implements IInventory {
     }
 
     @Override
-    public void onInventoryChanged() {
+    public void markDirty() {
     }
 
     @Override
@@ -63,11 +63,11 @@ public class DummyInventory implements IInventory {
     }
 
     @Override
-    public void openChest() {
+    public void openInventory() {
     }
 
     @Override
-    public void closeChest() {
+    public void closeInventory() {
     }
 
     @Override

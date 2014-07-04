@@ -10,6 +10,7 @@ import monnef.core.MonnefCorePlugin;
 import monnef.core.block.ContainerMonnefCore;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.GuiHelper;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -84,9 +85,9 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
         if (getContainerTitle() != null) {
-            fontRenderer.drawString(getContainerTitle(), 8, 4, COLOR_DARK_GRAY);
+            fontRendererObj.drawString(getContainerTitle(), 8, 4, COLOR_DARK_GRAY);
         }
-        fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8 + myContainer.getXPlayerInvShift(), ySize - 96 + 4 + myContainer.getYPlayerInvShift(), COLOR_DARK_GRAY);
+        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8 + myContainer.getXPlayerInvShift(), ySize - 96 + 4 + myContainer.getYPlayerInvShift(), COLOR_DARK_GRAY);
     }
 
     @Override
@@ -169,7 +170,7 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
 
             while (iterator.hasNext()) {
                 String currentText = (String) iterator.next();
-                int stringWidth = this.fontRenderer.getStringWidth(currentText);
+                int stringWidth = this.fontRendererObj.getStringWidth(currentText);
 
                 if (stringWidth > maximalWidth) {
                     maximalWidth = stringWidth;
@@ -200,7 +201,7 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
             for (int i = 0; i < tooltip.size(); ++i) {
                 String currTooltip = tooltip.get(i);
 
-                this.fontRenderer.drawStringWithShadow(currTooltip, xcoord, ycoord, -1);
+                this.fontRendererObj.drawStringWithShadow(currTooltip, xcoord, ycoord, -1);
 
                 if (i == 0) {
                     ycoord += 2;
@@ -326,6 +327,6 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
     }
 
     private void playButtonSound() {
-        this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+        mc.getSoundHandler().playSound(PositionedSoundRecord.func_147673_a(new ResourceLocation("random.click")));
     }
 }
