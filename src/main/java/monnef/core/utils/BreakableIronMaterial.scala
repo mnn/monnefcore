@@ -11,7 +11,7 @@ object BreakableIronMaterial {
     if (initialized) throw new RuntimeException("re-initialization!")
     initialized = true
 
-    val blocksFromBreakableIron = GameData.getBlockRegistry.iterator().asInstanceOf[Iterator[Block]].filter { b => b != null && b.getMaterial == breakableIronMaterial}
+    val blocksFromBreakableIron = GameDataHelper.extractAllBlocks().filter { b => b != null && b.getMaterial == breakableIronMaterial}
     blocksFromBreakableIron.foreach {_.setHarvestLevel("pickaxe", 0)}
     val marked = blocksFromBreakableIron.size
 

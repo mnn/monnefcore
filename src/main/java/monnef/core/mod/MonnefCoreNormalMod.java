@@ -68,10 +68,7 @@ public class MonnefCoreNormalMod {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         if (Config.isCommandEnabled()) {
-            MinecraftServer server = FMLServerHandler.instance().getServer();
-            ICommandManager commandManager = server.getCommandManager();
-            ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager);
-            serverCommandManager.registerCommand(new CommandMC());
+            event.registerServerCommand(new CommandMC());
         }
     }
 
