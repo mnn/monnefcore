@@ -11,7 +11,9 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.utils.PlayerHelper;
 import monnef.core.utils.ScreenShotHelper;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.io.File;
@@ -23,12 +25,11 @@ public class ExporterTickHandler {
     private static LinkedList<RenderTask> tasks = new LinkedList<RenderTask>();
     private RenderTask currentTask;
 
-    public static void scheduleTask(ItemStack stack, int origId) {
-        tasks.add(new RenderTask(stack, origId));
+    public static void scheduleTask(ItemStack stack, Item origItem) {
+        tasks.add(new RenderTask(stack, origItem));
     }
 
     public void onTickEvent(TickEvent evt) {
-
     }
 
     @SubscribeEvent
@@ -47,7 +48,7 @@ public class ExporterTickHandler {
                         gui.inventorySlots.getSlot(0).inventory.setInventorySlotContents(0, currentTask.stack);
                         takeShotNow = true;
                     } catch (NullPointerException e) {
-                        MonnefCorePlugin.Log.printWarning("NPE while popping task! BlockID: " + currentTask.stack.getItem().getUnlocalizedName() + " (origId: " + currentTask.origId + ")");
+                        MonnefCorePlugin.Log.printWarning("NPE while popping task! BlockID: " + currentTask.stack.getItem().getUnlocalizedName() + " (origId: " + currentTask.origItem + ")");
                         takeShotNow = false;
                     }
                 }
@@ -76,7 +77,7 @@ public class ExporterTickHandler {
         }
         String res = ScreenShotHelper.saveScreenShot(currDir, fileName, pixX, pixY - iconSize, iconSize, iconSize);
         if (res.startsWith("Saved")) {
-            MonnefCorePlugin.Log.printFinest("Rendered block " + blockName + " (oID:" + currentTask.origId + ", sID:" + currentTask.stack.getItem().getUnlocalizedName() + ").");
+            MonnefCorePlugin.Log.printFinest("Rendered block " + blockName + " (oItem:" + currentTask.origItem.getUnlocalizedName() + ", sItem:" + currentTask.stack.getItem().getUnlocalizedName() + ").");
         } else {
             PlayerHelper.addMessage(FMLClientHandler.instance().getClient().thePlayer, "Problem! " + res);
         }
@@ -84,11 +85,11 @@ public class ExporterTickHandler {
 
     public static class RenderTask {
         public final ItemStack stack;
-        public final int origId;
+        public final Item origItem;
 
-        public RenderTask(ItemStack stack, int origId) {
+        public RenderTask(ItemStack stack, Item origItem) {
             this.stack = stack;
-            this.origId = origId;
+            this.origItem = origItem;
         }
     }
 }
