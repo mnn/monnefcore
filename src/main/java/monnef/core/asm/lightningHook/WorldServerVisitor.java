@@ -5,9 +5,7 @@
 
 package monnef.core.asm.lightningHook;
 
-import monnef.core.Config;
-import monnef.core.asm.MappedObject;
-import monnef.core.asm.ObfuscationHelper;
+import monnef.core.asm.SrgNames;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -29,7 +27,6 @@ public class WorldServerVisitor extends ClassVisitor {
 
         if (outerName.equals("net/minecraftforge/event/world/WorldEvent$Save")) {
             Log.printFine("Injecting forge event inner class reference.");
-            //cv.visitInnerClass("net/minecraftforge/event/Event$Result", "net/minecraftforge/event/Event", "Result", ACC_PUBLIC + ACC_FINAL + ACC_STATIC + ACC_ENUM);
             cv.visitInnerClass("cpw/mods/fml/common/eventhandler/Event$Result", "cpw/mods/fml/common/eventhandler/Event", "Result", ACC_PUBLIC + ACC_FINAL + ACC_STATIC + ACC_ENUM);
         }
     }
@@ -38,15 +35,9 @@ public class WorldServerVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
 
-        if (mv != null && ObfuscationHelper.namesAreEqual(name, MappedObject.M_TICK_BLOCKS_AND_AMBIANCE)) {
+        if (mv != null && SrgNames.M_TICK_BLOCKS_AND_AMBIANCE.isEqualName(name)) {
             Log.printFine("Found tickBlocksAndAmbiance method.");
-            if (Config.useOldASMLightning()) {
-                Log.printFine("Using old adapter.");
-                mv = new OldInjectLightningEventAdapter(mv);
-            } else {
-                Log.printFine("Using new adapter.");
-                mv = new InjectLightningEventAdapter(mv);
-            }
+            mv = new InjectLightningEventAdapter(mv);
         }
 
         return mv;

@@ -7,8 +7,7 @@ package monnef.core.asm.lightningHook;
 
 import monnef.core.MonnefCorePlugin;
 import monnef.core.asm.CoreTransformer;
-import monnef.core.asm.MappedObject;
-import monnef.core.asm.ObfuscationHelper;
+import monnef.core.asm.SrgNames;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -54,7 +53,7 @@ public class InjectLightningEventAdapter extends MethodVisitor {
             return;
         }
 
-        if (state == State.LOOKING && ObfuscationHelper.namesAreEqual(name, MappedObject.M_CAN_LIGHTNING_STRIKE_AT)) {
+        if (state == State.LOOKING && SrgNames.M_CAN_LIGHTNING_STRIKE_AT.isEqualName(name)) {
             newState(State.GOT_METHOD);
             logger.log("method found");
         } else {
@@ -107,7 +106,7 @@ public class InjectLightningEventAdapter extends MethodVisitor {
         mv.visitVarInsn(ILOAD, localVars.get(1));
         mv.visitVarInsn(ILOAD, localVars.get(2));
         // mv.visitMethodInsn(Opcodes.INVOKESTATIC, "monnef/core/event/EventFactory", "onLightningGenerated", "(Lnet/minecraft/world/World;III)Z");
-        String signature = "(L" + ObfuscationHelper.getRealNameSlashed(MappedObject.C_WORLD) + ";III)Z";
+        String signature = "(L" + SrgNames.getSlashedName(SrgNames.C_WORLD.getTranslatedName()) + ";III)Z";
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "monnef/core/event/EventFactory", "onLightningGenerated", signature);
         mv.visitJumpInsn(IFEQ, label);
         print("Lightning hook inserted.");

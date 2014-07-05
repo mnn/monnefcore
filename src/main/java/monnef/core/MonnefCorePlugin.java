@@ -56,13 +56,13 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     @Override
     public String getAccessTransformerClass() {
-        return null;
+        return CORE_NAMESPACE + ".asm.CoreTransformer";
     }
 
     @Override
     // TODO: check if we can't use getAccessTransformerClass instead (after deobf access? we could get rid of the whole McpParser and that problematic version-sensitive binary config file)
     public String[] getASMTransformerClass() {
-        return new String[]{CORE_NAMESPACE + ".asm.CoreTransformer"};
+        return null;
     }
 
     @Override
