@@ -22,7 +22,7 @@ public class GuiHandler implements IGuiHandler {
         GuiId gui = GuiId.values()[ID];
         switch (gui) {
             case EXPORTER:
-                return new ContainerExporter();
+                return new ContainerExporter(player.inventory);
 
             default:
                 return null;
@@ -35,7 +35,7 @@ public class GuiHandler implements IGuiHandler {
         GuiId gui = GuiId.values()[ID];
         switch (gui) {
             case EXPORTER:
-                return new GuiExporter(new ContainerExporter());
+                return new GuiExporter(new ContainerExporter(player.inventory));
 
             default:
                 return null;

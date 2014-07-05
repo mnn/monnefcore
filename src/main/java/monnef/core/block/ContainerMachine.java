@@ -12,17 +12,18 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.tileentity.TileEntity;
 
 import java.util.ArrayList;
 
-public class ContainerMachine extends ContainerMonnefCore {
+public class ContainerMachine extends TileContainerMonnefCore {
     protected TileMachineWithInventory machine;
 
     protected ArrayList<Integer> lastValue;
 
     @Override
-    public void constructSlots(IInventory inv) {
-        addSlotToContainer(new Slot(inv, 0, 80, 25));
+    public void constructSlotsFromTile(TileEntity inv) {
+        addSlotToContainer(new Slot((IInventory) inv, 0, 80, 25));
     }
 
     public ContainerMachine(InventoryPlayer inventoryPlayer, TileMachineWithInventory te) {

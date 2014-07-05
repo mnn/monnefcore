@@ -1,46 +1,25 @@
-/*
- * Jaffas and more!
- * author: monnef
- */
-
 package monnef.core.block;
 
 import monnef.core.MonnefCorePlugin;
-import monnef.core.common.ContainerRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
 import java.util.List;
 
 public abstract class ContainerMonnefCore extends Container {
     private static final boolean PRINT_DEBUG_TRANSFER_MESSAGES = false;
 
-    protected TileEntity tile;
-    private ContainerRegistry.ContainerDescriptor descriptor;
+    protected InventoryPlayer playerInventory;
+    protected IInventory inventory;
 
-    protected ContainerMonnefCore(InventoryPlayer inventoryPlayer, TileEntity tile) {
-        this.tile = tile;
-        if (!(tile instanceof IInventory)) {
-            throw new RuntimeException("Linked tile entity must implement IInventory.");
-        }
-
-        setupDescriptor();
-
-        constructSlots((IInventory) tile);
-        if (inventorySlots.size() != getSlotsCount()) {
-            throw new RuntimeException("Expected count of slots is " + getSlotsCount() + ", but current number of slots is " + inventorySlots.size() + ".");
-        }
-
-        bindPlayerInventory(inventoryPlayer);
-    }
-
-    private void setupDescriptor() {
-        descriptor = ContainerRegistry.getContainerPrototype(tile.getClass());
+    public ContainerMonnefCore(InventoryPlayer inventoryPlayer, IInventory inventory) {
+        this.playerInventory = inventoryPlayer;
+        this.inventory = inventory;
+        constructSlotsFromInventoryAndBindPlayerInventory(this.inventory);
     }
 
     public int getYSize() {
@@ -117,13 +96,9 @@ public abstract class ContainerMonnefCore extends Container {
         return stack;
     }
 
-    public int getSlotsCount() {
-        return descriptor.getSlotsCount();
-    }
+    public abstract int getSlotsCount();
 
-    public int getOutputSlotsCount() {
-        return descriptor.getOutputSlotsCount();
-    }
+    public abstract int getOutputSlotsCount();
 
     public int getInputSlotsCount() {
         return getSlotsCount() - getOutputSlotsCount();
@@ -135,7 +110,13 @@ public abstract class ContainerMonnefCore extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return ((IInventory) tile).isUseableByPlayer(player);
+        return true;
+    }
+
+
+    public void constructSlotsFromInventoryAndBindPlayerInventory(IInventory inv) {
+        constructSlotsFromInventory(inv);
+        bindPlayerInventory(playerInventory);
     }
 
     /**
@@ -144,7 +125,7 @@ public abstract class ContainerMonnefCore extends Container {
      *
      * @param inv The inventory.
      */
-    public abstract void constructSlots(IInventory inv);
+    public abstract void constructSlotsFromInventory(IInventory inv);
 
     /**
      * Merges provided ItemStack with the first available one in the (container/player) inventory

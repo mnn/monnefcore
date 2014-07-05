@@ -35,7 +35,10 @@ public class ExporterTickHandler {
     @SubscribeEvent
     public void tickStart(TickEvent.ClientTickEvent evt) {
         if (evt.phase == TickEvent.Phase.START) {
-            if (!tasks.isEmpty() && !takeShotNow) {
+            if (takeShotNow) {
+                takeShot();
+                takeShotNow = false;
+            } else if (!tasks.isEmpty() && !takeShotNow) {
                 GuiExporter gui = (GuiExporter) FMLClientHandler.instance().getClient().currentScreen;
                 currentTask = tasks.pop();
                 if (currentTask == null) {
@@ -56,12 +59,15 @@ public class ExporterTickHandler {
         }
     }
 
+    /*
     @SubscribeEvent
-    public void tickEnd(TickEvent.RenderTickEvent evt) {
-        if (!takeShotNow) return;
-        takeShot();
-        takeShotNow = false;
+    public void tickEnd(TickEvent.ClientTickEvent evt) {
+        if (evt.phase == TickEvent.Phase.START) {
+            if (!takeShotNow) return;
+
+        }
     }
+    */
 
     private void takeShot() {
         GuiExporter gui = (GuiExporter) FMLClientHandler.instance().getClient().currentScreen;

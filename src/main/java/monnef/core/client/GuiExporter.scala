@@ -6,9 +6,7 @@ package monnef.core.client
 
 import cpw.mods.fml.client.FMLClientHandler
 import monnef.core.MonnefCorePlugin
-import monnef.core.utils.ColorEnum
-import monnef.core.utils.GuiHelper
-import monnef.core.utils.PlayerHelper
+import monnef.core.utils.{GameDataHelper, ColorEnum, GuiHelper, PlayerHelper}
 import net.minecraft.block.Block
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.init.Blocks
@@ -56,7 +54,7 @@ class GuiExporter(container: Container) extends GuiContainerMonnefCore(container
         queueBlock(Blocks.dispenser)
 
       case BUTTON_PROCESS_ALL =>
-        val itemsToProcess: Seq[Item] = GameData.getItemRegistry.iterator().asInstanceOf[Iterator[Item]].filter(_ != null).toSeq
+        val itemsToProcess: Seq[Item] = GameDataHelper.extractAllItems().filter(_ != null).toSeq
         val tmpList = new java.util.ArrayList[ItemStack]()
         val queued = itemsToProcess.map {
           item => {

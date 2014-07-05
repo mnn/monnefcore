@@ -7,6 +7,7 @@ package monnef.core.common;
 
 import monnef.core.MonnefCorePlugin;
 import monnef.core.block.ContainerMonnefCore;
+import monnef.core.block.TileContainerMonnefCore;
 import monnef.core.client.GuiContainerMonnefCore;
 import monnef.core.external.eu.infomas.annotation.AnnotationDetector;
 import monnef.core.utils.ReflectionTools;
@@ -213,7 +214,7 @@ public class ContainerRegistry {
                 }
                 if (!InventoryPlayer.class.isAssignableFrom(constructor.getParameterTypes()[0]) ||
                         !TileEntity.class.isAssignableFrom(constructor.getParameterTypes()[1]) ||
-                        !ContainerMonnefCore.class.isAssignableFrom(constructor.getParameterTypes()[2])) {
+                        !TileContainerMonnefCore.class.isAssignableFrom(constructor.getParameterTypes()[2])) {
                     throw new RuntimeException("Incorrect type of parameters of GUI constructor.");
                 }
                 setGuiConstructor(constructor);
