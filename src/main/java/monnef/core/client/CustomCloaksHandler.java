@@ -38,6 +38,8 @@ public class CustomCloaksHandler {
     private static final String JAFFA_CLOAK_URL = JAFFA_CLOAK_URL_BASE + "?name=%s";
     private static final boolean SHOW_CLOAK_DEBUG_MESSAGES = false; // WARNING: it's really spammy!
 
+    // TODO: update to use UUIDs instead of names
+
     private static Set<String> specialNames = new HashSet<String>();
     private Set<AbstractClientPlayer> processedPlayers = new HashSet<AbstractClientPlayer>();
     private Map<String, ResourceLocation> nameToResLoc = new HashMap<String, ResourceLocation>();
