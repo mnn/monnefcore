@@ -15,6 +15,7 @@ import java.util.HashSet;
 
 import static monnef.core.MonnefCorePlugin.Log;
 
+@Deprecated
 public class McpParser {
     private static MappingDictionary methods, fields;
 

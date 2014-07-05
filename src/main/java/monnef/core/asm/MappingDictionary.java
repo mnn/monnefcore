@@ -15,6 +15,7 @@ import java.util.Set;
 import static monnef.core.MonnefCorePlugin.Log;
 import static monnef.core.asm.ObfuscationHelper.isRunningInObfuscatedMode;
 
+@Deprecated
 public class MappingDictionary implements Serializable {
     private HashMap<String, HashSet<String>> data;
 

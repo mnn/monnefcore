@@ -20,10 +20,14 @@ import java.util.HashSet;
 import static monnef.core.MonnefCorePlugin.Log;
 
 public class ObfuscationHelper {
+    @Deprecated
     public static final String JAFFAS_MAPPINGS_CFG = "monnef_mappings.ser";
+
     private static boolean runningInObfuscatedMode = System.getProperty("debugFlag") == null;
 
+    @Deprecated
     private static HashMap<MappedObjectType, MappingDictionary> database;
+    @Deprecated
     private static HashMap<MappedObjectType, HashSet<MappedObject>> usedFlags;
 
     private static boolean initialized = false;
@@ -41,10 +45,12 @@ public class ObfuscationHelper {
         return runningInObfuscatedMode;
     }
 
+    @Deprecated
     public static String getRealNameSlashed(MappedObject toTranslate) {
         return getRealName(toTranslate).replace('.', '/');
     }
 
+    @Deprecated
     public static String getRealName(MappedObject toTranslate) {
         if (!initialized) initialize();
 
@@ -63,6 +69,7 @@ public class ObfuscationHelper {
         }
     }
 
+    @Deprecated
     private static void initialize() {
         if (runningInObfuscatedMode) {
             loadConfigFromJar();
@@ -75,6 +82,7 @@ public class ObfuscationHelper {
         initialized = true;
     }
 
+    @Deprecated
     private static void loadConfigFromJar() {
         //String myJar = PathHelper.getMyPath();
         String myJar = MonnefCorePlugin.getMyJarPath();
@@ -104,10 +112,12 @@ public class ObfuscationHelper {
         }
     }
 
+    @Deprecated
     public static void printAllDataToLog() {
         printAllDataToLog(database);
     }
 
+    @Deprecated
     public static void printAllDataToLog(HashMap<MappedObjectType, MappingDictionary> database) {
         for (MappedObjectType type : MappedObjectType.values()) {
             Log.printFine(type.toString() + ":");
@@ -118,12 +128,14 @@ public class ObfuscationHelper {
         }
     }
 
+    @Deprecated
     private static String formatDatabaseStats(HashMap<MappedObjectType, MappingDictionary> database) {
         return database.get(MappedObjectType.METHOD).countKeys() + " methods, " +
                 database.get(MappedObjectType.CLASS).countKeys() + " classes, " +
                 database.get(MappedObjectType.FIELD).countKeys() + " fields";
     }
 
+    @Deprecated
     public static void dumpUsedItemsToConfig() {
         //String path = PathHelper.getMinecraftPath() + "/../bin_data/" + JAFFAS_MAPPINGS_CFG;
         String path = MonnefCorePlugin.getMcPath() + "/../bin_data/" + JAFFAS_MAPPINGS_CFG;
@@ -139,6 +151,7 @@ public class ObfuscationHelper {
         }
     }
 
+    @Deprecated
     private static HashMap<MappedObjectType, MappingDictionary> constructOnlyUsed(HashMap<MappedObjectType, MappingDictionary> database, HashMap<MappedObjectType, HashSet<MappedObject>> usedFlags) {
         HashMap<MappedObjectType, MappingDictionary> ret = new HashMap<MappedObjectType, MappingDictionary>();
 
@@ -160,6 +173,7 @@ public class ObfuscationHelper {
         return ret;
     }
 
+    @Deprecated
     public static boolean namesAreEqual(String name, MappedObject toTranslate) {
         if (!initialized) initialize();
 

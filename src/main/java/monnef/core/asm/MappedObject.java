@@ -8,6 +8,7 @@ package monnef.core.asm;
 import static monnef.core.asm.MappedObjectType.CLASS;
 import static monnef.core.asm.MappedObjectType.METHOD;
 
+@Deprecated
 public enum MappedObject {
     C_ENTITY("net.minecraft.entity.Entity", CLASS),
     M_ON_ENTITY_CREATE("onEntityCreate", METHOD),

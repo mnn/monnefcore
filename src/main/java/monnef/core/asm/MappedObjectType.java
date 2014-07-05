@@ -5,6 +5,7 @@
 
 package monnef.core.asm;
 
+@Deprecated
 public enum MappedObjectType {
     CLASS, FIELD, METHOD
 }

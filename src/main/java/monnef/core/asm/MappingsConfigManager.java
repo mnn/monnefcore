@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
+@Deprecated
 public class MappingsConfigManager {
     @SuppressWarnings("unchecked")
     public static HashMap<MappedObjectType, MappingDictionary> loadConfig(InputStream inputStream) {
