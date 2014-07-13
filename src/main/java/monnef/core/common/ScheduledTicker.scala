@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.Side
 
 /**
  * Simplified reimplementation of IScheduledTickHandler from FML
+ * registration example: FMLCommonHandler.instance().bus().register(new MyTicker());
  */
 abstract class ScheduledTicker {
   private var ticksClient = 0
