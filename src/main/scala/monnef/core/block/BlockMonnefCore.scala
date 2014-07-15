@@ -9,9 +9,13 @@ import net.minecraft.block.material.Material
 import javax.swing.Icon
 import net.minecraft.client.renderer.texture.IIconRegister
 import net.minecraft.util.IIcon
+import net.minecraft.init.Blocks
 
 
 abstract class BlockMonnefCore(_material: Material) extends Block(_material) with GameObjectDescriptor {
+
+  import BlockMonnefCore._
+
   initCustomIcon()
 
   def this(index: Int, material: Material) = {
@@ -36,5 +40,15 @@ abstract class BlockMonnefCore(_material: Material) extends Block(_material) wit
   def removeFromCreativeTab() {
     if (!MonnefCorePlugin.debugEnv)
       setCreativeTab(null)
+  }
+
+  def setBurnProperties(encouragement: Int, flammibility: Int) {
+    BlockMonnefCore.setBurnProperties(this, encouragement, flammibility)
+  }
+}
+
+object BlockMonnefCore {
+  def setBurnProperties(block: Block, encouragement: Int, flammibility: Int) {
+    Blocks.fire.setFireInfo(block, encouragement, flammibility)
   }
 }
