@@ -90,4 +90,8 @@ public class EntityHelper {
     public static void kickEntityInDirection(EntityLivingBase entity, ForgeDirection direction, float force) {
         entity.addVelocity(direction.offsetX * force, direction.offsetY * force, direction.offsetZ * force);
     }
+
+    public static int getNextFreeEntityID() {
+        return EntityRegistry.findGlobalUniqueEntityId();
+    }
 }

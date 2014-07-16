@@ -8,7 +8,7 @@ import net.minecraft.item.{EnumRarity, Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{MathHelper, IIcon}
 import monnef.core.block.GameObjectDescriptor
-import cpw.mods.fml.relauncher.{Side, SideOnly}
+import cpw.mods.fml.relauncher.{SideOnly, Side}
 import net.minecraft.creativetab.CreativeTabs
 import monnef.core.mod.MonnefCoreNormalMod
 import cpw.mods.fml.common.registry.LanguageRegistry
@@ -53,13 +53,17 @@ abstract class ItemMonnefCore extends Item with GameObjectDescriptor {
     inBetaStage = true
   }
 
-  override def addInformation(stack: ItemStack, player: EntityPlayer, result: java.util.List[_], par4: Boolean): Unit = {
+  // raw type stuff
+  final override def addInformation(stack: ItemStack, player: EntityPlayer, result: java.util.List[_], par4: Boolean): Unit = {
+    addInformationCustom(stack, player, result.asInstanceOf[util.List[String]], par4)
+  }
+
+  def addInformationCustom(stack: ItemStack, player: EntityPlayer, result: java.util.List[String], par4: Boolean): Unit = {
     super.addInformation(stack, player, result, par4)
-    val r = result.asInstanceOf[java.util.List[String]]
     if (inBetaStage) {
-      r.add(BETA_WARNING_TEXT)
+      result.add(BETA_WARNING_TEXT)
     }
-    if (info != null) r.add(info)
+    if (info != null) result.add(info)
   }
 
   def setInfo(text: String) {
@@ -131,8 +135,13 @@ trait MultiItem extends MultiItemBase {
       LanguageRegistry.instance.addStringLocalization(this.getUnlocalizedName + "." + getSubNames(i) + ".name", getSubTitles(i))
   }
 
-  @SideOnly(Side.CLIENT) override def getSubItems(item: Item, par2CreativeTabs: CreativeTabs, par3List: util.List[_]) {
-    val l = par3List.asInstanceOf[util.List[ItemStack]]
-    for (i <- 0 until getSubItemsCount) l.add(new ItemStack(item, 1, i))
+  // raw type issue when java -> scala -> java/scala class hierarchy, use getSubItemsCustom
+  @SideOnly(Side.CLIENT) final override def getSubItems(item: Item, tabs: CreativeTabs, result: util.List[_]) {
+    getSubItemsCustom(item, tabs, result.asInstanceOf[util.List[ItemStack]])
+  }
+
+  @SideOnly(Side.CLIENT)
+  def getSubItemsCustom(item: Item, tabs: CreativeTabs, result: util.List[ItemStack]) {
+    for (i <- 0 until getSubItemsCount) result.add(new ItemStack(item, 1, i))
   }
 }

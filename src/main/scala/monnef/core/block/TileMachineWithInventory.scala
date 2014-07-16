@@ -191,4 +191,6 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
   def canAddToInventory(item: EntityItem): Boolean = {
     this.addItemToInventory(item.getEntityItem, doAdd = false) > 0
   }
+
+
 }

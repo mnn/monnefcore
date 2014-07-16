@@ -23,7 +23,7 @@ object BlockHelper {
 
   def setBlock(world: World, x: Int, y: Int, z: Int, block: Block): Boolean = world.setBlock(x, y, z, block)
 
-  def setAir(world: World, x: Int, y: Int, z: Int): Boolean = setBlock(world, x, y, z, Blocks.air)
+  def setAir(world: World, x: Int, y: Int, z: Int): Boolean = world.setBlockToAir(x, y, z)
 
   def setBlock(world: World, x: Int, y: Int, z: Int, block: Block, meta: Int): Boolean = world.setBlock(x, y, z, block, meta, NOTIFY_ALL)
 

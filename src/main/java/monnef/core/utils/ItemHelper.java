@@ -5,6 +5,7 @@
 
 package monnef.core.utils;
 
+import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -115,5 +116,9 @@ public class ItemHelper {
             ret[i] = toCopy.copy();
         }
         return ret;
+    }
+
+    public static Item findItemByName(String itemName) {
+        return GameData.getItemRegistry().getObject(itemName);
     }
 }
