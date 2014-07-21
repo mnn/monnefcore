@@ -216,4 +216,9 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     public String format() {
         return String.format("%d@%dx%dx%d", getWorld().provider.dimensionId, getX(), getY(), getZ());
     }
+
+    @Override
+    public boolean isAir() {
+        return getWorld().isAirBlock(getX(), getY(), getZ());
+    }
 }

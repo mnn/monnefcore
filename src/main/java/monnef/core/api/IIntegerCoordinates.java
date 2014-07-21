@@ -45,4 +45,6 @@ public interface IIntegerCoordinates {
     IIntegerCoordinates copy();
 
     String format();
+
+    boolean isAir();
 }
