@@ -9,5 +9,7 @@ trait MessageIn[IN] {
 
   def readChar(): Char
 
+  def readBoolean(): Boolean
+
   def get: IN
 }

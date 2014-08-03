@@ -9,5 +9,7 @@ trait MessageOut[OUT] {
 
   def writeChar(d: Char): Unit
 
+  def writeBoolean(d: Boolean): Unit
+
   def get: OUT
 }

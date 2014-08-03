@@ -4,7 +4,7 @@ import io.netty.handler.codec.MessageToMessageCodec
 import cpw.mods.fml.common.network.internal.FMLProxyPacket
 import monnef.core.network.common.PacketMonnefCoreBase
 import io.netty.channel.{ChannelHandlerContext, ChannelHandler}
-import monnef.core.network.Message.{MessageOutMC17, MessageInMC17}
+import monnef.core.network.message.{MessageOutMC17, MessageInMC17}
 import net.minecraft.entity.player.EntityPlayer
 import cpw.mods.fml.common.FMLCommonHandler
 import net.minecraft.network.{NetHandlerPlayServer, INetHandler}
