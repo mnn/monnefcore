@@ -6,7 +6,6 @@
 package monnef.core.utils;
 
 import cpw.mods.fml.common.registry.GameData;
-import monnef.jaffas.food.block.BlockSwitchgrass;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
