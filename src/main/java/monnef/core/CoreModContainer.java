@@ -19,6 +19,7 @@ import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.Side;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.ObfuscationHelper;
+import monnef.core.asm.SrgNames;
 import monnef.core.calendar.CoreTickHandler;
 import monnef.core.utils.WolfFoodRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -75,12 +76,7 @@ public class CoreModContainer extends DummyModContainer {
     @Subscribe
     public void preLoad(FMLPreInitializationEvent event) {
         Log.printFinest("container preLoad event");
-    }
 
-    // use google subscribe and FML events
-    @Subscribe
-    public void load(FMLInitializationEvent event) {
-        Log.printFinest("container Load event");
         Side side = FMLCommonHandler.instance().getEffectiveSide();
 
         if (!CoreTransformer.lightningHookApplied) {
@@ -106,10 +102,17 @@ public class CoreModContainer extends DummyModContainer {
         MonnefCorePlugin.Log.printInfo("Final checks passed.");
     }
 
+    // use google subscribe and FML events
+    @Subscribe
+    public void load(FMLInitializationEvent event) {
+        Log.printFinest("container Load event");
+    }
+
     private void printDebugDataAndCrash(String msg) {
         Log.printSevere(msg);
         Log.printFine("Mapping database:");
         ObfuscationHelper.printAllDataToLog();
+        SrgNames.dump();
         throw new RuntimeException(msg);
     }
 

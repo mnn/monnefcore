@@ -43,11 +43,26 @@ abstract class BlockMonnefCore(_material: Material) extends Block(_material) wit
   }
 
   def setBurnProperties(encouragement: Int, flammibility: Int) {
-    BlockMonnefCore.setBurnProperties(this, encouragement, flammibility)
+    burnPropertiesQueue :+= BurnPropertiesRecord(this, encouragement, flammibility)
+    //BlockMonnefCore.setBurnProperties(this, encouragement, flammibility)
   }
 }
 
 object BlockMonnefCore {
+  private var initialized: Boolean = false
+
+  private case class BurnPropertiesRecord(block: Block, encouragement: Int, flammibility: Int)
+
+  private var burnPropertiesQueue: Seq[BurnPropertiesRecord] = Seq()
+
+  def onPostLoad() {
+    if (initialized) throw new RuntimeException("re-initialization!")
+    initialized = true
+
+    burnPropertiesQueue.foreach { case BurnPropertiesRecord(block, encouragement, flammibility) => setBurnProperties(block, encouragement, flammibility)}
+    burnPropertiesQueue = null
+  }
+
   def setBurnProperties(block: Block, encouragement: Int, flammibility: Int) {
     Blocks.fire.setFireInfo(block, encouragement, flammibility)
   }

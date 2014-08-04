@@ -19,6 +19,7 @@ import cpw.mods.fml.server.FMLServerHandler;
 import monnef.core.Config;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.Reference;
+import monnef.core.block.BlockMonnefCore;
 import monnef.core.client.ExporterTickHandler;
 import monnef.core.command.CommandMC;
 import monnef.core.common.CommonProxy;
@@ -62,6 +63,7 @@ public class MonnefCoreNormalMod {
     @Mod.EventHandler
     public void postLoad(FMLPostInitializationEvent evt) {
         BreakableIronMaterial.onPostLoad();
+        BlockMonnefCore.onPostLoad();
         packetHandler.onPostLoad();
     }
 
