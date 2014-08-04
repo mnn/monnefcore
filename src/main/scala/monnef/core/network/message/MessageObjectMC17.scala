@@ -23,6 +23,8 @@ class MessageInMC17(input: ByteBuf) extends MessageIn[ByteBuf] {
 
   override def readBoolean(): Boolean = input.readBoolean()
 
+  override def readDouble(): Double = input.readDouble()
+
   override def get: ByteBuf = input
 
   var resultPacket: PacketMonnefCoreBase = _
@@ -41,6 +43,8 @@ class MessageOutMC17(output: ByteBuf = Unpooled.buffer()) extends MessageOut[Byt
   override def writeChar(d: Char): Unit = output.writeChar(d)
 
   override def writeBoolean(d: Boolean): Unit = output.writeBoolean(d)
+
+  override def writeDouble(d: Double): Unit = output.writeDouble(d)
 
   override def get: ByteBuf = output
 }

@@ -11,5 +11,7 @@ trait MessageOut[OUT] {
 
   def writeBoolean(d: Boolean): Unit
 
+  def writeDouble(d: Double): Unit
+
   def get: OUT
 }

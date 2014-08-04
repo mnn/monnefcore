@@ -11,5 +11,7 @@ trait MessageIn[IN] {
 
   def readBoolean(): Boolean
 
+  def readDouble(): Double
+
   def get: IN
 }
