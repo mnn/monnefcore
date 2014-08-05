@@ -43,8 +43,7 @@ abstract class BlockMonnefCore(_material: Material) extends Block(_material) wit
   }
 
   def setBurnProperties(encouragement: Int, flammibility: Int) {
-    burnPropertiesQueue :+= BurnPropertiesRecord(this, encouragement, flammibility)
-    //BlockMonnefCore.setBurnProperties(this, encouragement, flammibility)
+    queueSetBurnProperties(this, encouragement, flammibility)
   }
 }
 
@@ -63,7 +62,11 @@ object BlockMonnefCore {
     burnPropertiesQueue = null
   }
 
-  def setBurnProperties(block: Block, encouragement: Int, flammibility: Int) {
+  def queueSetBurnProperties(block: Block, encouragement: Int, flammibility: Int) {
+    burnPropertiesQueue :+= BurnPropertiesRecord(block, encouragement, flammibility)
+  }
+
+  private def setBurnProperties(block: Block, encouragement: Int, flammibility: Int) {
     Blocks.fire.setFireInfo(block, encouragement, flammibility)
   }
 }

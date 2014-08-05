@@ -82,9 +82,20 @@ object RegistryUtils {
       assert(block != null, "registerBlock: block cannot be null")
       assert(itemclass != null, "registerBlock: itemclass cannot be null")
 
-      var itemCtor: Constructor[_ <: IItemBlock] = null
-      itemCtor = itemclass.getConstructor(classOf[Block])
-      i = itemCtor.newInstance(block).asInstanceOf[Item]
+      try {
+        var itemCtor: Constructor[_ <: IItemBlock] = null
+        itemCtor = itemclass.getConstructor(classOf[Block])
+        i = itemCtor.newInstance(block).asInstanceOf[Item]
+      } catch {
+        case _: NoSuchMethodException =>
+          try {
+            i = itemclass.newInstance().asInstanceOf[Item]
+          } catch {
+            case e: NoSuchMethodException =>
+              throw new RuntimeException("Block doesn't have suitable constructor (either parameter-less or accepting a block).", e)
+          }
+      }
+
       if (names != null) {
         i.asInstanceOf[IItemBlock].setSubNames(names)
       }
