@@ -69,7 +69,7 @@ object RegistryUtils {
     else {
       throw new RuntimeException("Unknown class in block registration.")
     }
-    registerSubBlocks(block, titles)
+    registerSubBlockNames(block, titles)
   }
 
   private def registerMyBlock(block: Block, itemclass: Class[_ <: IItemBlock], blockName: String, names: Array[String]) {
@@ -189,10 +189,13 @@ object RegistryUtils {
   }
 
   @deprecated(message = "no titles in code, use lang files")
-  private def registerSubBlocks(block: Block, names: Array[String]) {
+  def registerSubBlockNames(block: Block, names: Array[String]) {
     for (ix <- 0 until names.length) {
       val blockId = GameData.getBlockRegistry.getId(block)
       val multiBlockStack: ItemStack = new ItemStack(Item.getItemById(blockId), 1, ix)
+      if (multiBlockStack.getItem == null) {
+        throw new RuntimeException("Item from " + block.getUnlocalizedName + " Block is null!")
+      }
       LanguageRegistry.addName(multiBlockStack, names(multiBlockStack.getItemDamage))
     }
   }
