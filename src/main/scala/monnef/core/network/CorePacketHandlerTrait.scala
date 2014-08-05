@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer
  */
 
 trait CorePacketHandlerTrait {
-  def onLoad() {}
+  def onPreLoad() {}
 
   def onPostLoad() {}
 

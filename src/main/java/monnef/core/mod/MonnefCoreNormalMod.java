@@ -15,7 +15,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.server.FMLServerHandler;
 import monnef.core.Config;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.Reference;
@@ -27,9 +26,6 @@ import monnef.core.common.GuiHandler;
 import monnef.core.network.CorePacketHandlerMC17;
 import monnef.core.network.CorePacketHandlerTrait;
 import monnef.core.utils.BreakableIronMaterial;
-import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.server.MinecraftServer;
 
 @Mod(modid = Reference.ModIdHelper, name = Reference.ModNameHelper, version = Reference.Version, dependencies = "required-after:monnef-core")
 public class MonnefCoreNormalMod {
@@ -46,6 +42,7 @@ public class MonnefCoreNormalMod {
     public void preLoad(FMLPreInitializationEvent evt) {
         handleMetadata();
         proxy.registerContainers();
+        packetHandler.onPreLoad();
     }
 
     @Mod.EventHandler
@@ -57,7 +54,6 @@ public class MonnefCoreNormalMod {
         }
 
         proxy.registerClientStuff();
-        packetHandler.onLoad();
     }
 
     @Mod.EventHandler

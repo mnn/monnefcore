@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack
 import java.lang.reflect.Constructor
 import monnef.core.MonnefCorePlugin.Log
 import java.util
+import com.sun.javaws.exceptions.InvalidArgumentException
 
 object RegistryUtils {
   def registerBlock(block: Block) {
@@ -164,8 +165,9 @@ object RegistryUtils {
       throw new RuntimeException("Block must be registered first.")
     }
     else {
-      FMLLog.fine("Found matching Block %s for ItemBlock %s at id %d", block, item, idHint)
+      FMLLog.fine("[registerCustomItemBlock] Found matching Block %s for ItemBlock %s at id %d", block, item, idHint)
       GameDataAccessor.freeSlot(idHint, item)
+      if (GameData.getItemRegistry.getObjectById(idHint) != null) throw new RuntimeException("freeSlot was unsuccessful")
     }
 
     val itemId: Int = GameDataAccessor.iItemRegistryAdd(idHint, name, item, GameDataAccessor.availabilityMap)
@@ -214,7 +216,16 @@ object RegistryUtils {
   }
 
   def registerBlockPackingRecipe(input: ItemStack, outputBlock: ItemStack) {
+    if (input == null || input.getItem == null || outputBlock == null || outputBlock.getItem == null) {
+      throw new NullPointerException
+    }
+    if (Item.getIdFromItem(input.getItem) == 0) {
+      throw new RuntimeException(s"Input ${input.getItem.getUnlocalizedName} has invalid ID.")
+    }
+    if (Item.getIdFromItem(outputBlock.getItem) == 0) {
+      throw new RuntimeException(s"Output ${outputBlock.getItem.getUnlocalizedName} has invalid ID.")
+    }
     val inputItems: Array[ItemStack] = Array.fill(9) {input.copy}
-    GameRegistry.addShapelessRecipe(outputBlock.copy, inputItems)
+    GameRegistry.addShapelessRecipe(outputBlock.copy, inputItems: _*)
   }
 }

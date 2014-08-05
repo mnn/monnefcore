@@ -45,8 +45,8 @@ class CorePacketHandlerMC17 extends CorePacketHandlerBase {
   private var _manager: PacketManagerMonnefCoreMC17 = _
   private var _dispatcher: CorePacketDispatcherMC17 = _
 
-  override def onLoad() {
-    super.onLoad()
+  override def onPreLoad() {
+    super.onPreLoad()
     _dispatcher = new CorePacketDispatcherMC17(this)
     _manager = new PacketManagerMonnefCoreMC17(this)
     nativeHandler = new MC17NativeCorePacketHandler(this)
