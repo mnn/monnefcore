@@ -125,4 +125,12 @@ public class ItemHelper {
     public static boolean isStackSameItemAsBlock(ItemStack stack, Block block) {
         return stack.getItem() == Item.getItemFromBlock(block);
     }
+
+    public static ItemStack getBlockItemStack(Block block, int size, int meta) {
+        return new ItemStack(getItemFromBlockViaGameData(block), size, meta);
+    }
+
+    public static Item getItemFromBlockViaGameData(Block block) {
+        return Item.getItemById(GameData.getBlockRegistry().getId(block));
+    }
 }

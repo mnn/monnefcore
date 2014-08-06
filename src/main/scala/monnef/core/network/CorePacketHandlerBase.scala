@@ -4,7 +4,7 @@
 
 package monnef.core.network
 
-import monnef.core.network.message.MessageIn
+import monnef.core.network.message.{MessageInMC17, MessageIn}
 import net.minecraft.entity.player.{EntityPlayerMP, EntityPlayer}
 import cpw.mods.fml.relauncher.Side
 import java.net.ProtocolException
@@ -12,6 +12,7 @@ import monnef.core.{Reference, MonnefCorePlugin}
 import cpw.mods.fml.common.network.{NetworkRegistry, FMLEmbeddedChannel}
 import java.util
 import monnef.core.utils.PlayerHelper
+import monnef.core.network.common.PacketMonnefCoreBase
 
 abstract class CorePacketHandlerBase extends CorePacketHandlerTrait {
   def onPacket(in: MessageIn[_], player: EntityPlayer) {
@@ -19,6 +20,10 @@ abstract class CorePacketHandlerBase extends CorePacketHandlerTrait {
       val packetId = in.readByte()
       val corePacket = manager.constructPacket(packetId)
       corePacket.read(in)
+
+      // HACK
+      in.asInstanceOf[MessageInMC17].resultPacket = corePacket.asInstanceOf[PacketMonnefCoreBase]
+
       corePacket.execute(player, if (player.worldObj.isRemote) Side.CLIENT else Side.SERVER)
     } catch {
       case e: ProtocolException =>
@@ -62,6 +67,6 @@ class CorePacketHandlerMC17 extends CorePacketHandlerBase {
   def channelServer = channels.get(Side.SERVER)
 }
 
-object CorePacketHandlerMC17{
+object CorePacketHandlerMC17 {
   val instance = new CorePacketHandlerMC17()
 }
