@@ -16,6 +16,7 @@ public class ResourcePathHelper {
         ENTITY("textures/entities"),
         TILE("textures/tiles"),
         ARMOR("textures/armor"),
+        MODELS("models"),
         SOUND(""),;
 
         private String path;
