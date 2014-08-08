@@ -6,6 +6,7 @@
 package monnef.core.asm.lightningHook;
 
 import monnef.core.MonnefCorePlugin;
+import monnef.core.asm.AdapterLogger;
 import monnef.core.asm.CoreTransformer;
 import monnef.core.asm.SrgNames;
 import org.objectweb.asm.Label;
@@ -13,7 +14,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import static org.objectweb.asm.Opcodes.ASM4;
 import static org.objectweb.asm.Opcodes.IFEQ;
@@ -23,7 +23,7 @@ public class InjectLightningEventAdapter extends MethodVisitor {
     public static final String MSG_PREFIX = "[LH] ";
     private ArrayList<Integer> localVars = new ArrayList<Integer>();
     private State state = State.LOOKING;
-    private Logger logger = new Logger();
+    private AdapterLogger logger = new AdapterLogger(MSG_PREFIX);
 
     private enum State {LOOKING, GOT_METHOD, DONE, BROKEN}
 
@@ -90,7 +90,7 @@ public class InjectLightningEventAdapter extends MethodVisitor {
     public void visitEnd() {
         super.visitEnd();
         if (state != State.DONE) {
-            printError("not DONE at the end, code has probably changed so the adapter cannot detect right injection place");
+            logger.printError("not DONE at the end, code has probably changed so the adapter cannot detect right injection place");
             logger.printAll();
         }
     }
@@ -98,7 +98,7 @@ public class InjectLightningEventAdapter extends MethodVisitor {
     private void injectHook(Label label) {
         if (localVars.size() != 3) {
             newState(State.BROKEN);
-            logger.log("expected 3 local vars, got " + localVars.size() + " (" + getVarsForLog() + ")");
+            logger.log("expected 3 local vars, got " + localVars.size() + " (" + AdapterLogger.getVarsForLog(localVars) + ")");
             return;
         }
         mv.visitVarInsn(Opcodes.ALOAD, 0);
@@ -109,48 +109,9 @@ public class InjectLightningEventAdapter extends MethodVisitor {
         String signature = "(L" + SrgNames.getSlashedName(SrgNames.C_WORLD.getTranslatedName()) + ";III)Z";
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "monnef/core/event/EventFactory", "onLightningGenerated", signature);
         mv.visitJumpInsn(IFEQ, label);
-        print("Lightning hook inserted.");
+        logger.print("Lightning hook inserted.");
         newState(State.DONE);
         CoreTransformer.lightningHookApplied = true;
     }
 
-    private String getVarsForLog() {
-        StringBuilder sb = new StringBuilder();
-        for (Integer var : localVars) {
-            sb.append(var);
-            sb.append(";");
-        }
-        if (sb.length() > 0) {
-            sb.deleteCharAt(sb.length() - 1);
-        }
-        return sb.toString();
-    }
-
-    private void print(String msg) {
-        MonnefCorePlugin.Log.printInfo(MSG_PREFIX + msg);
-    }
-
-    private void printError(String msg) {
-        MonnefCorePlugin.Log.printSevere(MSG_PREFIX + msg);
-    }
-
-    private class Logger {
-        private LinkedList<String> messages = new LinkedList<String>();
-
-        public void log(String msg) {
-            messages.add(msg);
-        }
-
-        public void printAll() {
-            printInternal("List of all adapter logging info");
-            printInternal("--------------------------------");
-            for (String msg : messages) {
-                printInternal(msg);
-            }
-        }
-
-        private void printInternal(String msg) {
-            print("[logger] " + msg);
-        }
-    }
 }

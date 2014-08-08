@@ -27,6 +27,7 @@ public class SrgNames {
     public static final SrgMapping C_WORLD = new SrgMappingClass("net.minecraft.world.World");
     public static final SrgMapping M_TICK_BLOCKS_AND_AMBIANCE = new SrgMappingMethod("func_147456_g");
     public static final SrgMapping M_CAN_LIGHTNING_STRIKE_AT = new SrgMappingMethod("func_72951_B");
+    public static final SrgMapping C_ITEM = new SrgMappingClass("net.minecraft.item.Item");
 
     private SrgNames() {
     }

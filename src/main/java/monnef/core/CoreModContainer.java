@@ -82,6 +82,9 @@ public class CoreModContainer extends DummyModContainer {
         if (!CoreTransformer.lightningHookApplied) {
             printDebugDataAndCrash("Unable to install a lightning hook!");
         }
+        if (!CoreTransformer.gameDataHookApplied) {
+            printDebugDataAndCrash("Unable to install gamedata hooks!");
+        }
 
         if (MonnefCorePlugin.debugEnv && MonnefCorePlugin.jaffasEnv) {
             try {

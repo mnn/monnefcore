@@ -6,6 +6,7 @@
 package monnef.core.event;
 
 import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
