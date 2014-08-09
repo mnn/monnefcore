@@ -158,6 +158,11 @@ object RegistryUtils {
     item
   }
 
+  def registerItem[T <: Item](item: T): T = {
+    GameRegistry.registerItem(item, item.getUnlocalizedName)
+    item
+  }
+
   def getTitle(stack: ItemStack): String = {
     // TODO needed? it's pre 1.7, might be broken
     var title: String = stack.getDisplayName
