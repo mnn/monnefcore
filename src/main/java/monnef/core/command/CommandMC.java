@@ -14,6 +14,7 @@ import monnef.core.common.GuiHandler;
 import monnef.core.common.ScheduledTicker;
 import monnef.core.mod.MonnefCoreNormalMod;
 import monnef.core.utils.DyeHelper;
+import monnef.core.utils.GameObjectsDumper;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +39,7 @@ public class CommandMC extends CommandBase {
     @Override
     public void processCommand(ICommandSender commandsender, String[] parameters) {
         if (parameters.length <= 0) {
-            addMessage(commandsender, "monnef core created by §e" + Reference.MONNEF + "§r.");
+            addMessage(commandsender, "§dmonnef core§r created by §e" + Reference.MONNEF + "§r.");
         } else if (parameters.length == 1 && parameters[0].equals("exporter")) {
             if (Config.isExporterEnabled()) {
                 if (commandsender instanceof EntityPlayer) {
@@ -50,6 +51,8 @@ public class CommandMC extends CommandBase {
             } else {
                 addMessage(commandsender, "Exporter is disabled in a config file.");
             }
+        } else if (parameters.length == 1 && parameters[0].equals("dumpGameObjects")) {
+            GameObjectsDumper.dump("gameObjects.csv");
         } else if (parameters.length == 2 && parameters[0].equals("debug")) {
             if (parameters[1].equals("dumpColors")) {
                 addMessage(commandsender, DyeHelper.compileColorList());

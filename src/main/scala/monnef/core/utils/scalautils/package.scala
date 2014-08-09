@@ -8,6 +8,9 @@ package monnef.core.utils
 import scala.collection.IterableLike
 import scala.reflect.runtime.universe._
 import scala.reflect.ClassTag
+import java.io.File
+import java.nio.file.{Paths, Files}
+import java.nio.charset.StandardCharsets
 
 package object scalautils {
 
@@ -55,6 +58,10 @@ package object scalautils {
     def insertSpaceOnLowerUpperCaseChange: String = {
       s.replaceAll("(\\p{javaLowerCase})(\\p{javaUpperCase})", "$1 $2")
     }
+
+    def saveToFile(fileName: String) {
+      Files.write(Paths.get(fileName), fileName.getBytes(StandardCharsets.UTF_8))
+    }
   }
 
   lazy val centeredSquares = CenteredSquareGenerator.centeredSquares(0)
@@ -76,7 +83,7 @@ package object scalautils {
           x <- -rad to rad
           y <- List(rad, -rad)
         } yield (x, y)).toList
-        val smallerHalf = largerHalf.filter {case (x, y) => x != y && x != -y}.map {case (x, y) => (y, x)}
+        val smallerHalf = largerHalf.filter { case (x, y) => x != y && x != -y}.map { case (x, y) => (y, x)}
         largerHalf ++ smallerHalf
       }
     }
@@ -100,6 +107,10 @@ package object scalautils {
     def isInstanceOfCustom[OUT: TypeTag]: Boolean = typeOf[IN] <:< typeOf[OUT]
 
     def tryAsInstanceOf[OUT: TypeTag](f: OUT => Unit) { if (in.isInstanceOfCustom[OUT]) f(in.asInstanceOf[OUT]) }
+  }
+
+  implicit class StringSeqPimps(s: Seq[String]) {
+    def toCSV = s.map(_.replace("\"", "\\\"")).map(s => "\"" + s + "\"").mkString(",")
   }
 
 }
