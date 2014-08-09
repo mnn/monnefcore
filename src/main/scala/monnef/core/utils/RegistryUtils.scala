@@ -163,6 +163,11 @@ object RegistryUtils {
     item
   }
 
+  def registerItem[T <: Item](item: T, name: String): T = {
+    item.setUnlocalizedName(name)
+    registerItem(item)
+  }
+
   def getTitle(stack: ItemStack): String = {
     // TODO needed? it's pre 1.7, might be broken
     var title: String = stack.getDisplayName
