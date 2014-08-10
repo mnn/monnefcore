@@ -23,6 +23,8 @@ public class CoreTransformer implements IClassTransformer {
     public static boolean lightningHookApplied = false;
     public static boolean gameDataHookApplied = false;
 
+    private static final boolean DEBUG_GAMEDATA_TRANSFORMER = false;
+
     public CoreTransformer() {
     }
 
@@ -42,17 +44,19 @@ public class CoreTransformer implements IClassTransformer {
                 Log.printFine("Found GameData class.");
                 ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 ClassReader reader = new ClassReader(bytes);
-                ClassVisitor visitor = new GameDataVisitor(ASM4, writer, MonnefCorePlugin.debugEnv);
+                ClassVisitor visitor = new GameDataVisitor(ASM4, writer, DEBUG_GAMEDATA_TRANSFORMER);
                 reader.accept(visitor, 0);
                 byte[] out = writer.toByteArray();
 
-                FileOutputStream os;
-                try {
-                    os = new FileOutputStream("mC_GameData.class");
-                    os.write(out);
-                    os.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (DEBUG_GAMEDATA_TRANSFORMER) {
+                    FileOutputStream os;
+                    try {
+                        os = new FileOutputStream("mC_GameData.class");
+                        os.write(out);
+                        os.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 return out;
