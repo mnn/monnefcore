@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class PackageToModIdRegistry {
     private static LinkedHashMap<String, String> packagePathToModId = new LinkedHashMap<String, String>();
+    private static Boolean registering = false;
 
     public static void registerClassToModId(String packagePath, String modId) {
         if (!searchModId(packagePath).equals("")) {
@@ -35,10 +36,14 @@ public class PackageToModIdRegistry {
         if (ann == null) {
             throw new RuntimeException("Mod class doesn't have proper annotation, incorrect class?");
         }
+        registering = true;
         registerClassToModId(callerPackage, ann.name());
+        registering = false;
     }
 
     public static String searchModId(String packagePath) {
+        if (packagePathToModId.isEmpty() && !registering)
+            throw new RuntimeException("PackageToModIdRegistry is empty, not filled yet?");
         if (packagePathToModId.containsValue(packagePath)) return packagePathToModId.get(packagePath);
         for (Map.Entry<String, String> item : packagePathToModId.entrySet()) {
             if (packagePath.startsWith(item.getKey())) {
