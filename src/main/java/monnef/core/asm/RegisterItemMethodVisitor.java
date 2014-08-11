@@ -11,7 +11,7 @@ import static org.objectweb.asm.Opcodes.*;
 public class RegisterItemMethodVisitor extends MethodVisitor {
     private final boolean debugMessages;
     private ArrayList<Integer> localVars = new ArrayList<Integer>();
-    private AdapterLogger logger = new AdapterLogger("[GDH]");
+    private AdapterLogger logger = new AdapterLogger("[GDH] ");
 
     private enum State {LOOKING, FREEING, PRE_LABEL, PRE_FRAME, ADDING, ADDING_STORE_RESULT, DONE, BROKEN}
 

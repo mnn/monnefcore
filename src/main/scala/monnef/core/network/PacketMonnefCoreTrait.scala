@@ -3,7 +3,6 @@ package monnef.core.network
 import cpw.mods.fml.relauncher.Side
 import net.minecraft.entity.player.{EntityPlayerMP, EntityPlayer}
 import monnef.core.network.message.{MessageIn, MessageOut}
-import net.minecraft.client.entity.EntityPlayerSP
 import java.net.ProtocolException
 
 trait PacketMonnefCoreTrait {
@@ -13,7 +12,7 @@ trait PacketMonnefCoreTrait {
 
   final def execute(player: EntityPlayer, side: Side) {
     try {
-      if (side == Side.CLIENT) executeClient(player.asInstanceOf[EntityPlayerSP])
+      if (side == Side.CLIENT) executeClient(player.asInstanceOf[EntityPlayer])
       else executeServer(player.asInstanceOf[EntityPlayerMP])
     } catch {
       case e: ClassCastException => throw new RuntimeException("Cannot convert player to its side version")
@@ -24,7 +23,7 @@ trait PacketMonnefCoreTrait {
 
   def executeServer(player: EntityPlayerMP): Unit = WRONG_SIDE()
 
-  def executeClient(player: EntityPlayerSP): Unit = WRONG_SIDE()
+  def executeClient(player: EntityPlayer): Unit = WRONG_SIDE()
 
   def manager: PacketManager
 
