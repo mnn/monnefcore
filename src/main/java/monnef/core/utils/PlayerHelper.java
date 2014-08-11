@@ -43,6 +43,7 @@ public class PlayerHelper {
             }
         } else {
             inv.addItemStackToInventory(item.copy());
+            player.inventoryContainer.detectAndSendChanges();
         }
     }
 
