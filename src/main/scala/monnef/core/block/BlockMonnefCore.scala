@@ -8,8 +8,11 @@ import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import javax.swing.Icon
 import net.minecraft.client.renderer.texture.IIconRegister
-import net.minecraft.util.IIcon
+import net.minecraft.util.{MovingObjectPosition, IIcon}
 import net.minecraft.init.Blocks
+import net.minecraft.world.World
+import net.minecraft.item.{ItemBlock, Item, ItemStack}
+import monnef.core.api.IItemBlock
 
 
 abstract class BlockMonnefCore(_material: Material) extends Block(_material) with GameObjectDescriptor {
@@ -44,6 +47,15 @@ abstract class BlockMonnefCore(_material: Material) extends Block(_material) wit
 
   def setBurnProperties(encouragement: Int, flammibility: Int) {
     queueSetBurnProperties(this, encouragement, flammibility)
+  }
+
+  override def getPickBlock(target: MovingObjectPosition, world: World, x: Int, y: Int, z: Int): ItemStack = {
+    val item = getItem(world, x, y, z)
+    if (item == null) null
+    else {
+      if (item.isInstanceOf[IItemBlock]) new ItemStack(item, 1, Block.getBlockFromItem(item).getDamageValue(world, x, y, z))
+      else super.getPickBlock(target, world, x, y, z)
+    }
   }
 }
 
