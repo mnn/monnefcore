@@ -159,7 +159,9 @@ object RegistryUtils {
   }
 
   def registerItem[T <: Item](item: T): T = {
-    GameRegistry.registerItem(item, item.getUnlocalizedName)
+    val name = item.getUnlocalizedName
+    if ("item.null".equals(name)) throw new RuntimeException("Trying to register not named item, this will cause unpredictable errors if not fixed.")
+    GameRegistry.registerItem(item, name)
     item
   }
 

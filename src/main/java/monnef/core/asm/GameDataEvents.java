@@ -17,7 +17,12 @@ public class GameDataEvents {
      */
     public static int onRegisterItemPre(GameData gameData, Item item, int idHint) {
         if (item instanceof IItemBlock) {
-            Block block = ((IItemBlock) item).getBlock();
+            IItemBlock itemBlock = (IItemBlock) item;
+            if (itemBlock.suppressSpecialItemBlockHandling()) {
+                MonnefCorePlugin.Log.printFine(String.format("Item %s suppressed special IItemBlock handling.", item.getUnlocalizedName()));
+                return idHint;
+            }
+            Block block = itemBlock.getBlock();
             idHint = GameDataAccessor.iBlockRegistry(gameData).getId(block);
             if (idHint == -1) {
                 throw new RuntimeException("Block must be registered first!");
@@ -38,7 +43,7 @@ public class GameDataEvents {
      * @param itemId Newly registered item ID.
      */
     public static void onRegisterItemPost(GameData gameData, Item item, int itemId, int idHint) {
-        if (item instanceof IItemBlock) {
+        if (item instanceof IItemBlock && !((IItemBlock) item).suppressSpecialItemBlockHandling()) {
             if (itemId != idHint) {
                 throw new IllegalStateException("Block -> IItemBlock insertion failed (itemId=" + itemId + ", idHint=" + idHint + ").");
             }
