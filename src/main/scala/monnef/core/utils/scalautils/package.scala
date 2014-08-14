@@ -113,4 +113,8 @@ package object scalautils {
     def toCSV = s.map(_.replace("\"", "\\\"")).map(s => "\"" + s + "\"").mkString(",")
   }
 
+  implicit class ObjectPimps[T <: Object](o: T) {
+    def toOption: Option[T] = if (o == null) None else Some(o)
+  }
+
 }

@@ -5,8 +5,10 @@
 
 package monnef.core.utils;
 
+import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -132,5 +134,12 @@ public class ItemHelper {
 
     public static Item getItemFromBlockViaGameData(Block block) {
         return Item.getItemById(GameData.getBlockRegistry().getId(block));
+    }
+
+    public static Block getBlockFromItemViaGameData(Item item) {
+        int itemId = GameData.getItemRegistry().getId(item);
+        FMLControlledNamespacedRegistry<Block> bReg = GameData.getBlockRegistry();
+        Block block = itemId > 0 && bReg.containsId(itemId) ? bReg.getObjectById(itemId) : null;
+        return block;
     }
 }

@@ -5,7 +5,7 @@
 
 package monnef.core.utils
 
-import net.minecraft.item.ItemStack
+import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.util.AxisAlignedBB
@@ -13,6 +13,8 @@ import net.minecraft.command.IEntitySelector
 import net.minecraft.entity.Entity
 import net.minecraft.world.World
 import scala.collection.JavaConversions._
+import net.minecraft.block.Block
+import scalautils._
 
 package object scalagameutils {
 
@@ -48,4 +50,9 @@ package object scalagameutils {
       w.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getAABBPool.getAABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius), new EntityTypeSelector(c)).asInstanceOf[java.util.List[A]].toList
   }
 
+  implicit class ItemPimps(i: Item) {
+    def getBlock: Option[Block] = {
+      ItemHelper.getBlockFromItemViaGameData(i).toOption
+    }
+  }
 }
