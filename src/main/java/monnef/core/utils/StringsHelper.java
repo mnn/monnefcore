@@ -48,4 +48,14 @@ public class StringsHelper {
     public static String insertSpaceOnLowerUpperCaseChange(String input) {
         return input.replaceAll("(\\p{javaLowerCase})(\\p{javaUpperCase})", "$1 $2");
     }
+
+    public static String makeFirstNonCapital(String input) {
+        String first = input.substring(0, 1);
+        String rest = input.substring(1);
+        return first.toLowerCase() + rest;
+    }
+
+    public static String generateNameFromTitle(String input) {
+        return makeFirstNonCapital(input.replace(" ", ""));
+    }
 }
