@@ -57,16 +57,16 @@ public class SrgNames {
 
     public static void dump() {
         CustomLogger l = MonnefCorePlugin.Log;
-        l.printInfo("Dumping " + SrgNames.class.getSimpleName() + ".");
+        l.printFinest("Dumping " + SrgNames.class.getSimpleName() + ".");
 
-        l.printInfo("Fields:");
+        l.printFinest("Fields:");
         for (Map.Entry<String, String> s : fields.entrySet()) {
-            l.printInfo(s.getKey() + " -> " + s.getValue());
+            l.printFinest(s.getKey() + " -> " + s.getValue());
         }
 
-        l.printInfo("Methods:");
+        l.printFinest("Methods:");
         for (Map.Entry<String, String> s : methods.entrySet()) {
-            l.printInfo(s.getKey() + " -> " + s.getValue());
+            l.printFinest(s.getKey() + " -> " + s.getValue());
         }
     }
 

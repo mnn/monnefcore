@@ -8,6 +8,7 @@ import static monnef.core.MonnefCorePlugin.Log;
 
 public class GameDataVisitor extends ClassVisitor {
     private final boolean debugMessages;
+    private boolean methodVisited = false;
 
     public GameDataVisitor(int api, ClassVisitor cv, boolean debugMessages) {
         super(api, cv);
@@ -19,9 +20,10 @@ public class GameDataVisitor extends ClassVisitor {
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
 
         if (mv != null && "registerItem".equals(name) &&
-                "(Lnet/minecraft/item/Item;Ljava/lang/String;Ljava/lang/String;I)I".equals(desc)) {
+                "(Lnet/minecraft/item/Item;Ljava/lang/String;I)I".equals(desc)) {
             Log.printFine("Found registerItem method.");
             mv = new RegisterItemMethodVisitor(api, mv, debugMessages);
+            methodVisited = true;
         }
 
         return mv;
@@ -30,5 +32,8 @@ public class GameDataVisitor extends ClassVisitor {
     @Override
     public void visitEnd() {
         super.visitEnd();
+        if (!methodVisited) {
+            Log.printSevere("Method in GameData not found!");
+        }
     }
 }

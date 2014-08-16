@@ -14,6 +14,7 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.relauncher.Side;
@@ -77,11 +78,23 @@ public class CoreModContainer extends DummyModContainer {
     public void preLoad(FMLPreInitializationEvent event) {
         Log.printFinest("container preLoad event");
 
-        Side side = FMLCommonHandler.instance().getEffectiveSide();
+        Log.printInfo("Forced GameData to load: " + GameData.getBlockedIds().toString());
+    }
+
+    // use google subscribe and FML events
+    @Subscribe
+    public void load(FMLInitializationEvent event) {
+        Log.printFinest("container Load event");
+
+        // core checks
+        if (!CoreTransformer.created) {
+            printDebugDataAndCrash(CoreTransformer.class.getSimpleName() + " is not being created!");
+        }
 
         if (!CoreTransformer.lightningHookApplied) {
             printDebugDataAndCrash("Unable to install a lightning hook!");
         }
+
         if (!CoreTransformer.gameDataHookApplied) {
             printDebugDataAndCrash("Unable to install gamedata hooks!");
         }
@@ -101,17 +114,10 @@ public class CoreModContainer extends DummyModContainer {
         MinecraftForge.EVENT_BUS.register(new WolfFoodRegistry());
 
         MonnefCorePlugin.initialized = true;
-        if (debugEnv) doDebuggingThings();
         MonnefCorePlugin.Log.printInfo("Final checks passed.");
     }
 
-    // use google subscribe and FML events
-    @Subscribe
-    public void load(FMLInitializationEvent event) {
-        Log.printFinest("container Load event");
-    }
-
-    private void printDebugDataAndCrash(String msg) {
+    public static void printDebugDataAndCrash(String msg) {
         Log.printSevere(msg);
         Log.printFine("Mapping database:");
         ObfuscationHelper.printAllDataToLog();

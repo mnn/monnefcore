@@ -15,10 +15,15 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.relauncher.Side;
 import monnef.core.Config;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.Reference;
+import monnef.core.asm.CoreTransformer;
+import monnef.core.asm.ObfuscationHelper;
 import monnef.core.block.BlockMonnefCore;
+import monnef.core.calendar.CoreTickHandler;
 import monnef.core.client.ExporterTickHandler;
 import monnef.core.command.CommandMC;
 import monnef.core.common.CommonProxy;
@@ -26,6 +31,12 @@ import monnef.core.common.GuiHandler;
 import monnef.core.network.CorePacketHandlerMC17;
 import monnef.core.network.CorePacketHandlerTrait;
 import monnef.core.utils.BreakableIronMaterial;
+import monnef.core.utils.WolfFoodRegistry;
+import net.minecraftforge.common.MinecraftForge;
+
+import static monnef.core.MonnefCorePlugin.Log;
+import static monnef.core.MonnefCorePlugin.debugEnv;
+import static monnef.core.CoreModContainer.printDebugDataAndCrash;
 
 @Mod(modid = Reference.ModIdHelper, name = Reference.ModNameHelper, version = Reference.Version, dependencies = "required-after:monnef-core")
 public class MonnefCoreNormalMod {

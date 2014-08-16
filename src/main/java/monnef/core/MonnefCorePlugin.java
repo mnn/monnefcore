@@ -49,6 +49,12 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
         return initialized;
     }
 
+    public static void markInitialized() {
+        if (initialized) CoreModContainer.printDebugDataAndCrash("re-initialization of core");
+        Log.printInfo("Initialized.");
+        initialized = true;
+    }
+
     public static LaunchClassLoader classLoader;
 
     public MonnefCorePlugin() {

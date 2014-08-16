@@ -93,8 +93,8 @@ object RegistryUtils {
       }
 
       try {
-        //GameData.getMain.registerBlock(block, name, modId)
-        GameDataAccessor.registerBlock(block, blockName, null)
+        //GameData.getMain.registerBlock(block, name,)
+        GameDataAccessor.registerBlock(block, blockName)
       } catch {
         case e: Exception =>
           Log.printSevere("Problem in registerMyBlock - Forge block registration")
