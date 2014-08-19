@@ -45,11 +45,8 @@ public class CoreTransformer implements IClassTransformer {
         }
         if (name.equals("cpw.mods.fml.common.registry.GameData")) {
             Log.printFine("Found GameData class.");
-            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-            ClassReader reader = new ClassReader(bytes);
-            ClassVisitor visitor = new GameDataVisitor(ASM4, writer, DEBUG_GAMEDATA_TRANSFORMER);
-            reader.accept(visitor, 0);
-            byte[] out = writer.toByteArray();
+
+            byte[] out = GameDataTransformer.transform(bytes,DEBUG_GAMEDATA_TRANSFORMER);
 
             if (DEBUG_GAMEDATA_TRANSFORMER) {
                 FileOutputStream os;
