@@ -4,11 +4,14 @@ import net.minecraft.block.Block
 import cpw.mods.fml.common.registry.{FMLControlledNamespacedRegistry, GameData, LanguageRegistry, GameRegistry}
 import net.minecraft.item.{ItemStack, Item, ItemBlock}
 import monnef.core.api.IItemBlock
-import cpw.mods.fml.common.{FMLLog, LoaderState, Loader}
+import cpw.mods.fml.common.{FMLCommonHandler, FMLLog, LoaderState, Loader}
 import monnef.core.MonnefCorePlugin._
 import java.lang.reflect.Constructor
 import cpw.mods.fml.relauncher.ReflectionHelper
 import monnef.core.MonnefCorePlugin
+import net.minecraft.client.resources.I18n
+import scalautils._
+import net.minecraft.util.StatCollector
 
 object RegistryUtils {
   def registerBlock(block: Block) {
@@ -170,17 +173,26 @@ object RegistryUtils {
     registerItem(item)
   }
 
+  private val titleGetters: Seq[(ItemStack) => (String, String)] = Seq(
+    s => "D" -> s.getDisplayName,
+    s => "s" -> StatCollector.translateToLocal(s.getUnlocalizedName),
+    s => "S" -> StatCollector.translateToLocal(s.getUnlocalizedName + ".name"),
+    s => "i" -> I18n.format(s.getUnlocalizedName),
+    s => "I" -> I18n.format(s.getUnlocalizedName + ".name"),
+    s => "l" -> (try {LanguageRegistry.instance().getStringLocalization(s.getUnlocalizedName)} catch {case _: Throwable => null}),
+    s => "L" -> (try {LanguageRegistry.instance().getStringLocalization(s.getUnlocalizedName + ".name")} catch {case _: Throwable => null}),
+    s => "u" -> LanguageRegistry.instance().getStringLocalization(s.getUnlocalizedName, "en_US"),
+    s => "U" -> LanguageRegistry.instance().getStringLocalization(s.getUnlocalizedName + ".name", "en_US"),
+
+    s => "?" -> ("[???]" + s.getUnlocalizedName)
+  )
+
   def getTitle(stack: ItemStack): String = {
-    // TODO needed? it's pre 1.7, might be broken
-    var title: String = stack.getDisplayName
-    if (title == null || title.isEmpty || title.contains("item.") || title.contains("tile.") || title.contains(".name")) {
-      title = LanguageRegistry.instance.getStringLocalization(stack.getItem.getUnlocalizedName + ".name")
-    }
-    if (title == null || title.isEmpty) {
-      title = stack.getUnlocalizedName
-      MonnefCorePlugin.Log.printWarning(String.format("Unable to find translation of %s.", title))
-    }
-    title
+    if (stack == null) throw new RuntimeException("Null stack.")
+    if (stack.getItem == null) throw new RuntimeException("Null item in stack.")
+    def seemsInvalid(name: String): Boolean = name == null || "".equals(name) || name.startsWith("item.") || name.startsWith("tile.") || name.endsWith(".name")
+
+    titleGetters.foldLeft(("", "")) { case (acc, f) => if (seemsInvalid(acc._2)) f(stack) else acc} |> { case (id, t) => (if (MonnefCorePlugin.debugEnv) id else "") + t}
   }
 
   def registerBlockPackingRecipe(input: ItemStack, outputBlock: ItemStack) {
