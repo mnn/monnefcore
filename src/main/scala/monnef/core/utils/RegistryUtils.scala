@@ -19,37 +19,19 @@ object RegistryUtils {
   }
 
   def registerBlockWithName(block: Block, name: String) {
-    registerBlock(block)
     block.setBlockName(name)
-  }
-
-  @deprecated(message = "no titles in code, use lang files")
-  def registerBlock(block: Block, title: String) {
     registerBlock(block)
-    LanguageRegistry.addName(block, title)
   }
 
-  @deprecated(message = "no titles in code, use lang files")
-  def registerBlock(block: Block, name: String, title: String) {
-    block.setBlockName(name)
-    registerBlock(block, title)
+  def registerMultiBlock(block: Block, itemBlock: Class[_], name: String) {
+    registerMultiBlock(block, itemBlock, Array[String](name))
   }
 
-  @deprecated(message = "no titles in code, use lang files")
-  def registerMultiBlock(block: Block, itemBlock: Class[_], titles: Array[String]) {
-    registerMultiBlock(block, itemBlock, titles, null)
-  }
-
-  @deprecated(message = "no titles in code, use lang files")
-  def registerMultiBlock(block: Block, itemBlock: Class[_], name: String, title: String) {
-    registerMultiBlock(block, itemBlock, Array[String](title), Array[String](name))
-  }
-
-  @deprecated(message = "no titles in code, use lang files")
-  def registerMultiBlock(block: Block, itemBlock: Class[_], titles: Array[String], names: Array[String]) {
+  def registerMultiBlock(block: Block, itemBlock: Class[_], names: Array[String]) {
     if (block.getUnlocalizedName == null && (names == null || names.length <= 0)) {
       throw new RuntimeException("Cannot find a block name - " + itemBlock.getSimpleName + ".")
     }
+    names.foreach { case name => if (name.contains(" ") || name(0).toLower != name(0)) Log.printWarning(s"Invalid name '$name' used for registration of multi block ${block.getUnlocalizedName} (${block.getClass}})")}
     val cls: Class[_] = itemBlock
     if (classOf[ItemBlock].isAssignableFrom(cls)) {
       if (names != null && names.length != 1) {
@@ -64,7 +46,6 @@ object RegistryUtils {
     else {
       throw new RuntimeException("Unknown class in block registration.")
     }
-    registerSubBlockNames(block, titles)
   }
 
   private def registerMyBlock(block: Block, itemclass: Class[_ <: IItemBlock], blockName: String, names: Array[String]) {
@@ -131,34 +112,6 @@ object RegistryUtils {
     GameDataAccessor.verifyCustomItemBlockName(item.asInstanceOf[IItemBlock])
     GameDataAccessor.useSlot(itemId)
     itemId
-  }
-
-  @deprecated(message = "no titles in code, use lang files")
-  def registerSubBlockNames(block: Block, names: Array[String]) {
-    for (ix <- 0 until names.length) {
-      val blockId = GameData.getBlockRegistry.getId(block)
-      val multiBlockStack: ItemStack = new ItemStack(Item.getItemById(blockId), 1, ix)
-      if (multiBlockStack.getItem == null) {
-        throw new RuntimeException("Item from " + block.getUnlocalizedName + " Block is null!")
-      }
-      LanguageRegistry.addName(multiBlockStack, names(multiBlockStack.getItemDamage))
-    }
-  }
-
-  @deprecated(message = "no titles in code, use lang files")
-  def registerSubItems(item: Item, names: Array[String]) {
-    for (ix <- 0 until names.length) {
-      val multiBlockStack: ItemStack = new ItemStack(item, 1, ix)
-      LanguageRegistry.addName(multiBlockStack, names(multiBlockStack.getItemDamage))
-    }
-  }
-
-  @deprecated(message = "no titles in code, use lang files")
-  def registerItem[T <: Item](item: T, name: String, title: String): T = {
-    item.setUnlocalizedName(name)
-    GameRegistry.registerItem(item, item.getUnlocalizedName)
-    LanguageRegistry.addName(item, title)
-    item
   }
 
   def registerItem[T <: Item](item: T): T = {
