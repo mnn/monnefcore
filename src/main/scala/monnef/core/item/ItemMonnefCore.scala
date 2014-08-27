@@ -8,14 +8,14 @@ import net.minecraft.item.{EnumRarity, Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{MathHelper, IIcon}
 import monnef.core.block.GameObjectDescriptor
-import cpw.mods.fml.relauncher.{SideOnly, Side}
+import cpw.mods.fml.relauncher.{ReflectionHelper, SideOnly, Side}
 import net.minecraft.creativetab.CreativeTabs
 import monnef.core.mod.MonnefCoreNormalMod
 import cpw.mods.fml.common.registry.LanguageRegistry
 import java.util
 import monnef.core.utils.scalautils._
 
-abstract class ItemMonnefCore extends Item with GameObjectDescriptor {
+abstract class ItemMonnefCore extends Item with GameObjectDescriptor with CustomItemIconTrait {
 
   import ItemMonnefCore._
 
@@ -24,25 +24,10 @@ abstract class ItemMonnefCore extends Item with GameObjectDescriptor {
   protected var rarity: Int = 0
   private var secondCreativeTab: CreativeTabs = null
 
-  initCustomIcon()
   rarity = MonnefCoreNormalMod.proxy.getCommonRarity
   if (this.isInstanceOf[MultiItem]) this.asInstanceOf[MultiItem].initMulti()
 
   // this.tryAsInstanceOf((a: MultiItem) => a.initMulti()) // <- not working, maybe too much is erased?
-
-  override def registerIcons(iconRegister: IIconRegister) {
-    this.itemIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this))
-    if (iconsCount > 1) {
-      icons = new Array[IIcon](iconsCount)
-      icons(0) = this.itemIcon
-
-      var i: Int = 1
-      while (i < iconsCount) {
-        icons(i) = iconRegister.registerIcon(CustomIconHelper.generateShiftedId(this, i))
-        i = i + 1
-      }
-    }
-  }
 
   def removeFromCreativeTab() {
     if (!MonnefCorePlugin.debugEnv)
@@ -130,11 +115,6 @@ trait MultiItem extends MultiItemBase {
     super.getUnlocalizedName + "." + getSubNames(idx)
   }
 
-  def registerNames() {
-    for (i <- 0 until getSubItemsCount)
-      LanguageRegistry.instance.addStringLocalization(this.getUnlocalizedName + "." + getSubNames(i) + ".name", getSubTitles(i))
-  }
-
   // raw type issue when java -> scala -> java/scala class hierarchy, use getSubItemsCustom
   @SideOnly(Side.CLIENT) final override def getSubItems(item: Item, tabs: CreativeTabs, result: util.List[_]) {
     getSubItemsCustom(item, tabs, result.asInstanceOf[util.List[ItemStack]])
@@ -144,4 +124,39 @@ trait MultiItem extends MultiItemBase {
   def getSubItemsCustom(item: Item, tabs: CreativeTabs, result: util.List[ItemStack]) {
     for (i <- 0 until getSubItemsCount) result.add(new ItemStack(item, 1, i))
   }
+}
+
+trait CustomItemIconTraitBase {
+
+}
+
+trait CustomItemIconTrait extends CustomItemIconTraitBase {
+  this: Item with GameObjectDescriptor =>
+
+  initCustomIcon()
+
+  override def registerIcons(iconRegister: IIconRegister) {
+    val newIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this))
+    ItemAccessor.setItemIcon(this, newIcon)
+    if (iconsCount > 1) {
+      icons = new Array[IIcon](iconsCount)
+      icons(0) = ItemAccessor.getItemIcon(this)
+
+      var i: Int = 1
+      while (i < iconsCount) {
+        icons(i) = iconRegister.registerIcon(CustomIconHelper.generateShiftedId(this, i))
+        i = i + 1
+      }
+    }
+  }
+}
+
+object ItemAccessor {
+  private[this] final val itemIconFieldName = "itemIcon"
+  private[this] final val itemIconFieldNameSrg = "field_77791_bV"
+  private[this] final lazy val itemIconField = ReflectionHelper.findField(classOf[Item], itemIconFieldName, itemIconFieldNameSrg)
+
+  def setItemIcon(item: Item, icon: IIcon) { itemIconField.set(item, icon) }
+
+  def getItemIcon(item: Item): IIcon = itemIconField.get(item).asInstanceOf[IIcon]
 }
