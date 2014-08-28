@@ -1,7 +1,6 @@
 package monnef.core.block
 
-import cpw.mods.fml.relauncher.Side
-import cpw.mods.fml.relauncher.SideOnly
+import cpw.mods.fml.relauncher.{ReflectionHelper, Side, SideOnly}
 import monnef.core.MonnefCorePlugin
 import monnef.core.common.CustomIconHelper
 import net.minecraft.block.Block
@@ -14,30 +13,13 @@ import net.minecraft.world.World
 import net.minecraft.item.{ItemBlock, Item, ItemStack}
 import monnef.core.api.IItemBlock
 
-
-abstract class BlockMonnefCore(_material: Material) extends Block(_material) with GameObjectDescriptor {
+abstract class BlockMonnefCore(_material: Material) extends Block(_material) with GameObjectDescriptor with CustomBlockIconTrait {
 
   import BlockMonnefCore._
-
-  initCustomIcon()
 
   def this(index: Int, material: Material) = {
     this(material)
     this.customIconIndex = index
-  }
-
-  @SideOnly(Side.CLIENT)
-  override def registerBlockIcons(iconRegister: IIconRegister) {
-    this.blockIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this))
-    if (iconsCount > 1) {
-      icons = new Array[IIcon](iconsCount)
-      icons(0) = this.blockIcon
-      var i: Int = 1
-      while (i < iconsCount) {
-        icons(i) = iconRegister.registerIcon(CustomIconHelper.generateShiftedId(this, i))
-        i = i + 1
-      }
-    }
   }
 
   def removeFromCreativeTab() {
@@ -81,4 +63,37 @@ object BlockMonnefCore {
   private def setBurnProperties(block: Block, encouragement: Int, flammibility: Int) {
     Blocks.fire.setFireInfo(block, encouragement, flammibility)
   }
+}
+
+trait CustomBlockIconTraitBase
+
+trait CustomBlockIconTrait extends CustomBlockIconTraitBase {
+  this: Block with GameObjectDescriptor =>
+
+  initCustomIcon()
+
+  @SideOnly(Side.CLIENT)
+  override def registerBlockIcons(iconRegister: IIconRegister) {
+    val newBlockIcon = iconRegister.registerIcon(CustomIconHelper.generateId(this))
+    BlockAccessor.setBlockIcon(this, newBlockIcon)
+    if (iconsCount > 1) {
+      icons = new Array[IIcon](iconsCount)
+      icons(0) = BlockAccessor.getBlockIcon(this)
+      var i: Int = 1
+      while (i < iconsCount) {
+        icons(i) = iconRegister.registerIcon(CustomIconHelper.generateShiftedId(this, i))
+        i = i + 1
+      }
+    }
+  }
+}
+
+object BlockAccessor {
+  private[this] final val blockIconFieldName = "blockIcon"
+  private[this] final val blockIconFieldNameSrg = "field_149761_L"
+  private[this] final lazy val blockIconField = ReflectionHelper.findField(classOf[Block], blockIconFieldName, blockIconFieldNameSrg)
+
+  def setBlockIcon(block: Block, icon: IIcon) { blockIconField.set(block, icon) }
+
+  def getBlockIcon(block: Block): IIcon = blockIconField.get(block).asInstanceOf[IIcon]
 }
