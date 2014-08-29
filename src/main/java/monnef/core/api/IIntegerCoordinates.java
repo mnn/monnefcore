@@ -47,4 +47,8 @@ public interface IIntegerCoordinates {
     String format();
 
     boolean isAir();
+
+    void setBlock(Block block);
+
+    void setMetadata(int meta);
 }

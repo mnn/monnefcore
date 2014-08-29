@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -53,6 +54,13 @@ public class IntegerCoordinates implements IIntegerCoordinates {
         loadFrom(tag, compoundTagName);
 
         postInit();
+    }
+
+    public IntegerCoordinates(World world, MovingObjectPosition pos) {
+        setWorld(world);
+        x = pos.blockX;
+        y = pos.blockY;
+        z = pos.blockZ;
     }
 
     // used for testing
@@ -220,5 +228,15 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     @Override
     public boolean isAir() {
         return getWorld().isAirBlock(getX(), getY(), getZ());
+    }
+
+    @Override
+    public void setBlock(Block block) {
+        BlockHelper.setBlock(getWorld(), getX(), getY(), getZ(), block);
+    }
+
+    @Override
+    public void setMetadata(int meta) {
+        BlockHelper.setBlockMetadata(getWorld(), getX(), getY(), getZ(), meta);
     }
 }
