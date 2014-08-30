@@ -10,6 +10,7 @@ import monnef.core.MonnefCorePlugin;
 import monnef.core.block.ContainerMonnefCore;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.GuiHelper;
+import monnef.core.utils.LanguageHelper;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -87,7 +88,7 @@ public abstract class GuiContainerMonnefCore extends GuiContainer {
         if (getContainerTitle() != null) {
             fontRendererObj.drawString(getContainerTitle(), 8, 4, COLOR_DARK_GRAY);
         }
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8 + myContainer.getXPlayerInvShift(), ySize - 96 + 4 + myContainer.getYPlayerInvShift(), COLOR_DARK_GRAY);
+        fontRendererObj.drawString(LanguageHelper.localInventory(), 8 + myContainer.getXPlayerInvShift(), ySize - 96 + 4 + myContainer.getYPlayerInvShift(), COLOR_DARK_GRAY);
     }
 
     @Override

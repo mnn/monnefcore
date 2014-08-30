@@ -15,6 +15,8 @@ import net.minecraft.world.World
 import scala.collection.JavaConversions._
 import net.minecraft.block.Block
 import scalautils._
+import net.minecraftforge.fluids.{BlockFluidBase, BlockFluidFinite}
+import cpw.mods.fml.relauncher.ReflectionHelper
 
 package object scalagameutils {
 
@@ -55,4 +57,18 @@ package object scalagameutils {
       ItemHelper.getBlockFromItemViaGameData(i).toOption
     }
   }
+
+  implicit class BlockFluidBasePimps(b: BlockFluidBase) {
+    private[this] lazy val quantaPerBlockField = ReflectionHelper.findField(classOf[BlockFluidBase], "quantaPerBlock")
+
+    def getQuantaPerBlock = quantaPerBlockField.getInt(b)
+
+    def getMaxMeta(): Int = b.getMaxRenderHeightMeta
+
+    def isFullyFilled(world: World, x: Int, y: Int, z: Int): Boolean = b.getQuantaValue(world, x, y, z) == b.getQuantaPerBlock
+  }
+
+  implicit class BlockFluidFinitePimps(b: BlockFluidFinite) {
+  }
+
 }

@@ -8,6 +8,7 @@ package monnef.core.client;
 import monnef.core.block.ContainerMachine;
 import monnef.core.block.TileMachineWithInventory;
 import monnef.core.utils.ColorHelper;
+import monnef.core.utils.LanguageHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -37,7 +38,7 @@ public class GuiContainerMachine extends GuiContainerMonnefCore {
     @Override
     protected void drawGuiContainerForegroundLayer(int param1, int param2) {
         fontRendererObj.drawString(getTitle(), 8, 6, 4210752);
-        fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, 4210752);
+        fontRendererObj.drawString(LanguageHelper.localInventory(), 8, ySize - 96 + 2, 4210752);
     }
 
     protected String getTitle() {
