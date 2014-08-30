@@ -22,11 +22,18 @@ object FluidPlacer {
 
     if (!world.isRemote) {
       blockToPlace match {
-        case b: BlockStaticLiquid => BlockHelper.setBlock(world, x, y, z, b)
+        case b: BlockStaticLiquid =>
+          FakeFluidRegistry.getBlockToPlace(fluidStack.getFluid) match {
+            case Some(translatedBlockToPlace) => BlockHelper.setBlock(world, x, y, z, translatedBlockToPlace)
+            case None => JaffasFood.Log.printSevere(s"Attempt to place a vanilla liquid block without proper mapping: ${blockToPlace.getUnlocalizedName}.")
+          }
+
         case b: BlockFluidClassic => BlockHelper.setBlock(world, x, y, z, b, b.getMaxMeta())
+
         case b: BlockFluidFinite =>
           val meta: Int = MathHelper.floor_float((fluidStack.amount.asInstanceOf[Float] / FluidContainerRegistry.BUCKET_VOLUME) * b.getQuantaPerBlock) - 1
           BlockHelper.setBlock(world, x, y, z, b, meta)
+
         case _ => JaffasFood.Log.printSevere(s"Attempt to place an unknown liquid block: ${blockToPlace.getUnlocalizedName}.")
       }
     }
