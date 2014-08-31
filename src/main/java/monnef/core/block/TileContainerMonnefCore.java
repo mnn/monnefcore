@@ -25,7 +25,7 @@ public abstract class TileContainerMonnefCore extends ContainerMonnefCore {
 
         constructSlotsFromTileAndBindPlayerInventory(tile);
         if (inventorySlots.size() != getSlotsCount() + PLAYER_INVENTORY_SIZE) {
-            throw new RuntimeException("Expected count of slots is " + getSlotsCount() + ", but current number of slots is " + inventorySlots.size() + ".");
+            throw new RuntimeException("Expected count of slots is " + (getSlotsCount() + PLAYER_INVENTORY_SIZE) + ", but current number of slots is " + inventorySlots.size() + ".");
         }
     }
 
