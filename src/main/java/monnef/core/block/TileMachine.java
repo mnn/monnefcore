@@ -10,6 +10,7 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.api.IIntegerCoordinates;
+import monnef.core.power.PowerValues;
 import monnef.core.utils.IntegerCoordinates;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,6 +18,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -100,8 +102,8 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
     }
 
     protected void configurePowerParameters() {
-        powerNeeded = 20;
-        maxEnergyReceived = 20;
+        powerNeeded = MathHelper.floor_float(200 * PowerValues.totalPowerConsumptionCoef());
+        maxEnergyReceived = powerNeeded;
         powerStorage = 10 * powerNeeded;
         bcPowerType = PowerHandler.Type.MACHINE;
     }

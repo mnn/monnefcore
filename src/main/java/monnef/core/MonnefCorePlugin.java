@@ -49,12 +49,6 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
         return initialized;
     }
 
-    public static void markInitialized() {
-        if (initialized) CoreModContainer.printDebugDataAndCrash("re-initialization of core");
-        Log.printInfo("Initialized.");
-        initialized = true;
-    }
-
     public static LaunchClassLoader classLoader;
 
     public MonnefCorePlugin() {
@@ -66,7 +60,6 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     }
 
     @Override
-    // TODO: check if we can't use getAccessTransformerClass instead (after deobf access? we could get rid of the whole McpParser and that problematic version-sensitive binary config file)
     public String[] getASMTransformerClass() {
         return null;
     }
@@ -78,7 +71,6 @@ public class MonnefCorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
 
     @Override
     public String getSetupClass() {
-        // return CORE_NAMESPACE + ".MonnefCorePlugin";
         return null;
     }
 
