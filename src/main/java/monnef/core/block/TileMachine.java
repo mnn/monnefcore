@@ -23,6 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Random;
 
 public abstract class TileMachine extends TileMonnefCore implements IPowerReceptor, IPowerEmitter {
+    public static final String POWER_TAG_NAME = "PowerData";
     public static final String ROTATION_TAG_NAME = "rotation";
     public static final Random rand = new Random();
     private static final int DUMMY_CREATION_PHASE_INSTANCE_COUNTER_LIMIT = 5;
@@ -80,6 +81,9 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
             refreshCachedRedstoneStatus();
         }
         powerHandler.update();
+        if (gotPowerToActivate() && gotPower(POWER_LOSS * 10)) {
+            applyCounterPerdition();
+        }
     }
 
     protected void onFirstTick() {
@@ -118,12 +122,14 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.rotation = ForgeDirection.getOrientation(tag.getByte(ROTATION_TAG_NAME));
+        getPowerHandler().readFromNBT(tag, POWER_TAG_NAME);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte(ROTATION_TAG_NAME, (byte) this.rotation.ordinal());
+        getPowerHandler().writeToNBT(tag, POWER_TAG_NAME);
     }
 
     @Override
@@ -240,6 +246,12 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
             doWorkCounter = 0;
             doMachineWork();
         }
+    }
+
+    // just fixing what was broken in BuildCraft,
+    // I really need to look at Thermal Expansion power and move away from BC
+    private void applyCounterPerdition() {
+        getPowerHandler().addEnergy(POWER_LOSS);
     }
 
     @Override
