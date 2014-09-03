@@ -11,6 +11,7 @@ import scala.reflect.ClassTag
 import java.io.File
 import java.nio.file.{Paths, Files}
 import java.nio.charset.StandardCharsets
+import scala.util.Random
 
 package object scalautils {
 
@@ -115,6 +116,14 @@ package object scalautils {
 
   implicit class ObjectPimps[T <: Object](o: T) {
     def toOption: Option[T] = if (o == null) None else Some(o)
+  }
+
+  implicit class SeqPimps[T](s: Seq[T]) {
+    def random: T = s(Random.nextInt(s.size))
+
+    def shuffled: Seq[T] = Random.shuffle(s)
+
+    def zipWithIndexReversed: Seq[(Int, T)] = s.zipWithIndex.map(_.swap)
   }
 
 }

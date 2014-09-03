@@ -13,7 +13,7 @@ import net.minecraft.command.IEntitySelector
 import net.minecraft.entity.Entity
 import net.minecraft.world.World
 import scala.collection.JavaConversions._
-import net.minecraft.block.Block
+import net.minecraft.block.{BlockLiquid, Block}
 import scalautils._
 import net.minecraftforge.fluids.{BlockFluidBase, BlockFluidFinite}
 import cpw.mods.fml.relauncher.ReflectionHelper
@@ -69,6 +69,16 @@ package object scalagameutils {
   }
 
   implicit class BlockFluidFinitePimps(b: BlockFluidFinite) {
+  }
+
+  implicit class BlockPimps(b: Block) {
+    def isFluid: Boolean = b match {
+      case _: BlockLiquid => true
+      case _: BlockFluidBase => true
+      case _ => false
+    }
+
+    def isUnbreakable(w: World, x: Int, y: Int, z: Int): Boolean = b.getBlockHardness(w, x, y, z) < 0
   }
 
 }

@@ -5,6 +5,7 @@
 
 package monnef.core.utils;
 
+import monnef.core.api.IIntegerCoordinates;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -30,7 +31,7 @@ public class WorldHelper {
      * @param block      Block to look for
      * @param metadata   Metadata of block to look for (-1 denotes any metadata)
      */
-    public static void getBlocksInBox(List<IntegerCoordinates> res, World w, int x, int y, int z, int radius, int bottomSize, int topSize, Block block, int metadata) {
+    public static void getBlocksInBox(List<IIntegerCoordinates> res, World w, int x, int y, int z, int radius, int bottomSize, int topSize, Block block, int metadata) {
         if (bottomSize == -1) bottomSize = y;
         if (topSize == -1) topSize = WORLD_HEIGHT - y;
 
