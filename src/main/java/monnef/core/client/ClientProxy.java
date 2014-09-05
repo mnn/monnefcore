@@ -18,8 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ClientProxy extends CommonProxy {
     @Override
     public void registerClientStuff() {
-        CustomCloaksHandler handler = new CustomCloaksHandler();
-        MinecraftForge.EVENT_BUS.register(handler);
+        MinecraftForge.EVENT_BUS.register(new CustomCloaksHandler());
         MonnefCoreNormalMod.renderID = RenderingRegistry.getNextAvailableRenderId();
 
         FMLCommonHandler.instance().bus().register(new MonnefCoreKeyHandler());
