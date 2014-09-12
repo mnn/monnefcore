@@ -42,7 +42,7 @@ public class CommandMC extends CommandBase {
     @Override
     public void processCommand(ICommandSender commandsender, String[] parameters) {
         if (parameters.length <= 0) {
-            addMessage(commandsender, "\u00A7dmonnef core§r created by §e" + Reference.MONNEF + "§r.");
+            addMessage(commandsender, "\u00A7dmonnef core\u00A7r created by \u00A7e" + Reference.MONNEF + "\u00A7r.");
         } else if (parameters.length == 1 && parameters[0].equals("exporter")) {
             if (Config.isExporterEnabled()) {
                 if (commandsender instanceof EntityPlayer) {
