@@ -34,8 +34,10 @@ abstract class ScheduledTicker {
 
     if (ticksClient <= 0) {
       if (evt.phase == Phase.START) onClientTickStart()
-      else if (evt.phase == Phase.END) onClientTickEnd()
-      ticksClient = nextTickSpacing(Side.CLIENT)
+      else if (evt.phase == Phase.END) {
+        onClientTickEnd()
+        ticksClient = nextTickSpacing(Side.CLIENT)
+      }
     }
   }
 
@@ -44,8 +46,10 @@ abstract class ScheduledTicker {
 
     if (ticksServer <= 0) {
       if (evt.phase == Phase.START) onServerTickStart()
-      else if (evt.phase == Phase.END) onServerTickEnd()
-      ticksServer = nextTickSpacing(Side.SERVER)
+      else if (evt.phase == Phase.END) {
+        onServerTickEnd()
+        ticksServer = nextTickSpacing(Side.SERVER)
+      }
     }
   }
 

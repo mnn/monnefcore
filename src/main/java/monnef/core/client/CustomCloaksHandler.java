@@ -11,6 +11,7 @@ import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import monnef.core.Config;
 import monnef.core.Reference;
+import monnef.core.utils.PlayerHelper;
 import monnef.core.utils.WebHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -37,6 +38,8 @@ public class CustomCloaksHandler {
     private static final String JAFFA_CLOAK_URL_BASE = Reference.URL_JAFFAS + "/skin/cloak/_get.php";
     private static final String JAFFA_CLOAK_URL = JAFFA_CLOAK_URL_BASE + "?name=%s";
     private static final boolean SHOW_CLOAK_DEBUG_MESSAGES = false; // WARNING: it's really spammy!
+    public static boolean DEBUG_FORCE_SPECIAL_CLOAK = false;
+    private static final String DEBUG_CLOAK_URL = Reference.URL_JAFFAS + "/skin/cloak/jaffaCloak.png";
 
     // TODO: update to use UUIDs instead of names
 
@@ -66,14 +69,14 @@ public class CustomCloaksHandler {
 
             if (!processedPlayers.contains(player)) {
                 String playerName = player.getDisplayName();
-                Log.printFine("Got question on cloak for [" + playerName + "].");
+                Log.printFine("Got question on cloak for [" + PlayerHelper.formatPlayerID(player) + "].");
                 processedPlayers.add(player);
 
-                if (!specialNames.contains(playerName)) {
+                if (!specialNames.contains(playerName) && !DEBUG_FORCE_SPECIAL_CLOAK) {
                     return;
                 }
 
-                String cloakURL = getCloakUrl(player.getUniqueID());
+                String cloakURL = DEBUG_FORCE_SPECIAL_CLOAK ? DEBUG_CLOAK_URL : getCloakUrl(player.getUniqueID());
                 if (SHOW_CLOAK_DEBUG_MESSAGES)
                     Log.printDebug("Setting cloak for [" + playerName + "]");
 

@@ -9,7 +9,9 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.server.FMLServerHandler;
 import monnef.core.Config;
+import monnef.core.MonnefCorePlugin;
 import monnef.core.Reference;
+import monnef.core.client.CustomCloaksHandler;
 import monnef.core.common.GuiHandler;
 import monnef.core.common.ScheduledTicker;
 import monnef.core.mod.MonnefCoreNormalMod;
@@ -23,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static monnef.core.client.CustomCloaksHandler.DEBUG_FORCE_SPECIAL_CLOAK;
 import static monnef.core.utils.PlayerHelper.addMessage;
 
 public class CommandMC extends CommandBase {
@@ -39,7 +42,7 @@ public class CommandMC extends CommandBase {
     @Override
     public void processCommand(ICommandSender commandsender, String[] parameters) {
         if (parameters.length <= 0) {
-            addMessage(commandsender, "§dmonnef core§r created by §e" + Reference.MONNEF + "§r.");
+            addMessage(commandsender, "\u00A7dmonnef core§r created by §e" + Reference.MONNEF + "§r.");
         } else if (parameters.length == 1 && parameters[0].equals("exporter")) {
             if (Config.isExporterEnabled()) {
                 if (commandsender instanceof EntityPlayer) {
@@ -58,6 +61,9 @@ public class CommandMC extends CommandBase {
                 addMessage(commandsender, DyeHelper.compileColorList());
             } else if (parameters[1].equals("scheduledTicker")) {
                 constructScheduledTickerAndRun();
+            } else if (parameters[1].equals("forceCloak")) {
+                if (MonnefCorePlugin.debugEnv) DEBUG_FORCE_SPECIAL_CLOAK = !DEBUG_FORCE_SPECIAL_CLOAK;
+                addMessage(commandsender, "Cloak forcing: " + DEBUG_FORCE_SPECIAL_CLOAK);
             } else {
                 addMessage(commandsender, "Unknown debug sub-command.");
             }
