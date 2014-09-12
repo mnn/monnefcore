@@ -43,11 +43,6 @@ public class SrgNames {
             String name = getTranslatedName();
             if (name == null) {
                 return innerName.equals(other);
-
-                /*
-                dump();
-                throw new RuntimeException("Mapping of " + innerName + " not found.");
-                */
             }
             return name.equals(other);
         }
@@ -59,14 +54,22 @@ public class SrgNames {
         CustomLogger l = MonnefCorePlugin.Log;
         l.printFinest("Dumping " + SrgNames.class.getSimpleName() + ".");
 
-        l.printFinest("Fields:");
-        for (Map.Entry<String, String> s : fields.entrySet()) {
-            l.printFinest(s.getKey() + " -> " + s.getValue());
+        if (fields != null) {
+            l.printFinest("Fields:");
+            for (Map.Entry<String, String> s : fields.entrySet()) {
+                l.printFinest(s.getKey() + " -> " + s.getValue());
+            }
+        } else {
+            l.printFine("No fields.");
         }
 
-        l.printFinest("Methods:");
-        for (Map.Entry<String, String> s : methods.entrySet()) {
-            l.printFinest(s.getKey() + " -> " + s.getValue());
+        if (methods != null) {
+            l.printFinest("Methods:");
+            for (Map.Entry<String, String> s : methods.entrySet()) {
+                l.printFinest(s.getKey() + " -> " + s.getValue());
+            }
+        } else {
+            l.printFine("No methods.");
         }
     }
 

@@ -5,18 +5,16 @@
 
 package monnef.core.asm;
 
-import monnef.core.MonnefCorePlugin;
 import monnef.core.asm.lightningHook.WorldServerVisitor;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import static monnef.core.MonnefCorePlugin.Log;
+import static monnef.core.asm.SrgNames.C_WORLD_SERVER;
 import static org.objectweb.asm.Opcodes.ASM4;
 
 public class CoreTransformer implements IClassTransformer {
@@ -32,10 +30,19 @@ public class CoreTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
-        if (bytes == null) return null;
-        if (name == null) return bytes;
+        String bytesCount = bytes == null ? "null" : Integer.toString(bytes.length);
+        Log.printFinest("Transformer is processing class with name=" + name + ", transformedName=" + transformedName + " and bytesLen=" + bytesCount + ".");
 
-        if (SrgNames.C_WORLD_SERVER.isEqualName(name)) {
+        if (bytes == null) {
+            Log.printFinest("Transformer is skipping class " + name + " because it contains no code (null).");
+            return null;
+        }
+        if (name == null) {
+            Log.printFinest("Transformer is skipping class without a name (null).");
+            return bytes;
+        }
+
+        if (C_WORLD_SERVER.isEqualName(name) || C_WORLD_SERVER.isEqualName(transformedName)) {
             Log.printFine("Found WorldServer class.");
             ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
             ClassReader reader = new ClassReader(bytes);
@@ -46,7 +53,7 @@ public class CoreTransformer implements IClassTransformer {
         if (name.equals("cpw.mods.fml.common.registry.GameData")) {
             Log.printFine("Found GameData class.");
 
-            byte[] out = GameDataTransformer.transform(bytes,DEBUG_GAMEDATA_TRANSFORMER);
+            byte[] out = GameDataTransformer.transform(bytes, DEBUG_GAMEDATA_TRANSFORMER);
 
             if (DEBUG_GAMEDATA_TRANSFORMER) {
                 FileOutputStream os;
