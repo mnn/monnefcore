@@ -56,7 +56,7 @@ public class PlayerHelper {
     }
 
     public static Vec3 getPlayersHeadPositionVector(EntityPlayer entity) {
-        return entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX, calculatePlayerPositionY(entity), entity.posZ);
+        return VectorUtils.createVector(entity.posX, calculatePlayerPositionY(entity), entity.posZ);
     }
 
     public static AxisAlignedBB addCoord(AxisAlignedBB input, Vec3 vector) {
@@ -64,7 +64,7 @@ public class PlayerHelper {
     }
 
     public static Vec3 calculatePlayerVectorMultiplied(EntityPlayer player, Vec3 vector, double distance) {
-        return VectorUtils.multiplyVector(player.worldObj.getWorldVec3Pool(), vector.normalize(), distance);
+        return VectorUtils.multiplyVector(vector.normalize(), distance);
     }
 
     public static MovingObjectPosition rayTraceBlock(EntityPlayer entity, double distance, Vec3 look) {

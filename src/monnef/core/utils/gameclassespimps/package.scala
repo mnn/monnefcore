@@ -45,7 +45,7 @@ package object scalagameutils {
 
   implicit class WorldPimps(w: World) {
     def findEntitiesInRangeOfType[A](x: Int, y: Int, z: Int, radius: Int, c: Class[A]): List[A] =
-      w.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getAABBPool.getAABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius), new EntityTypeSelector(c)).asInstanceOf[java.util.List[A]].toList
+      w.getEntitiesWithinAABBExcludingEntity(null, AxisAlignedBB.getBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius), new EntityTypeSelector(c)).asInstanceOf[java.util.List[A]].toList
   }
 
 }

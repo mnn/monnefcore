@@ -16,11 +16,11 @@ public class BoxHelper {
         switch (direction) {
             case NORTH:
             case SOUTH:
-                return AxisAlignedBB.getAABBPool().getAABB(x1, y1, z1, x2, y2, z2);
+                return AxisAlignedBB.getBoundingBox(x1, y1, z1, x2, y2, z2);
 
             case WEST:
             case EAST:
-                return AxisAlignedBB.getAABBPool().getAABB(z1, y1, x1, z2, y2, x2);
+                return AxisAlignedBB.getBoundingBox(z1, y1, x1, z2, y2, x2);
         }
 
         return null;

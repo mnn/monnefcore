@@ -214,7 +214,7 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         if (forceFullCubeRenderBoundingBox) {
-            return AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
+            return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
         }
         return super.getRenderBoundingBox();
     }

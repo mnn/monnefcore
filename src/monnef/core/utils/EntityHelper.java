@@ -39,17 +39,17 @@ public class EntityHelper {
     }
 
     public static void pushEntitiesBack(World w, Vec3 hitVec, float force, float radius, float damage, float yBoost, EntityLivingBase thrower) {
-        AxisAlignedBB area = AxisAlignedBB.getAABBPool().getAABB(hitVec.xCoord, hitVec.yCoord, hitVec.zCoord, hitVec.xCoord, hitVec.yCoord, hitVec.zCoord).expand(radius, radius, radius);
+        AxisAlignedBB area = AxisAlignedBB.getBoundingBox(hitVec.xCoord, hitVec.yCoord, hitVec.zCoord, hitVec.xCoord, hitVec.yCoord, hitVec.zCoord).expand(radius, radius, radius);
         List entities = w.getEntitiesWithinAABB(Entity.class, area);
         for (Entity entity : (List<Entity>) entities) {
             double dist = entity.getDistance(hitVec.xCoord, hitVec.yCoord, hitVec.zCoord) / radius;
             if (dist <= 1) {
-                Vec3 distFromExpl = w.getWorldVec3Pool().getVecFromPool(entity.posX - hitVec.xCoord, entity.posY + entity.getEyeHeight() - hitVec.yCoord, entity.posZ - hitVec.zCoord);
+                Vec3 distFromExpl = VectorUtils.createVector(entity.posX - hitVec.xCoord, entity.posY + entity.getEyeHeight() - hitVec.yCoord, entity.posZ - hitVec.zCoord);
                 double len = distFromExpl.lengthVector();
                 if (len == 0) {
                     continue;
                 }
-                distFromExpl = VectorUtils.divideVector(w.getWorldVec3Pool(), distFromExpl, len); // normalization
+                distFromExpl = VectorUtils.divideVector(distFromExpl, len); // normalization
                 double reduction = entity.boundingBox != null ? w.getBlockDensity(hitVec, entity.boundingBox) : 1;
                 double dmg = (1 - dist) * damage * reduction;
                 DamageSource dmgSrc = thrower != null
