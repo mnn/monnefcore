@@ -7,11 +7,9 @@ package monnef.core.command;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.server.FMLServerHandler;
 import monnef.core.Config;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.Reference;
-import monnef.core.client.CustomCloaksHandler;
 import monnef.core.common.GuiHandler;
 import monnef.core.common.ScheduledTicker;
 import monnef.core.mod.MonnefCoreNormalMod;
@@ -25,7 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static monnef.core.client.CustomCloaksHandler.DEBUG_FORCE_SPECIAL_CLOAK;
+import static monnef.core.mod.MonnefCoreNormalMod.sashRegistry;
 import static monnef.core.utils.PlayerHelper.addMessage;
 
 public class CommandMC extends CommandBase {
@@ -62,8 +60,8 @@ public class CommandMC extends CommandBase {
             } else if (parameters[1].equals("scheduledTicker")) {
                 constructScheduledTickerAndRun();
             } else if (parameters[1].equals("forceCloak")) {
-                if (MonnefCorePlugin.debugEnv) DEBUG_FORCE_SPECIAL_CLOAK = !DEBUG_FORCE_SPECIAL_CLOAK;
-                addMessage(commandsender, "Cloak forcing: " + DEBUG_FORCE_SPECIAL_CLOAK);
+                if (MonnefCorePlugin.debugEnv) sashRegistry.FORCE_LOCAL_SASH_$eq(sashRegistry.FORCE_LOCAL_SASH());
+                addMessage(commandsender, "Cloak forcing: " + sashRegistry.FORCE_LOCAL_SASH());
             } else {
                 addMessage(commandsender, "Unknown debug sub-command.");
             }

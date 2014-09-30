@@ -20,6 +20,7 @@ import monnef.core.MonnefCorePlugin;
 import monnef.core.Reference;
 import monnef.core.block.BlockMonnefCore;
 import monnef.core.client.ExporterTickHandler;
+import monnef.core.client.SashRegistry;
 import monnef.core.command.CommandMC;
 import monnef.core.common.CommonProxy;
 import monnef.core.common.GuiHandler;
@@ -40,16 +41,20 @@ public class MonnefCoreNormalMod {
 
     public static CorePacketHandlerTrait packetHandler = CorePacketHandlerMC17.instance();
 
+    public static Configuration config;
+    public static SashRegistry sashRegistry;
+
     @Mod.EventHandler
     public void preLoad(FMLPreInitializationEvent evt) {
         handleMetadata();
         proxy.registerContainers();
         packetHandler.onPreLoad();
 
-        Configuration config = new Configuration(evt.getSuggestedConfigurationFile());
+        config = new Configuration(evt.getSuggestedConfigurationFile());
         PowerValues$.MODULE$.coreConfigPowerGenerationCoef_$eq((float) config.get(Configuration.CATEGORY_GENERAL, "powerGenerationCoef", 1d).getDouble(1));
         PowerValues$.MODULE$.coreConfigPowerConsumptionCoef_$eq((float) config.get(Configuration.CATEGORY_GENERAL, "powerConsumptionCoef", 1d).getDouble(1));
         config.save();
+        sashRegistry = new SashRegistry();
     }
 
     @Mod.EventHandler
