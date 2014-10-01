@@ -12,8 +12,21 @@ class SashRegistry {
 
   var FORCE_LOCAL_SASH = false
   var db = Map[UUID, SashRecord]()
+  val dummySashRecord = Some(SashRecord(UUID.randomUUID(), 1))
 
   private def configProperty = MonnefCoreNormalMod.config.get(Configuration.CATEGORY_GENERAL, "sashCache", "")
+
+  def getSashRecord(uuid: UUID): Option[SashRecord] = {
+    val r = db.get(uuid)
+    if (r.isEmpty && FORCE_LOCAL_SASH) dummySashRecord
+    else r
+  }
+
+  def getSashNumber(uuid: UUID): Int =
+    getSashRecord(uuid) match {
+      case Some(sr) => sr.number
+      case None => 0
+    }
 
   def refreshFromWeb() {
     // TODO

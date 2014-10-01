@@ -59,9 +59,9 @@ public class CommandMC extends CommandBase {
                 addMessage(commandsender, DyeHelper.compileColorList());
             } else if (parameters[1].equals("scheduledTicker")) {
                 constructScheduledTickerAndRun();
-            } else if (parameters[1].equals("forceCloak")) {
-                if (MonnefCorePlugin.debugEnv) sashRegistry.FORCE_LOCAL_SASH_$eq(sashRegistry.FORCE_LOCAL_SASH());
-                addMessage(commandsender, "Cloak forcing: " + sashRegistry.FORCE_LOCAL_SASH());
+            } else if (parameters[1].equals("forceSash")) {
+                if (MonnefCorePlugin.debugEnv) sashRegistry.FORCE_LOCAL_SASH_$eq(!sashRegistry.FORCE_LOCAL_SASH());
+                addMessage(commandsender, "Sash forcing: " + sashRegistry.FORCE_LOCAL_SASH());
             } else {
                 addMessage(commandsender, "Unknown debug sub-command.");
             }
