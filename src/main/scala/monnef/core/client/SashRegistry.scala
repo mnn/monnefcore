@@ -50,6 +50,7 @@ object SashRegistry {
   var DEBUG_FORCE_SASH = false
   val SASH_URL = Reference.URL_JAFFAS + "/sash.txt"
   val DAY_IN_MILLIS = 24 * 60 * 60 * 1000
+  final val SASH_COUNT = 1
 
   case class SashRecord(uuid: UUID, number: Int)
 
