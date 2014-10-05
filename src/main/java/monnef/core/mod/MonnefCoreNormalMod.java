@@ -55,6 +55,7 @@ public class MonnefCoreNormalMod {
         PowerValues$.MODULE$.coreConfigPowerConsumptionCoef_$eq((float) config.get(Configuration.CATEGORY_GENERAL, "powerConsumptionCoef", 1d).getDouble(1));
         config.save();
         sashRegistry = new SashRegistry();
+        sashRegistry.init();
     }
 
     @Mod.EventHandler

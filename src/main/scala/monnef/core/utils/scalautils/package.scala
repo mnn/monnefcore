@@ -12,6 +12,7 @@ import java.io.File
 import java.nio.file.{Paths, Files}
 import java.nio.charset.StandardCharsets
 import scala.util.Random
+import java.util.UUID
 
 package object scalautils {
 
@@ -62,6 +63,14 @@ package object scalautils {
 
     def saveToFile(fileName: String) {
       Files.write(Paths.get(fileName), fileName.getBytes(StandardCharsets.UTF_8))
+    }
+
+    def toUuidOpt: Option[UUID] = {
+      try {
+        Some(UUID.fromString(s))
+      } catch {
+        case _ => None
+      }
     }
   }
 

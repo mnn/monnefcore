@@ -10,9 +10,9 @@ class SashRegistryTest {
 
   def createTestingDbSimple = {
     val u1 = UUID.randomUUID()
-    val p1 = SashRecord(u1, 0)
+    val p1 = SashRecord(u1, 0, None)
     val u2 = UUID.randomUUID()
-    val p2 = SashRecord(u2, 1)
+    val p2 = SashRecord(u2, 1, None)
     Map(u1 -> p1, u2 -> p2)
   }
 

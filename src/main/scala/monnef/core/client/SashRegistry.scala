@@ -5,6 +5,10 @@ import java.util.{Date, UUID}
 import monnef.core.mod.MonnefCoreNormalMod
 import net.minecraftforge.common.config.Configuration
 import com.google.common.io.BaseEncoding
+import monnef.core.utils.{scalautils, WebHelper}
+import scala.collection.JavaConverters._
+import scala.collection.mutable
+import scalautils._
 
 class SashRegistry {
 
@@ -12,7 +16,7 @@ class SashRegistry {
 
   var FORCE_LOCAL_SASH = false
   var db = Map[UUID, SashRecord]()
-  val dummySashRecord = Some(SashRecord(UUID.randomUUID(), 1))
+  val dummySashRecord = Some(SashRecord(UUID.randomUUID(), 1, None))
 
   private def configProperty = MonnefCoreNormalMod.config.get(Configuration.CATEGORY_GENERAL, "sashCache", "")
 
@@ -28,8 +32,49 @@ class SashRegistry {
       case None => 0
     }
 
-  def refreshFromWeb() {
-    // TODO
+  def processSashLinesFromWeb(lines: mutable.Buffer[String]): Boolean = {
+    val chopped = lines.map {_.split(" ").toSeq}
+    if (!chopped.forall(_.size == 3)) false
+    else {
+      // nick, uuid, sash number
+      val triples = chopped.map { a => (a(0), a(1), a(2))}
+      val convertedOpt: Seq[Option[(String, UUID, Int)]] = triples.map {
+        case (nickStr, uuidStr, sashNumStr) =>
+          val sashNum = sashNumStr.toIntOpt
+          val uuid = uuidStr.toUuidOpt
+          if (sashNum.nonEmpty && uuid.nonEmpty) Some((nickStr, uuid.get, sashNum.get))
+          else None
+      }
+      if (convertedOpt.exists(_.isEmpty)) false
+      else {
+        db = convertedOpt.map {
+          case Some((nick, uuid, sashNumber)) =>
+            val newItem = SashRecord(uuid, sashNumber, Some(nick))
+            uuid -> newItem
+        }.toMap
+        MonnefCorePlugin.Log.printFine(s"Obtained sash data: ${formatDb()}.")
+        true
+      }
+    }
+  }
+
+  def refreshFromWeb(): Boolean = {
+    val javaLines = new java.util.ArrayList[String]()
+    if (WebHelper.getLinesTillFooter(SASH_URL, javaLines)) {
+      val lines = javaLines.asScala
+      if (lines.size == 0) {
+        System.err.println(s"Empty sash info.")
+        return false
+      }
+      if (processSashLinesFromWeb(lines)) {
+        saveToConfig()
+        true
+      }
+      else false
+    } else {
+      System.err.println(s"Unable to obtain sash info from web.")
+      false
+    }
   }
 
   def loadFromConfig(): Boolean = {
@@ -43,16 +88,25 @@ class SashRegistry {
 
   def saveToConfig() {
     configProperty.set(serialize(db))
+    MonnefCoreNormalMod.config.save()
+  }
+
+  def init() {
+    if (!loadFromConfig()) refreshFromWeb()
+  }
+
+  def formatDb(): String = {
+    db.values.mkString(", ")
   }
 }
 
 object SashRegistry {
   var DEBUG_FORCE_SASH = false
-  val SASH_URL = Reference.URL_JAFFAS + "/sash.txt"
-  val DAY_IN_MILLIS = 24 * 60 * 60 * 1000
+  final val SASH_URL = Reference.URL_JAFFAS + "/sash.txt"
+  final val DAY_IN_MILLIS = 24 * 60 * 60 * 1000
   final val SASH_COUNT = 1
 
-  case class SashRecord(uuid: UUID, number: Int)
+  case class SashRecord(uuid: UUID, number: Int, nick: Option[String])
 
   def deserialize(data: String): Option[Map[UUID, SashRecord]] = {
     val dec: String = new String(BaseEncoding.base64Url().decode(data))
@@ -83,7 +137,7 @@ object SashRegistry {
         t.printStackTrace()
         return None
     }
-    Some(parsedData.map { case (uuid, stype) => (uuid, SashRecord(uuid, stype))}.toMap)
+    Some(parsedData.map { case (uuid, stype) => (uuid, SashRecord(uuid, stype, None))}.toMap)
   }
 
   def serialize(db: Map[UUID, SashRecord]): String = {

@@ -62,6 +62,8 @@ public class CommandMC extends CommandBase {
             } else if (parameters[1].equals("forceSash")) {
                 if (MonnefCorePlugin.debugEnv) sashRegistry.FORCE_LOCAL_SASH_$eq(!sashRegistry.FORCE_LOCAL_SASH());
                 addMessage(commandsender, "Sash forcing: " + sashRegistry.FORCE_LOCAL_SASH());
+            } else if (parameters[1].equals("showSash")) {
+                addMessage(commandsender, "Sash registry: " + sashRegistry.formatDb());
             } else {
                 addMessage(commandsender, "Unknown debug sub-command.");
             }
