@@ -9,6 +9,7 @@ import monnef.core.utils.{scalautils, WebHelper}
 import scala.collection.JavaConverters._
 import scala.collection.mutable
 import scalautils._
+import monnef.core.MonnefCorePlugin.Log
 
 class SashRegistry {
 
@@ -52,27 +53,29 @@ class SashRegistry {
             val newItem = SashRecord(uuid, sashNumber, Some(nick))
             uuid -> newItem
         }.toMap
-        MonnefCorePlugin.Log.printFine(s"Obtained sash data: ${formatDb()}.")
+        Log.printFine(s"Obtained sash data: ${formatDb()}.")
         true
       }
     }
   }
 
   def refreshFromWeb(): Boolean = {
+    Log.printInfo("Requesting sash info from web.")
     val javaLines = new java.util.ArrayList[String]()
     if (WebHelper.getLinesTillFooter(SASH_URL, javaLines)) {
       val lines = javaLines.asScala
       if (lines.size == 0) {
-        System.err.println(s"Empty sash info.")
+        Log.printWarning(s"Empty sash info.")
         return false
       }
       if (processSashLinesFromWeb(lines)) {
+        Log.printInfo(s"Successfully downloaded and processed sash info from web.")
         saveToConfig()
         true
       }
       else false
     } else {
-      System.err.println(s"Unable to obtain sash info from web.")
+      Log.printWarning(s"Unable to obtain sash info from web.")
       false
     }
   }
@@ -81,18 +84,22 @@ class SashRegistry {
     val data = configProperty.getString
     if (data == "") false
     else deserialize(data) match {
-      case Some(newDb) => db = newDb; true
-      case None => false
+      case Right(newDb) => db = newDb; true
+      case Left(msg) =>
+        s"Loading from config failed: $msg" |> {if (msg == ERR_MSG_CACHE_EXPIRED) Log.printInfo else Log.printWarning}
+        false
     }
   }
 
   def saveToConfig() {
     configProperty.set(serialize(db))
     MonnefCoreNormalMod.config.save()
+    Log.printFine(s"Saved sash info to config file.")
   }
 
   def init() {
     if (!loadFromConfig()) refreshFromWeb()
+    Log.printFine(s"Sash registry initialization complete. DB: ${formatDb()}")
   }
 
   def formatDb(): String = {
@@ -105,25 +112,26 @@ object SashRegistry {
   final val SASH_URL = Reference.URL_JAFFAS + "/sash.txt"
   final val DAY_IN_MILLIS = 24 * 60 * 60 * 1000
   final val SASH_COUNT = 1
+  final val ERR_MSG_CACHE_EXPIRED = "cache expired"
 
   case class SashRecord(uuid: UUID, number: Int, nick: Option[String])
 
-  def deserialize(data: String): Option[Map[UUID, SashRecord]] = {
+  def deserialize(data: String): Either[String, Map[UUID, SashRecord]] = {
     val dec: String = new String(BaseEncoding.base64Url().decode(data))
     log(s"Decoded sash data: '$dec'")
     val parts = dec.split(" ").toSeq
-    if (parts.size < 1 || !parts.head.forall(_.isDigit)) return None
+    if (parts.size < 1 || !parts.head.forall(_.isDigit)) return Left("empty or head not a digit")
     val lastUpdated = new Date(parts.head.toLong)
     val currentTime = new Date
     val validUntil = new Date(lastUpdated.getTime + DAY_IN_MILLIS)
-    if (lastUpdated.after(currentTime)) return None
-    if (validUntil.before(currentTime)) return None
-    deserializeDb(parts.tail)
+    if (lastUpdated.after(currentTime)) return Left("invalid data - last updated in config is after current time")
+    if (validUntil.before(currentTime)) return Left(ERR_MSG_CACHE_EXPIRED)
+    deserializeDb(parts.tail) match {case Some(a) => Right(a) case None => Left("deserialization error")}
   }
 
   def deserializeDb(partsWithUsers: Seq[String]): Option[Map[UUID, SashRecord]] = {
     if (partsWithUsers.size % 2 != 0) {
-      MonnefCorePlugin.Log.printWarning(s"Size of user parts not dividable be 2.")
+      Log.printWarning(s"Size of user parts not dividable be 2.")
       return None
     }
     var parsedData: Seq[(UUID, Int)] = Seq()
@@ -133,7 +141,7 @@ object SashRegistry {
       }.toSeq
     } catch {
       case t: Throwable =>
-        MonnefCorePlugin.Log.printWarning(s"Cannot parse item.")
+        Log.printWarning(s"Cannot parse item.")
         t.printStackTrace()
         return None
     }
@@ -149,6 +157,6 @@ object SashRegistry {
   def serializeDb(db: Map[UUID, SashRecord]): String = db.map(i => i._1 + " " + i._2.number).mkString(" ")
 
   def log(msg: String) {
-    MonnefCorePlugin.Log.printFine(s"[SashHandler] $msg")
+    Log.printFine(s"[SashHandler] $msg")
   }
 }
