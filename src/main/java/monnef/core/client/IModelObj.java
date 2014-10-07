@@ -11,15 +11,19 @@ import net.minecraftforge.client.model.obj.WavefrontObject;
 public interface IModelObj {
     void bindTexture();
 
-    void render(float scale);
+    void render();
 
-    void renderWithTexture(float scale);
+    void renderWithTexture();
 
-    void renderPossiblyWithTexture(float scale);
+    void renderPossiblyWithTexture();
 
     WavefrontObject getModel();
 
-    void renderWithTint(float scale, ColorHelper.IntColor tint);
+    void renderWithTint(ColorHelper.IntColor tint);
 
-    void renderWithTextureAndTint(float scale, ColorHelper.IntColor tint);
+    void renderWithTextureAndTint(ColorHelper.IntColor tint);
+
+    void setScale(float scale);
+
+    float getScale();
 }

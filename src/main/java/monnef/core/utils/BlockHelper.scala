@@ -11,6 +11,7 @@ import scala.collection.immutable.HashSet
 import net.minecraft.init.Blocks
 
 object BlockHelper {
+
   private var winterBlocks: HashSet[Block] = HashSet(Blocks.snow, Blocks.snow_layer, Blocks.ice, Blocks.packed_ice)
 
   final val NOTIFY_FLAG: Int = 2
@@ -50,4 +51,6 @@ object BlockHelper {
   }
 
   def registerWinterBlock(block: Block) { winterBlocks += block }
+
+  def setFire(world: World, x: Int, y: Int, z: Int) = setBlock(world, x, y, z, Blocks.fire)
 }

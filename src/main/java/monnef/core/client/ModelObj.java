@@ -20,10 +20,12 @@ public class ModelObj extends ModelBase implements IModelObj {
     private float rotationFix;
     private String texture;
     private ResourceLocation textureResource;
+    private float scale;
 
-    public ModelObj(String resourceName, float rotationFix, String texture) {
+    public ModelObj(String resourceName, float rotationFix, String texture, float defaultScale) {
         this.rotationFix = rotationFix;
         this.texture = texture;
+        this.scale = defaultScale;
         this.textureResource = new ResourceLocation(texture);
         IModelCustom tmp = AdvancedModelLoader.loadModel(new ResourceLocation(resourceName));
         if (!(tmp instanceof WavefrontObject))
@@ -41,12 +43,12 @@ public class ModelObj extends ModelBase implements IModelObj {
     }
 
     @Override
-    public void render(float scale) {
-        renderWithTint(scale, null);
+    public void render() {
+        renderWithTint(null);
     }
 
     @Override
-    public void renderWithTint(float scale, ColorHelper.IntColor tint) {
+    public void renderWithTint(ColorHelper.IntColor tint) {
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(rotationFix, 0, 1, 0);
@@ -58,24 +60,32 @@ public class ModelObj extends ModelBase implements IModelObj {
     }
 
     @Override
-    public void renderWithTexture(float scale) {
-        renderWithTextureAndTint(scale, null);
+    public void renderWithTexture() {
+        renderWithTextureAndTint(null);
     }
 
     @Override
-    public void renderWithTextureAndTint(float scale, ColorHelper.IntColor tint) {
+    public void renderWithTextureAndTint(ColorHelper.IntColor tint) {
         bindTexture();
-        renderWithTint(scale, tint);
+        renderWithTint(tint);
     }
 
     @Override
-    public void renderPossiblyWithTexture(float scale) {
-        if (texture != null) renderWithTexture(scale);
-        else render(scale);
+    public void renderPossiblyWithTexture() {
+        if (texture != null) renderWithTexture();
+        else render();
     }
 
     @Override
     public WavefrontObject getModel() {
         return model;
+    }
+
+    public float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
     }
 }

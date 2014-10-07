@@ -9,9 +9,10 @@ import javax.swing.Icon
 import net.minecraft.client.renderer.texture.IIconRegister
 import net.minecraft.util.{MovingObjectPosition, IIcon}
 import net.minecraft.init.Blocks
-import net.minecraft.world.World
+import net.minecraft.world.{IBlockAccess, World}
 import net.minecraft.item.{ItemBlock, Item, ItemStack}
 import monnef.core.api.IItemBlock
+import monnef.core.utils.ColorHelper
 
 abstract class BlockMonnefCore(_material: Material) extends Block(_material) with GameObjectDescriptor with CustomBlockIconTrait {
 
@@ -62,6 +63,30 @@ object BlockMonnefCore {
 
   private def setBurnProperties(block: Block, encouragement: Int, flammibility: Int) {
     Blocks.fire.setFireInfo(block, encouragement, flammibility)
+  }
+
+  def colorMultiplierMixedWithBiomeColor(access: IBlockAccess, x: Int, y: Int, z: Int): Int = {
+    colorMultiplierMixedWithBiomeColor(access, x, y, z, 9, 10)
+  }
+
+  def colorMultiplierMixedWithBiomeColor(access: IBlockAccess, x: Int, y: Int, z: Int, div: Int, shift: Int): Int = {
+    var red = 0
+    var green = 0
+    var blue = 0
+    for {
+      zShift <- -1 to 1
+      xShift <- -1 to 1
+    } {
+      val xBiome: Int = x + xShift
+      val zBiome: Int = z + zShift
+      val foliageColor: Int = access.getBiomeGenForCoords(xBiome, zBiome).getBiomeFoliageColor(xBiome, y, zBiome)
+      val currentFoliageColor: ColorHelper.IntColor = ColorHelper.getColor(foliageColor)
+      red += currentFoliageColor.getRed
+      green += currentFoliageColor.getGreen
+      blue += currentFoliageColor.getBlue
+    }
+
+    ColorHelper.getInt(red / div + shift, green / div + shift, blue / div + shift)
   }
 }
 
