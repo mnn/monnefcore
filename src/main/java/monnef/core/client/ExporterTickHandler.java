@@ -38,6 +38,8 @@ public class ExporterTickHandler {
             if (takeShotNow) {
                 takeShot();
                 takeShotNow = false;
+                if (tasks.isEmpty())
+                    PlayerHelper.addMessage(FMLClientHandler.instance().getClientPlayerEntity(), "Exporting finished");
             } else if (!tasks.isEmpty() && !takeShotNow) {
                 GuiExporter gui = (GuiExporter) FMLClientHandler.instance().getClient().currentScreen;
                 currentTask = tasks.pop();
@@ -76,17 +78,32 @@ public class ExporterTickHandler {
         int pixY = (gui.y - gui.height /*+ 1*/) * (-mc.displayHeight) / gui.height;
         int iconSize = 32;
         String blockName = currentTask.stack.getUnlocalizedName();
-        String fileName = blockName + ".png";
         File currDir = new File(".");
-        if (new File(currDir, fileName).exists()) {
-            MonnefCorePlugin.Log.printWarning("Overwriting '" + fileName + "'!");
+        File screenshotDir = new File(currDir, "monnefCoreExporter");
+        screenshotDir.mkdir();
+        String fileName = blockName + ".png";
+        int counter = 0;
+        boolean exists = fileExists(screenshotDir.getAbsolutePath(), fileName);
+
+        while (exists) {
+            fileName = blockName + "_" + counter++ + ".png";
+            exists = fileExists(screenshotDir.getAbsolutePath(), fileName);
         }
-        String res = ScreenShotHelper.saveScreenShot(currDir, fileName, pixX, pixY - iconSize, iconSize, iconSize);
+
+        String res = ScreenShotHelper.saveScreenShot(screenshotDir, fileName, pixX, pixY - iconSize, iconSize, iconSize);
         if (res.startsWith("Saved")) {
             MonnefCorePlugin.Log.printFinest("Rendered block " + blockName + " (oItem:" + currentTask.origItem.getUnlocalizedName() + ", sItem:" + currentTask.stack.getItem().getUnlocalizedName() + ").");
         } else {
             PlayerHelper.addMessage(FMLClientHandler.instance().getClient().thePlayer, "Problem! " + res);
         }
+    }
+
+    private static boolean fileExists(String path) {
+        return new File(path).exists();
+    }
+
+    private static boolean fileExists(String directoryPath, String filePath) {
+        return new File(directoryPath, filePath).exists();
     }
 
     public static class RenderTask {

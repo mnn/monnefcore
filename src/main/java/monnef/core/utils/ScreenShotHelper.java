@@ -29,8 +29,6 @@ public class ScreenShotHelper {
 
     public static String saveScreenShot(File path, String fileName, int left, int top, int width, int height) {
         try {
-            File screenshotDir = new File(path, "monnefCoreExporter");
-            screenshotDir.mkdir();
             int pixelsCount = width * height;
 
             if (intBuff == null || intBuff.capacity() < pixelsCount) {
@@ -49,9 +47,9 @@ public class ScreenShotHelper {
             File outFile;
 
             if (fileName == null) {
-                outFile = generateName(screenshotDir);
+                outFile = generateName(path);
             } else {
-                outFile = new File(screenshotDir, fileName);
+                outFile = new File(path, fileName);
             }
 
             ImageIO.write(bufferedimage, "png", outFile);
