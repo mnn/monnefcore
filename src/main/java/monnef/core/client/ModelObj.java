@@ -88,4 +88,9 @@ public class ModelObj extends ModelBase implements IModelObj {
     public void setScale(float scale) {
         this.scale = scale;
     }
+
+    @Override
+    public ResourceLocation getTexture() {
+        return textureResource;
+    }
 }

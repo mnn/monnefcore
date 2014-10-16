@@ -18,6 +18,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class EntityHelper {
@@ -69,29 +70,42 @@ public class EntityHelper {
         ReflectionHelper.setPrivateValue(EntityRegistry.EntityRegistration.class, record, range, "trackingRange");
     }
 
-    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int id, Object modInstance) {
-        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, id, modInstance, false, 0, 0);
+    public static void registerModEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, Object modInstance) {
+        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, -1, modInstance, false, 0, 0);
     }
 
-    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int id, Object modInstance, int backEgg, int foreEgg) {
-        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, id, modInstance, true, backEgg, foreEgg);
+    public static void registerGlobalEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int globalId, Object modInstance, int backEgg, int foreEgg) {
+        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, globalId, modInstance, true, backEgg, foreEgg);
     }
 
-    private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int id, Object modInstance, boolean registerSpawnEggs, int backEgg, int foreEgg) {
-        MonnefCorePlugin.Log.printFine("Registered entity class \"" + entityClass + "\" with id #" + id);
+    private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int globalId, Object modInstance, boolean registerSpawnEggs, int backEgg, int foreEgg) {
+        if (globalId == -1 && registerSpawnEggs)
+            throw new RuntimeException("Cannot register global entity (b/c spawn eggs) without proper id (currently got -1).");
         if (registerSpawnEggs) {
+            int id = getNextFreeGlobalEntityID();
             EntityRegistry.registerGlobalEntityID(entityClass, entityName, id, backEgg, foreEgg);
+            MonnefCorePlugin.Log.printFine("Registered global entity class \"" + entityClass + "\" with id #" + id);
         } else {
-            EntityRegistry.registerGlobalEntityID(entityClass, entityName, id);
+            int id = getNextFreeModID(modInstance);
+            EntityRegistry.registerModEntity(entityClass, entityName, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates);
+            MonnefCorePlugin.Log.printFine("Registered local (mod) entity class \"" + entityClass + "\" with id #" + id);
         }
-        EntityRegistry.registerModEntity(entityClass, entityName, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates);
     }
 
     public static void kickEntityInDirection(EntityLivingBase entity, ForgeDirection direction, float force) {
         entity.addVelocity(direction.offsetX * force, direction.offsetY * force, direction.offsetZ * force);
     }
 
-    public static int getNextFreeEntityID() {
+    public static int getNextFreeGlobalEntityID() {
         return EntityRegistry.findGlobalUniqueEntityId();
+    }
+
+    private static HashMap<Object, Integer> nextFreeIdPerMod = new HashMap<Object, Integer>();
+
+    public static int getNextFreeModID(Object modInstance) {
+        if (!nextFreeIdPerMod.containsKey(modInstance)) nextFreeIdPerMod.put(modInstance, 0);
+        int nextFreeId = nextFreeIdPerMod.get(modInstance);
+        nextFreeIdPerMod.put(modInstance, nextFreeId + 1);
+        return nextFreeId;
     }
 }

@@ -6,6 +6,7 @@
 package monnef.core.client;
 
 import monnef.core.utils.ColorHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 
 public interface IModelObj {
@@ -26,4 +27,6 @@ public interface IModelObj {
     void setScale(float scale);
 
     float getScale();
+
+    ResourceLocation getTexture();
 }
