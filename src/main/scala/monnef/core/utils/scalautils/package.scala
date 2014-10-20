@@ -135,4 +135,13 @@ package object scalautils {
     def zipWithIndexReversed: Seq[(Int, T)] = s.zipWithIndex.map(_.swap)
   }
 
+  implicit class FloatPimps(v: Float) {
+    def boundedAdd(toAdd: Float, max: Float): Float = {
+      val r = v + toAdd
+      if (r > max) r - max
+      else if (r < 0) r + max
+      else r
+    }
+  }
+
 }

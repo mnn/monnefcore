@@ -29,4 +29,8 @@ public interface IModelObj {
     float getScale();
 
     ResourceLocation getTexture();
+
+    void setRotationPoint(float x, float y, float z);
+
+    void setRotation(float x, float y, float z);
 }

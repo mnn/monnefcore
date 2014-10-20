@@ -7,9 +7,11 @@ package monnef.core.client;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import monnef.core.utils.ColorHelper;
+import monnef.core.utils.VectorUtils;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import net.minecraftforge.client.model.obj.WavefrontObject;
@@ -17,13 +19,15 @@ import org.lwjgl.opengl.GL11;
 
 public class ModelObj extends ModelBase implements IModelObj {
     private final WavefrontObject model;
-    private float rotationFix;
+    private float rotationYFix;
     private String texture;
     private ResourceLocation textureResource;
     private float scale;
+    private Vec3 rotationPoint, rotation;
+    private boolean rotationPointEnabled;
 
-    public ModelObj(String resourceName, float rotationFix, String texture, float defaultScale) {
-        this.rotationFix = rotationFix;
+    public ModelObj(String resourceName, float rotationYFix, String texture, float defaultScale) {
+        this.rotationYFix = rotationYFix;
         this.texture = texture;
         this.scale = defaultScale;
         this.textureResource = new ResourceLocation(texture);
@@ -51,11 +55,20 @@ public class ModelObj extends ModelBase implements IModelObj {
     public void renderWithTint(ColorHelper.IntColor tint) {
         GL11.glPushMatrix();
         GL11.glScalef(scale, scale, scale);
-        GL11.glRotatef(rotationFix, 0, 1, 0);
+        GL11.glRotatef(rotationYFix, 0, 1, 0);
         if (tint != null) {
             GL11.glColor4f(tint.getFloatRed(), tint.getFloatGreen(), tint.getFloatBlue(), 1f);
         }
+        if (rotationPointEnabled) {
+            GL11.glPushMatrix();
+            GL11.glTranslated(-rotationPoint.xCoord, -rotationPoint.yCoord, -rotationPoint.zCoord);
+            GL11.glRotated(rotation.xCoord, 1, 0, 0);
+            GL11.glRotated(rotation.yCoord, 0, 1, 0);
+            GL11.glRotated(rotation.zCoord, 0, 0, 1);
+            GL11.glTranslated(rotationPoint.xCoord, rotationPoint.yCoord, rotationPoint.zCoord);
+        }
         model.renderAll();
+        if (rotationPointEnabled) GL11.glPopMatrix();
         GL11.glPopMatrix();
     }
 
@@ -92,5 +105,16 @@ public class ModelObj extends ModelBase implements IModelObj {
     @Override
     public ResourceLocation getTexture() {
         return textureResource;
+    }
+
+    @Override
+    public void setRotationPoint(float x, float y, float z) {
+        rotationPoint = VectorUtils.createVector(x, y, z);
+        rotationPointEnabled = true;
+    }
+
+    @Override
+    public void setRotation(float x, float y, float z) {
+        rotation = VectorUtils.createVector(x, y, z);
     }
 }
