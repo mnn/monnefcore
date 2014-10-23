@@ -88,4 +88,10 @@ public class RenderUtils {
                 break;
         }
     }
+
+    public static void glRotateAroundPoint(float amount, float cx,float cy,float cz, float px,float py,float pz){
+        GL11.glTranslatef(px,py,pz);
+        GL11.glRotatef(amount,cx,cy,cz);
+        GL11.glTranslatef(-px,-py,-pz);
+    }
 }
