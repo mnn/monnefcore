@@ -89,9 +89,18 @@ public class RenderUtils {
         }
     }
 
-    public static void glRotateAroundPoint(float amount, float cx,float cy,float cz, float px,float py,float pz){
-        GL11.glTranslatef(px,py,pz);
-        GL11.glRotatef(amount,cx,cy,cz);
-        GL11.glTranslatef(-px,-py,-pz);
+    public static void glRotateAroundPoint(float amount, float cx, float cy, float cz, float px, float py, float pz) {
+        GL11.glTranslatef(px, py, pz);
+        GL11.glRotatef(amount, cx, cy, cz);
+        GL11.glTranslatef(-px, -py, -pz);
+    }
+
+    public static void glRenderLine(float red, float green, float blue, float width, float x1, float y1, float z1, float x2, float y2, float z2) {
+        GL11.glColor3f(red, green, blue);
+        GL11.glLineWidth(width);
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        GL11.glVertex3f(x1, y1, z1);
+        GL11.glVertex3f(x2, y2, z2);
+        GL11.glEnd();
     }
 }
