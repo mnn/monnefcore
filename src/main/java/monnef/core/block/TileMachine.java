@@ -148,7 +148,7 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
         return BuildCraftHelper.gotFreeSpaceInEnergyStorageAndWantsEnergy((IPowerReceptor) customer, customerDirection.getOpposite());
     }
 
-    private int getUpRotationsNeededForCurrentRotation() {
+    private int getDownRotationsNeededForCurrentRotation() {
         switch (rotation) {
             case NORTH:
                 return 0;
@@ -161,6 +161,10 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
             default:
                 return 0;
         }
+    }
+
+    private int getUpRotationsNeededForCurrentRotation() {
+        return 4 - getDownRotationsNeededForCurrentRotation();
     }
 
     private void refreshCustomer() {
