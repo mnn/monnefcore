@@ -92,4 +92,12 @@ public class DirectionHelper {
     public static int translateFromTrivialXToForgeDir(int direction) {
         return fromX[direction].ordinal();
     }
+
+    public static ForgeDirection applyRotationRepeatedly(ForgeDirection dir, ForgeDirection axis, int times) {
+        ForgeDirection d = dir;
+        for (int i = 0; i < times; i++) {
+            d = d.getRotation(axis);
+        }
+        return d;
+    }
 }

@@ -51,4 +51,6 @@ public interface IIntegerCoordinates {
     void setBlock(Block block);
 
     void setMetadata(int meta);
+
+    IIntegerCoordinates move(int x, int y, int z);
 }

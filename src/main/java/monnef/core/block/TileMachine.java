@@ -11,12 +11,15 @@ import buildcraft.api.power.PowerHandler;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.api.IIntegerCoordinates;
 import monnef.core.power.PowerValues;
+import monnef.core.utils.DirectionHelper;
 import monnef.core.utils.IntegerCoordinates;
+import monnef.jaffas.power.common.BuildCraftHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -46,6 +49,13 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
     private boolean forceFullCubeRenderBoundingBox;
     private boolean isPowerSource;
     private int tickCounter = 0;
+
+    public static final ForgeDirection[] CUSTOMER_DIRECTIONS_ALL = new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST, ForgeDirection.DOWN};
+    public static final ForgeDirection[] CUSTOMER_DIRECTIONS_NOT_BOTTOM = new ForgeDirection[]{ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
+    public static final ForgeDirection[] CUSTOMER_DIRECTIONS_BACK_AND_BOTTOM = new ForgeDirection[]{ForgeDirection.SOUTH, ForgeDirection.DOWN};
+
+    private int startDirNumber;
+    private ForgeDirection customerDirection = ForgeDirection.UNKNOWN;
 
     protected TileMachine() {
         onNewInstance(this);
@@ -86,6 +96,106 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
         if (gotPowerToActivate() && gotPower(POWER_LOSS * 10)) {
             applyCounterPerdition();
         }
+
+        if (!worldObj.isRemote) {
+            onServerTick();
+        }
+    }
+
+    private void onServerTick() {
+        onBeforePowerSourceHandling();
+
+        if (isPowerSource) {
+            refreshCustomer();
+
+            if (gotCustomer()) {
+                float energy = getEnergyGeneratedThisTick();
+                TileEntity consumerTile = getConsumerTile();
+                if (BuildCraftHelper.isPowerTile(consumerTile) && energy > 0) {
+                    PowerHandler.PowerReceiver customersPowerReceiver = ((IPowerReceptor) consumerTile).getPowerReceiver(customerDirection.getOpposite());
+                    customersPowerReceiver.receiveEnergy(PowerHandler.Type.ENGINE, energy, customerDirection.getOpposite());
+                }
+            }
+        }
+
+        onAfterPowerSourceHandling();
+    }
+
+    /**
+     * Used for generator to handle states sync.
+     */
+    protected void onAfterPowerSourceHandling() {
+    }
+
+    protected void onBeforePowerSourceHandling() {
+    }
+
+    public float getEnergyGeneratedThisTick() {
+        return 0;
+    }
+
+    private TileEntity getConsumerTileInDirection(ForgeDirection dir) {
+        return (new IntegerCoordinates(this)).shiftInDirectionBy(dir, 1).getBlockTileEntity();
+    }
+
+    protected boolean gotCustomer() {
+        return customerDirection != ForgeDirection.UNKNOWN;
+    }
+
+    private boolean isCustomerInDirection(ForgeDirection dir) {
+        TileEntity customer = getConsumerTileInDirection(dir);
+        if (!BuildCraftHelper.isPowerTile(customer)) return false;
+        return BuildCraftHelper.gotFreeSpaceInEnergyStorageAndWantsEnergy((IPowerReceptor) customer, customerDirection.getOpposite());
+    }
+
+    private int getUpRotationsNeededForCurrentRotation() {
+        switch (rotation) {
+            case NORTH:
+                return 0;
+            case WEST:
+                return 1;
+            case SOUTH:
+                return 2;
+            case EAST:
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
+    private void refreshCustomer() {
+        customerDirection = ForgeDirection.UNKNOWN;
+        setNextCustomerDirection();
+        int tested = 0;
+
+        while (tested < getValidCustomerDirections().length) {
+            ForgeDirection currentDirection = getValidCustomerDirections()[startDirNumber];
+            currentDirection = DirectionHelper.applyRotationRepeatedly(currentDirection, ForgeDirection.UP, getUpRotationsNeededForCurrentRotation());
+            if (isCustomerInDirection(currentDirection)) {
+                IPowerReceptor consumer = (IPowerReceptor) getConsumerTileInDirection(currentDirection);
+                if (BuildCraftHelper.gotFreeSpaceInEnergyStorage(consumer, currentDirection.getOpposite())) {
+                    customerDirection = currentDirection;
+                    return;
+                }
+            }
+            tested++;
+            setNextCustomerDirection();
+        }
+
+        customerDirection = ForgeDirection.UNKNOWN;
+    }
+
+    private void setNextCustomerDirection() {
+        startDirNumber++;
+        if (startDirNumber >= getValidCustomerDirections().length) startDirNumber = 0;
+    }
+
+    public ForgeDirection[] getValidCustomerDirections() {
+        return CUSTOMER_DIRECTIONS_ALL;
+    }
+
+    private TileEntity getConsumerTile() {
+        return getConsumerTileInDirection(customerDirection);
     }
 
     protected void onFirstTick() {

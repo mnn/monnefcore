@@ -239,4 +239,9 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     public void setMetadata(int meta) {
         BlockHelper.setBlockMetadata(getWorld(), getX(), getY(), getZ(), meta);
     }
+
+    @Override
+    public IIntegerCoordinates move(int x, int y, int z) {
+        return new IntegerCoordinates(getX() + x, getY() + y, getZ() + z, getWorld());
+    }
 }
