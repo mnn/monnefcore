@@ -2,7 +2,7 @@ package monnef.core.power
 
 object PowerValues {
   // getting ready for RedstoneFlux (after transition switch to 1)
-  var corePowerCoef = 0.1f
+  var corePowerCoef = 1f
 
   var corePowerGenerationCoef = 1f
   var corePowerConsumptionCoef = 1f

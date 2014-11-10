@@ -117,13 +117,13 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
 
   def getCurrentValueOfIntegerToSync(index: Int): Int = {
     index match {
-      case 0 => getPowerHandler.getEnergyStored.asInstanceOf[Int]
-      case 1 => getPowerHandler.getMaxEnergyStored.asInstanceOf[Int]
+      case 0 => getEnergyStorage.getEnergyStored
+      case 1 => getEnergyStorage.getMaxEnergyStored
       case _ => -1
     }
   }
 
-  def setCurrentValueOfIntegerToSync(index: Int, value: Int): Unit = {
+  def setCurrentValueOfIntegerToSync(index: Int, value: Int) {
     index match {
       case 0 => guiPowerStored = value
       case 1 => guiPowerMax = value

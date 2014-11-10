@@ -5,15 +5,14 @@
 
 package monnef.core.block;
 
-import buildcraft.api.power.IPowerEmitter;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
+import cofh.api.energy.IEnergyHandler;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.api.IIntegerCoordinates;
+import monnef.core.power.MonnefCoreEnergyStorage;
 import monnef.core.power.PowerValues;
 import monnef.core.utils.DirectionHelper;
 import monnef.core.utils.IntegerCoordinates;
-import monnef.jaffas.power.common.BuildCraftHelper;
+import monnef.jaffas.power.common.RedstoneFluxHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -22,27 +21,23 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-public abstract class TileMachine extends TileMonnefCore implements IPowerReceptor, IPowerEmitter {
-    public static final String POWER_TAG_NAME = "PowerData";
+public abstract class TileMachine extends TileMonnefCore implements IEnergyHandler {
     public static final String ROTATION_TAG_NAME = "rotation";
     public static final Random rand = new Random();
     private static final int DUMMY_CREATION_PHASE_INSTANCE_COUNTER_LIMIT = 5;
-    public static final float POWER_LOSS = 0.01f;
     protected int slowingCoefficient = 1;
     protected int doWorkCounter;
 
     private ForgeDirection rotation;
-    protected PowerHandler powerHandler;
+    protected MonnefCoreEnergyStorage energyStorage;
 
     protected int powerNeeded;
     protected int powerStorage;
     protected int maxEnergyReceived;
-    protected PowerHandler.Type bcPowerType;
     private boolean isRedstoneSensitive = false;
     private boolean cachedRedstoneStatus;
     private boolean isRedstoneStatusDirty;
@@ -62,9 +57,7 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
         setRotation(ForgeDirection.UNKNOWN);
 
         configurePowerParameters();
-        powerHandler = new PowerHandler(this, bcPowerType);
-        powerHandler.configure(1, maxEnergyReceived, powerNeeded, powerStorage);
-        powerHandler.setPerdition(new PowerHandler.PerditionCalculator(POWER_LOSS));
+        energyStorage = new MonnefCoreEnergyStorage(powerStorage, maxEnergyReceived);
     }
 
     public void setForceFullCubeRenderBoundingBox(boolean value) {
@@ -88,13 +81,18 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
             onFirstTick();
         }
         tickCounter++;
+
         if (isRedstoneStatusDirty) {
             isRedstoneStatusDirty = false;
             refreshCachedRedstoneStatus();
         }
-        powerHandler.update();
-        if (gotPowerToActivate() && gotPower(POWER_LOSS * 10)) {
-            applyCounterPerdition();
+
+        if (gotPowerToActivate()) {
+            doWorkCounter++;
+            if (doWorkCounter >= slowingCoefficient) {
+                doWorkCounter = 0;
+                doMachineWork();
+            }
         }
 
         if (!worldObj.isRemote) {
@@ -109,11 +107,12 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
             refreshCustomer();
 
             if (gotCustomer()) {
-                float energy = getEnergyGeneratedThisTick();
+                int energy = Math.round(getEnergyGeneratedThisTick());
                 TileEntity consumerTile = getConsumerTile();
-                if (BuildCraftHelper.isPowerTile(consumerTile) && energy > 0) {
-                    PowerHandler.PowerReceiver customersPowerReceiver = ((IPowerReceptor) consumerTile).getPowerReceiver(customerDirection.getOpposite());
-                    customersPowerReceiver.receiveEnergy(PowerHandler.Type.ENGINE, energy, customerDirection.getOpposite());
+                if (RedstoneFluxHelper.isPowerTile(consumerTile) && energy > 0) {
+                    IEnergyHandler customerEnergyConnection = (IEnergyHandler) consumerTile;
+                    ForgeDirection myDirectionFromCustomersView = customerDirection.getOpposite();
+                    customerEnergyConnection.receiveEnergy(myDirectionFromCustomersView, energy, false);
                 }
             }
         }
@@ -144,8 +143,8 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
 
     private boolean isCustomerInDirection(ForgeDirection dir) {
         TileEntity customer = getConsumerTileInDirection(dir);
-        if (!BuildCraftHelper.isPowerTile(customer)) return false;
-        return BuildCraftHelper.gotFreeSpaceInEnergyStorageAndWantsEnergy((IPowerReceptor) customer, customerDirection.getOpposite());
+        if (!RedstoneFluxHelper.isPowerTile(customer)) return false;
+        return RedstoneFluxHelper.gotFreeSpaceInEnergyStorageAndWantsEnergy((IEnergyHandler) customer, customerDirection.getOpposite());
     }
 
     private int getDownRotationsNeededForCurrentRotation() {
@@ -176,8 +175,8 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
             ForgeDirection currentDirection = getValidCustomerDirections()[startDirNumber];
             currentDirection = DirectionHelper.applyRotationRepeatedly(currentDirection, ForgeDirection.UP, getUpRotationsNeededForCurrentRotation());
             if (isCustomerInDirection(currentDirection)) {
-                IPowerReceptor consumer = (IPowerReceptor) getConsumerTileInDirection(currentDirection);
-                if (BuildCraftHelper.gotFreeSpaceInEnergyStorage(consumer, currentDirection.getOpposite())) {
+                IEnergyHandler consumer = (IEnergyHandler) getConsumerTileInDirection(currentDirection);
+                if (RedstoneFluxHelper.gotFreeSpaceInEnergyStorage(consumer, currentDirection.getOpposite())) {
                     customerDirection = currentDirection;
                     return;
                 }
@@ -211,7 +210,6 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
      */
     protected void configureAsPowerSource() {
         isPowerSource = true;
-        bcPowerType = PowerHandler.Type.ENGINE;
         powerNeeded = 0;
     }
 
@@ -219,7 +217,6 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
         powerNeeded = MathHelper.floor_float(200 * PowerValues.totalPowerConsumptionCoef());
         maxEnergyReceived = powerNeeded;
         powerStorage = 10 * powerNeeded;
-        bcPowerType = PowerHandler.Type.MACHINE;
     }
 
     public BlockMachine getMachineBlock() {
@@ -238,14 +235,14 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.rotation = ForgeDirection.getOrientation(tag.getByte(ROTATION_TAG_NAME));
-        getPowerHandler().readFromNBT(tag, POWER_TAG_NAME);
+        energyStorage.readFromNBT(tag);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByte(ROTATION_TAG_NAME, (byte) this.rotation.ordinal());
-        getPowerHandler().writeToNBT(tag, POWER_TAG_NAME);
+        energyStorage.writeToNBT(tag);
     }
 
     @Override
@@ -350,56 +347,56 @@ public abstract class TileMachine extends TileMonnefCore implements IPowerRecept
     public void onItemDebug(EntityPlayer player) {
     }
 
-    public PowerHandler getPowerHandler() {
-        return powerHandler;
-    }
-
-    //<editor-fold desc="BuildCraft API">
-    @Override
-    public final void doWork(PowerHandler workProvider) {
-        doWorkCounter++;
-        if (doWorkCounter >= slowingCoefficient) {
-            doWorkCounter = 0;
-            doMachineWork();
-        }
-    }
-
-    // just fixing what was broken in BuildCraft,
-    // I really need to look at Thermal Expansion power and move away from BC
-    private void applyCounterPerdition() {
-        getPowerHandler().addEnergy(POWER_LOSS);
-    }
-
-    @Override
-    public boolean canEmitPowerFrom(ForgeDirection side) {
-        return isPowerSource;
-    }
-
-    @Override
-    public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection side) {
-        return powerHandler.getPowerReceiver();
-    }
-
-    @Override
-    public World getWorld() {
-        return worldObj;
-    }
-    //</editor-fold>
-
     public boolean gotPowerToActivate() {
-        return gotPower(getPowerHandler().getActivationEnergy());
+        return gotPower(powerNeeded);
     }
 
-    public boolean gotPower(double amount) {
-        return getPowerHandler().getEnergyStored() >= amount;
+    public boolean gotPower(int amount) {
+        return energyStorage.getEnergyStored() >= amount;
     }
 
-    protected double consumeNeededPower() {
+    protected int consumeNeededPower() {
         return consumePower(powerNeeded);
     }
 
-    protected double consumePower(double amount) {
-        return getPowerHandler().useEnergy(amount, amount, true);
+    protected int consumePower(int amount) {
+        return energyStorage.extractEnergy(amount, false);
+    }
+
+    //<editor-fold desc="RedstoneFlux API">
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return energyStorage.receiveEnergy(maxReceive, simulate);
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return energyStorage.extractEnergy(maxExtract, simulate);
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return energyStorage.getEnergyStored();
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return energyStorage.getMaxEnergyStored();
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return true;
+    }
+    //</editor-fold>
+
+
+    public MonnefCoreEnergyStorage getEnergyStorage() {
+        return energyStorage;
+    }
+
+    public int getPowerNeeded() {
+        return powerNeeded;
     }
 }
 
