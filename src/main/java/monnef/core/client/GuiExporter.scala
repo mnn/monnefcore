@@ -50,8 +50,9 @@ class GuiExporter(container: Container) extends GuiContainerMonnefCore(container
 
       case BUTTON_TAKE_SHOTS =>
         queueBlock(Blocks.lapis_block)
+        queueBlock(Blocks.glass)
         queueBlock(Blocks.hopper)
-        queueBlock(Blocks.dispenser)
+        queueBlock(Blocks.glass)
 
       case BUTTON_PROCESS_ALL =>
         val itemsToProcess: Seq[Item] = GameDataHelper.extractAllItems().filter(_ != null).toSeq

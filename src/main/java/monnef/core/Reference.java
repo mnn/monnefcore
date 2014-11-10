@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Reference {
-    public static final String Version = "0.7.1";
+    public static final String Version = "0.7.2";
     public static final String ModId = "monnef-core";
     public static final String ModName = "monnef Core";
     public static final String ModIdHelper = "monnef-core-helper";
