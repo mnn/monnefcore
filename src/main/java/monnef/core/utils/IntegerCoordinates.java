@@ -244,4 +244,12 @@ public class IntegerCoordinates implements IIntegerCoordinates {
     public IIntegerCoordinates move(int x, int y, int z) {
         return new IntegerCoordinates(getX() + x, getY() + y, getZ() + z, getWorld());
     }
+
+    @Override
+    public String toString() {
+        if (getWorld() == null) {
+            return "null world";
+        }
+        return String.format("%s:%s", format(), getBlock().getUnlocalizedName());
+    }
 }
