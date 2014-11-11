@@ -7,6 +7,7 @@ package monnef.core.client;
 
 import monnef.core.block.ContainerMachine;
 import monnef.core.block.TileMachineWithInventory;
+import monnef.core.power.PowerValues;
 import monnef.core.utils.ColorHelper;
 import monnef.core.utils.LanguageHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -62,7 +63,7 @@ public class GuiContainerMachine extends GuiContainerMonnefCore {
     public List<String> fillTooltips(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
         if (isMouseInRect(mousex, mousey, ENERGY_BAR_X, ENERGY_BAR_Y, ENERGY_BAR_WIDTH, ENERGY_BAR_HEIGHT)) {
             currenttip.add("\u00A72Energy:\u00A7r");
-            currenttip.add(String.format("\u00A77%d\u00A78 / \u00A77%d\u00A7r", tile.getGuiPowerStored(), tile.getGuiPowerMax()));
+            currenttip.add(String.format("\u00A77%d\u00A78 / \u00A77%d\u00A7r %s", tile.getGuiPowerStored(), tile.getGuiPowerMax(), PowerValues.UNIT_TITLE()));
         }
 
         return currenttip;
