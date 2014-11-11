@@ -129,7 +129,7 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyHandl
     protected void onBeforePowerSourceHandling() {
     }
 
-    public float getEnergyGeneratedThisTick() {
+    public int getEnergyGeneratedThisTick() {
         return 0;
     }
 

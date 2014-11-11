@@ -13,4 +13,6 @@ object PowerValues {
   def totalPowerGenerationCoef = corePowerCoef * corePowerGenerationCoef * coreConfigPowerGenerationCoef
 
   def totalPowerConsumptionCoef = corePowerCoef * corePowerConsumptionCoef * coreConfigPowerConsumptionCoef
+
+  final val UNIT_TITLE = "RF"
 }
