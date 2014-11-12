@@ -5,7 +5,8 @@
 
 package monnef.core.block;
 
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
 import monnef.core.MonnefCorePlugin;
 import monnef.core.api.IIntegerCoordinates;
 import monnef.core.power.MonnefCoreEnergyStorage;
@@ -25,7 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-public abstract class TileMachine extends TileMonnefCore implements IEnergyHandler {
+public abstract class TileMachine extends TileMonnefCore implements IEnergyProvider, IEnergyReceiver {
     public static final String ROTATION_TAG_NAME = "rotation";
     public static final Random rand = new Random();
     private static final int DUMMY_CREATION_PHASE_INSTANCE_COUNTER_LIMIT = 5;
@@ -109,8 +110,8 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyHandl
             if (gotCustomer()) {
                 int energy = Math.round(getEnergyGeneratedThisTick());
                 TileEntity consumerTile = getConsumerTile();
-                if (RedstoneFluxHelper.isPowerTile(consumerTile) && energy > 0) {
-                    IEnergyHandler customerEnergyConnection = (IEnergyHandler) consumerTile;
+                if (RedstoneFluxHelper.isTilePowerReceiver(consumerTile) && energy > 0) {
+                    IEnergyReceiver customerEnergyConnection = (IEnergyReceiver) consumerTile;
                     ForgeDirection myDirectionFromCustomersView = customerDirection.getOpposite();
                     customerEnergyConnection.receiveEnergy(myDirectionFromCustomersView, energy, false);
                 }
@@ -143,8 +144,8 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyHandl
 
     private boolean isCustomerInDirection(ForgeDirection dir) {
         TileEntity customer = getConsumerTileInDirection(dir);
-        if (!RedstoneFluxHelper.isPowerTile(customer)) return false;
-        return RedstoneFluxHelper.gotFreeSpaceInEnergyStorageAndWantsEnergy((IEnergyHandler) customer, customerDirection.getOpposite());
+        if (!RedstoneFluxHelper.isTilePowerReceiver(customer)) return false;
+        return RedstoneFluxHelper.gotFreeSpaceInEnergyStorageAndWantsEnergy((IEnergyReceiver) customer, customerDirection.getOpposite());
     }
 
     private int getDownRotationsNeededForCurrentRotation() {
@@ -175,7 +176,7 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyHandl
             ForgeDirection currentDirection = getValidCustomerDirections()[startDirNumber];
             currentDirection = DirectionHelper.applyRotationRepeatedly(currentDirection, ForgeDirection.UP, getUpRotationsNeededForCurrentRotation());
             if (isCustomerInDirection(currentDirection)) {
-                IEnergyHandler consumer = (IEnergyHandler) getConsumerTileInDirection(currentDirection);
+                IEnergyReceiver consumer = (IEnergyReceiver) getConsumerTileInDirection(currentDirection);
                 if (RedstoneFluxHelper.gotFreeSpaceInEnergyStorage(consumer, currentDirection.getOpposite())) {
                     customerDirection = currentDirection;
                     return;
@@ -364,14 +365,12 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyHandl
     }
 
     //<editor-fold desc="RedstoneFlux API">
-    @Override
-    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        return energyStorage.receiveEnergy(maxReceive, simulate);
-    }
+
+    // Receiver
 
     @Override
-    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-        return energyStorage.extractEnergy(maxExtract, simulate);
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return isPowerSource ? 0 : energyStorage.receiveEnergy(maxReceive, simulate);
     }
 
     @Override
@@ -382,6 +381,13 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyHandl
     @Override
     public int getMaxEnergyStored(ForgeDirection from) {
         return energyStorage.getMaxEnergyStored();
+    }
+
+    // Provider
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return isPowerSource ? energyStorage.extractEnergy(maxExtract, simulate) : 0;
     }
 
     @Override
@@ -399,4 +405,3 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyHandl
         return powerNeeded;
     }
 }
-
