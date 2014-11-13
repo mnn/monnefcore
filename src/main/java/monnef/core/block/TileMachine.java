@@ -131,12 +131,14 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyProvi
     private int handleEnergyDistribution(int generatedEnergy) {
         generatedEnergy -= energyStorage.receiveEnergy(generatedEnergy, false);
 
-        if (generatedEnergy > 0 && gotCustomer()) {
+        if (energyStorage.getEnergyStored() > 0 && gotCustomer()) {
             TileEntity consumerTile = getConsumerTile();
             if (RedstoneFluxHelper.isTilePowerReceiver(consumerTile)) {
                 IEnergyReceiver customerEnergyConnection = (IEnergyReceiver) consumerTile;
                 ForgeDirection myDirectionFromCustomersView = customerDirection.getOpposite();
-                generatedEnergy -= customerEnergyConnection.receiveEnergy(myDirectionFromCustomersView, generatedEnergy, false);
+                int availableEnergy = extractEnergy(customerDirection, energyStorage.getMaxExtract(), true);
+                int sentPower = customerEnergyConnection.receiveEnergy(myDirectionFromCustomersView, availableEnergy, false);
+                extractEnergy(customerDirection, sentPower, false);
             }
         }
         return generatedEnergy;
