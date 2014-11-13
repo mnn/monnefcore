@@ -77,8 +77,6 @@ public class CoreModContainer extends DummyModContainer {
     @Subscribe
     public void preLoad(FMLPreInitializationEvent event) {
         Log.printFinest("container preLoad event");
-
-        Log.printInfo("Forced GameData to load: " + GameData.getBlockedIds().toString());
     }
 
     // use google subscribe and FML events

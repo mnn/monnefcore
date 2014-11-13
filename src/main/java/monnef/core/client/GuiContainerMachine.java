@@ -61,9 +61,13 @@ public class GuiContainerMachine extends GuiContainerMonnefCore {
 
     @Override
     public List<String> fillTooltips(GuiContainer gui, int mousex, int mousey, List<String> currenttip) {
-        if (isMouseInRect(mousex, mousey, ENERGY_BAR_X, ENERGY_BAR_Y, ENERGY_BAR_WIDTH, ENERGY_BAR_HEIGHT)) {
+        if (tile.isPowerBarRenderingEnabled() && isMouseInRect(mousex, mousey, ENERGY_BAR_X, ENERGY_BAR_Y, ENERGY_BAR_WIDTH, ENERGY_BAR_HEIGHT)) {
             currenttip.add("\u00A72Energy:\u00A7r");
             currenttip.add(String.format("\u00A77%d\u00A78 / \u00A77%d\u00A7r %s", tile.getGuiPowerStored(), tile.getGuiPowerMax(), PowerValues.UNIT_TITLE()));
+            if (tile.isPowerSource()) {
+                currenttip.add("\u00A72Production:\u00A7r");
+                currenttip.add(String.format(" \u00A77%d \u00A78%s/t\u00A7r", tile.getGeneratedPowerLastTick(), PowerValues.UNIT_TITLE()));
+            }
         }
 
         return currenttip;

@@ -14,6 +14,7 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
   var guiPowerMax: Int = _
   var guiPowerStored: Int = _
   private var containerDescriptor: ContainerRegistry.ContainerDescriptor = null
+  private var generatedPowerLastTick: Int = _
 
   setupContainerDescriptor()
   inventory = new Array[ItemStack](getSizeInventory())
@@ -113,12 +114,13 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
 
   override def getInventoryName: String
 
-  def getIntegersToSyncCount: Int = 2
+  def getIntegersToSyncCount: Int = 3
 
   def getCurrentValueOfIntegerToSync(index: Int): Int = {
     index match {
       case 0 => getEnergyStorage.getEnergyStored
       case 1 => getEnergyStorage.getMaxEnergyStored
+      case 2 => generatedPowerLastTick
       case _ => -1
     }
   }
@@ -127,6 +129,7 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
     index match {
       case 0 => guiPowerStored = value
       case 1 => guiPowerMax = value
+      case 2 => generatedPowerLastTick = value
       case _ =>
     }
   }
@@ -192,5 +195,7 @@ abstract class TileMachineWithInventory extends TileMachine with IInventory {
     this.addItemToInventory(item.getEntityItem, doAdd = false) > 0
   }
 
+  def getGeneratedPowerLastTick = generatedPowerLastTick
 
+  protected def setGeneratedPowerLastTick(value: Int) { generatedPowerLastTick = value }
 }

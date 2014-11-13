@@ -28,6 +28,7 @@ import monnef.core.network.CorePacketHandlerMC17;
 import monnef.core.network.CorePacketHandlerTrait;
 import monnef.core.power.PowerValues$;
 import monnef.core.utils.BreakableIronMaterial;
+import monnef.core.utils.ClassHelper;
 import net.minecraftforge.common.config.Configuration;
 
 @Mod(modid = Reference.ModIdHelper, name = Reference.ModNameHelper, version = Reference.Version, dependencies = "required-after:monnef-core")
@@ -56,6 +57,9 @@ public class MonnefCoreNormalMod {
         config.save();
         sashRegistry = new SashRegistry();
         sashRegistry.init();
+        if (!ClassHelper.isClassPresent("cofh.api.energy.IEnergyProvider")) {
+            MonnefCorePlugin.Log.printSevere("Missing or potentially incompatible Redstone Flux API.");
+        }
     }
 
     @Mod.EventHandler

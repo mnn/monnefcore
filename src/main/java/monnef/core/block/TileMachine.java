@@ -30,6 +30,7 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyProvi
     public static final String ROTATION_TAG_NAME = "rotation";
     public static final Random rand = new Random();
     private static final int DUMMY_CREATION_PHASE_INSTANCE_COUNTER_LIMIT = 5;
+    private static final int REFRESH_CUSTOMER_EVERY_NTH_TICK = 40;
     protected int slowingCoefficient = 1;
     protected int doWorkCounter;
 
@@ -102,23 +103,43 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyProvi
     }
 
     private void onServerTick() {
+        handlePossiblePowerSource();
+    }
+
+    private void handlePossiblePowerSource() {
         onBeforePowerSourceHandling();
 
         if (isPowerSource) {
-            refreshCustomer();
-
-            if (gotCustomer()) {
-                int energy = Math.round(getEnergyGeneratedThisTick());
-                TileEntity consumerTile = getConsumerTile();
-                if (RedstoneFluxHelper.isTilePowerReceiver(consumerTile) && energy > 0) {
-                    IEnergyReceiver customerEnergyConnection = (IEnergyReceiver) consumerTile;
-                    ForgeDirection myDirectionFromCustomersView = customerDirection.getOpposite();
-                    customerEnergyConnection.receiveEnergy(myDirectionFromCustomersView, energy, false);
-                }
-            }
+            handlePowerSource();
         }
 
         onAfterPowerSourceHandling();
+    }
+
+    private void handlePowerSource() {
+        if (tickCounter % REFRESH_CUSTOMER_EVERY_NTH_TICK == 0) refreshCustomer();
+        int generatedEnergy = Math.round(getEnergyGeneratedThisTick());
+        if (generatedEnergy > 0) {
+            generatedEnergy = handleEnergyDistribution(generatedEnergy);
+
+            if (generatedEnergy > 0) {
+                // TODO: react on energy wasting, maybe some particles like smoke?
+            }
+        }
+    }
+
+    private int handleEnergyDistribution(int generatedEnergy) {
+        generatedEnergy -= energyStorage.receiveEnergy(generatedEnergy, false);
+
+        if (generatedEnergy > 0 && gotCustomer()) {
+            TileEntity consumerTile = getConsumerTile();
+            if (RedstoneFluxHelper.isTilePowerReceiver(consumerTile)) {
+                IEnergyReceiver customerEnergyConnection = (IEnergyReceiver) consumerTile;
+                ForgeDirection myDirectionFromCustomersView = customerDirection.getOpposite();
+                generatedEnergy -= customerEnergyConnection.receiveEnergy(myDirectionFromCustomersView, generatedEnergy, false);
+            }
+        }
+        return generatedEnergy;
     }
 
     /**
@@ -403,5 +424,13 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyProvi
 
     public int getPowerNeeded() {
         return powerNeeded;
+    }
+
+    public boolean isInternalEnergyStorageFull() {
+        return energyStorage.getEnergyStored() >= energyStorage.getMaxEnergyStored();
+    }
+
+    public boolean isPowerSource() {
+        return isPowerSource;
     }
 }
