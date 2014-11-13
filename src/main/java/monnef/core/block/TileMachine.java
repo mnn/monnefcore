@@ -5,6 +5,7 @@
 
 package monnef.core.block;
 
+import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import monnef.core.MonnefCorePlugin;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.Random;
 
-public abstract class TileMachine extends TileMonnefCore implements IEnergyProvider, IEnergyReceiver {
+public abstract class TileMachine extends TileMonnefCore implements IEnergyProvider, IEnergyReceiver, IEnergyHandler {
     public static final String ROTATION_TAG_NAME = "rotation";
     public static final Random rand = new Random();
     private static final int DUMMY_CREATION_PHASE_INSTANCE_COUNTER_LIMIT = 5;
