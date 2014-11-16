@@ -25,6 +25,9 @@ public class EntityHelper {
 
     public static final float MAX_UP_MOTION = 0.5f;
 
+    // b/c Forge/FML has broken logging in dev env
+    private static final boolean FORCE_INFO_OUTPUT = true;
+
     public static boolean animalIsAdult(EntityLivingBase animal) {
         return animal instanceof EntityAnimal ? ((EntityAnimal) animal).getGrowingAge() >= 0 : true;
     }
@@ -71,25 +74,29 @@ public class EntityHelper {
     }
 
     public static void registerModEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, Object modInstance) {
-        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, -1, modInstance, false, 0, 0);
+        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, modInstance, false, 0, 0);
     }
 
-    public static void registerGlobalEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int globalId, Object modInstance, int backEgg, int foreEgg) {
-        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, globalId, modInstance, true, backEgg, foreEgg);
+    public static void registerGlobalEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, Object modInstance, int backEgg, int foreEgg) {
+        registerEntity(entityClass, entityName, trackingRange, updateFrequency, sendsVelocityUpdates, modInstance, true, backEgg, foreEgg);
     }
 
-    private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, int globalId, Object modInstance, boolean registerSpawnEggs, int backEgg, int foreEgg) {
-        if (globalId == -1 && registerSpawnEggs)
-            throw new RuntimeException("Cannot register global entity (b/c spawn eggs) without proper id (currently got -1).");
+    private static void registerEntity(Class<? extends Entity> entityClass, String entityName, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates, Object modInstance, boolean registerSpawnEggs, int backEgg, int foreEgg) {
         if (registerSpawnEggs) {
             int id = getNextFreeGlobalEntityID();
             EntityRegistry.registerGlobalEntityID(entityClass, entityName, id, backEgg, foreEgg);
-            MonnefCorePlugin.Log.printFine("Registered global entity class \"" + entityClass + "\" with id #" + id);
-        } else {
-            int id = getNextFreeModID(modInstance);
-            EntityRegistry.registerModEntity(entityClass, entityName, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates);
-            MonnefCorePlugin.Log.printFine("Registered local (mod) entity class \"" + entityClass + "\" with id #" + id);
+            printFineLogMsg("Registered global entity class \"" + entityClass + "\" with id #" + id);
         }
+
+        // global entities without its mod counterpart are not syncing - invisible on client
+        int id = getNextFreeModID(modInstance);
+        EntityRegistry.registerModEntity(entityClass, entityName, id, modInstance, trackingRange, updateFrequency, sendsVelocityUpdates);
+        printFineLogMsg("Registered local (mod) entity class \"" + entityClass + "\" with id #" + id);
+    }
+
+    private static void printFineLogMsg(String msg) {
+        MonnefCorePlugin.Log.printFine(msg);
+        if (FORCE_INFO_OUTPUT) MonnefCorePlugin.Log.printInfo(msg);
     }
 
     public static void kickEntityInDirection(EntityLivingBase entity, ForgeDirection direction, float force) {
