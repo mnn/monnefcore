@@ -64,4 +64,9 @@ public class WorldHelper {
         i.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(i);
     }
+
+    public static void dropLoot(Entity entity, ItemStack loot) {
+        EntityItem item = new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, loot);
+        entity.worldObj.spawnEntityInWorld(item);
+    }
 }
