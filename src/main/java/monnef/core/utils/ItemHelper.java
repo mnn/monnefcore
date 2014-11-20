@@ -7,11 +7,13 @@ package monnef.core.utils;
 
 import cpw.mods.fml.common.registry.FMLControlledNamespacedRegistry;
 import cpw.mods.fml.common.registry.GameData;
+import monnef.core.api.IItemSword;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
@@ -63,25 +65,6 @@ public class ItemHelper {
         if (!haveStacksSameIdAndDamage(template, tested)) return false;
         return tested.stackSize >= template.stackSize;
     }
-
-    /*
-    // to be removed - no IDs anymore
-    public static int findItemIdByName(String name) {
-        if (name == null || name.isEmpty()) return 0;
-        String prefixedName = "item." + name;
-
-        for (int i = 0; i < Item.itemsList.length; i++) {
-            Item item = Item.itemsList[i];
-            if (item != null) {
-                if (prefixedName.equals(item.getUnlocalizedName())) {
-                    return item.itemID;
-                }
-            }
-        }
-
-        return 0;
-    }
-    */
 
     public static ItemStack[] copyStackArray(ItemStack[] inv) {
         ItemStack[] ret = new ItemStack[inv.length];
@@ -141,5 +124,9 @@ public class ItemHelper {
         FMLControlledNamespacedRegistry<Block> bReg = GameData.getBlockRegistry();
         Block block = itemId > 0 && bReg.containsId(itemId) ? bReg.getObjectById(itemId) : null;
         return block;
+    }
+
+    public static boolean isSword(Item item) {
+        return item != null && (item instanceof ItemSword || item instanceof IItemSword);
     }
 }
