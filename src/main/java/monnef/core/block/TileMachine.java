@@ -33,7 +33,7 @@ public abstract class TileMachine extends TileMonnefCore implements IEnergyProvi
     private static final int DUMMY_CREATION_PHASE_INSTANCE_COUNTER_LIMIT = 5;
     private static final int REFRESH_CUSTOMER_EVERY_NTH_TICK = 40;
     protected int slowingCoefficient = 1;
-    protected int doWorkCounter;
+    protected int doWorkCounter = 0;
 
     private ForgeDirection rotation;
     protected MonnefCoreEnergyStorage energyStorage;
